@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <ListPreference android:key="currency"
+        android:title="Choose currency"
+        android:summary="Currencies other than USD will be calculated on device"
+        android:entries="@array/currency_list"
+        android:entryValues="@array/currency_values"
+        android:enabled="false"
+        android:defaultValue="0" />
+    
+    <MultiSelectListPreference android:key="source"
+        android:title="Choose sources"
+        android:summary="Where would you like to get your news from"
+        android:entries="@array/source_list"
+        android:entryValues="@array/source_values"
+        android:defaultValue="@array/source_defaults" />
+    
+    <ListPreference android:key="refresh"
+        android:title="Refresh interval"
+        android:summary="Choose how often new data should be retrieved."
+        android:entries="@array/interval_list"
+        android:entryValues="@array/interval_values"
+        android:defaultValue="600" />
+    
+    <CheckBoxPreference android:key="touch"
+       	android:title="Refresh on tap"
+       	android:summary="Fetch data from internets upon click"
+       	android:defaultValue="false" />
+    
+    <!-- refresh frequency -->
+    
+    <PreferenceCategory 
+        android:title="alarms"
+        android:enabled="false">
+        
+        <EditTextPreference android:key="min"
+            android:inputType="numberDecimal"
+            android:dialogMessage="Get notification when value drops below:"
+            android:summary="Currently not set"
+            android:title="Notify when below..."
+            android:defaultValue="200" />
+        
+        <EditTextPreference android:key="max"
+            android:inputType="numberDecimal"
+            android:dialogMessage="Get notification when value rises above:"
+            android:summary="Currently not set"
+            android:title="Notify when above..."
+            android:defaultValue="200" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory 
+        android:title="custom"
+        android:enabled="false">
+        
+        <EditTextPreference android:key="custom"
+            android:inputType="numberDecimal"
+            android:dialogMessage="Enter how much you'd like to track."
+            android:summary="That will be the biggest shown value."
+            android:title="Track custom amount of BTC"
+            android:defaultValue="1" />
+        
+    </PreferenceCategory>
+
+</PreferenceScreen>

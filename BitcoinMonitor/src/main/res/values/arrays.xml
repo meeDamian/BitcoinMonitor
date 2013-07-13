@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- for currency -->
+    <string-array name="currency_list">
+        <item>USD ($)</item>
+        <item>GBP (£)</item>
+        <item>CAD (CA$)</item>
+        <item>AUD (AU$)</item>
+        <item>PLN (zł)</item>
+        <item>JPY (¥)</item>
+        <item>EUR (€)</item>
+        <item>NOK (kr)</item>
+    </string-array>
+    <string-array name="currency_values">
+        <item>USD</item>
+        <item>GBP</item>
+        <item>CAD</item>
+        <item>AUD</item>
+        <item>PLN</item>
+        <item>JPY</item>
+        <item>EUR</item>
+        <item>NOK</item>
+    </string-array>
+    
+    <!-- for sources -->
+    <string-array name="source_list">
+        <item>mtgox.com</item>
+        <item>bitstamp.net</item>
+        <item>btc-e.com</item>
+    </string-array>
+    <string-array name="source_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="source_defaults">
+        <item>0</item>
+    </string-array>
+    
+    <!-- for intervals -->
+    <string-array name="interval_list">
+        <item>15s (madman mode)</item>
+        <item>1min (still-crazy mode)</item>
+        <item>10min (frequent enough for most mortals)</item>
+        <item>30min (take-it-easy mode)</item>
+        <item>3h (i-don\'t-really-care mode)</item>
+    </string-array>
+    <string-array name="interval_values">
+        <item>15</item>
+        <item>60</item>
+        <item>600</item>
+        <item>1800</item>
+        <item>10800</item>
+    </string-array>
+    
+    
+    <string-array name="empty_array">
+
+    </string-array>
+
+</resources>
