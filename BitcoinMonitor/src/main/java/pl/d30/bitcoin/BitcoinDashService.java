@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
@@ -61,7 +62,7 @@ public class BitcoinDashService extends DashClockExtension {
         } else {
             String s = (source==BITSTAMP) ? "bitstamp" : "mtgox";
             currency = sp.getString("currency", currency);
-            new DownloadFilesTask().execute("http://bitcoin.30d.pl?s="+s+"&c="+currency);
+            new DownloadFilesTask().execute("http://bitcoinN.30d.pl?s="+s+"&c="+currency);
         }
     }
 
@@ -131,7 +132,6 @@ public class BitcoinDashService extends DashClockExtension {
 
                 } else amount = "1";
 
-
                 if(source==MTGOX) src = "Mt.Gox";
                 else if(source==BITSTAMP) src = "Bitstamp";
                 else if(source==BTCE) src = "BTC-e";
@@ -145,18 +145,74 @@ public class BitcoinDashService extends DashClockExtension {
                 else if(currency.equals("JPY")) pre="¥";
                 else if(currency.equals("NOK")) suf="kr";
 
+                SharedPreferences.Editor spe = sp.edit();
+
+                String status = pre+Math.round(Float.parseFloat(result))+suf;
+                spe.putString("status", status);
+
+                String expTitle = ((pre_e!=null)?pre_e:pre)+result+suf;
+                spe.putString("expTitle", expTitle);
+
+                spe.putLong("epoch", System.currentTimeMillis()/1000);
+
+                spe.apply();
+
                 publishUpdate(new ExtensionData()
                         .visible(true)
                         .icon(R.drawable.icon_small)
-                        .status(pre+(int)Math.round(Float.parseFloat(result))+suf)
-                        .expandedTitle(((pre_e!=null)?pre_e:pre)+result+suf)
+                        .status(status)
+                        .expandedTitle(expTitle)
                         .expandedBody("Current value of "+amount+"BTC (" + src + ")")
                         .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://preev.com/btc/" + currency.toLowerCase()))));
 
                 tries = 0;
+                Log.d("DUPA", "full update.");
 
-            } else if( ++tries<3 ) onUpdateData(0);
-            else tries = 0;
+            } else if( ++tries<3 ) {
+                Log.d("DUPA", "retrying...");
+                onUpdateData(0);
+
+            } else {
+                Log.d("DUPA", "partial update.");
+
+                String src = "";
+                if(source==MTGOX) src = " (Mt.Gox)";
+                else if(source==BITSTAMP) src = " (Bitstamp)";
+                else if(source==BTCE) src = " (BTC-e)";
+
+                String amount = sp.getString("amount", DEF_AMOUNT);
+                if( amount!=DEF_AMOUNT ) {
+                    String tmp[] = amount.split("\\.");
+                    amount = tmp[0].replaceFirst("^0+(?!$)", "");
+                    if(amount.equals("")) amount = "0";
+                    if(tmp.length>1) {
+                        String decimals = tmp[1].replaceAll("[0]+$", "");
+                        if(!decimals.equals("")) amount += "." + decimals;
+                    }
+
+                } else amount = "1";
+
+                long lastRead = sp.getLong("epoch", 0);
+                String expandedBody = "";
+                if( lastRead!=0 ) {
+                    long diff = System.currentTimeMillis()/1000 - lastRead;
+//                    String unit = "s";
+//                    if( diff<3600 ) {
+//                        diff
+//                    }
+                    expandedBody =  "" + diff + "s ago " + amount + "BTC was worth" + src;
+                }
+
+                publishUpdate(new ExtensionData()
+                        .visible(true)
+                        .icon(R.drawable.icon_small)
+                        .status("---")
+                        .expandedTitle(sp.getString("expTitle", "---"))
+                        .expandedBody(expandedBody)
+                        .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://preev.com/btc/" + currency.toLowerCase()))));
+
+                tries = 0;
+            }
         }
     }
 }
