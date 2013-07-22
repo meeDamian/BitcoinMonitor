@@ -30,6 +30,8 @@ public class BitcoinDashService extends DashClockExtension {
     protected static final String DEF_CURRENCY = "USD";
     protected static final String DEF_AMOUNT = "1.0";
 
+    private static final String LOG_TAG = "BTC_APP";
+
     private SharedPreferences sp;
 
     private String currency = DEF_CURRENCY;
@@ -62,7 +64,7 @@ public class BitcoinDashService extends DashClockExtension {
         } else {
             String s = (source==BITSTAMP) ? "bitstamp" : "mtgox";
             currency = sp.getString("currency", currency);
-            new DownloadFilesTask().execute("http://bitcoinN.30d.pl?s="+s+"&c="+currency);
+            new DownloadFilesTask().execute("http://bitcoin.30d.pl/api/v3?s="+s+"&c="+currency);
         }
     }
 
@@ -71,7 +73,7 @@ public class BitcoinDashService extends DashClockExtension {
             HttpClient client = new DefaultHttpClient();
             String json = "", p = "0";
             try {
-                String line = "";
+                String line;
                 HttpGet request = new HttpGet(params[0]);
                 request.getParams().setParameter(CoreProtocolPNames.USER_AGENT, System.getProperty("http.agent"));
                 HttpResponse response = client.execute(request);
@@ -85,7 +87,8 @@ public class BitcoinDashService extends DashClockExtension {
 
                 } else {
                     String[] data = json.split(",");
-                    p = (data.length>=3) ? data[2].trim() : "FAIL";
+                    if( !currency.equals(data[3].trim()) ) Log.e("pl.d30.bitcoin", "Invalid currency! {requested:'" + currency + "' , received:'"+data[3].trim()+"'}");
+                    p = (data.length>=3) ? data[1].trim() : "FAIL";
                 }
 
             } catch (IllegalArgumentException e1) {
@@ -158,22 +161,22 @@ public class BitcoinDashService extends DashClockExtension {
                 spe.apply();
 
                 publishUpdate(new ExtensionData()
-                        .visible(true)
-                        .icon(R.drawable.icon_small)
-                        .status(status)
-                        .expandedTitle(expTitle)
-                        .expandedBody("Current value of "+amount+"BTC (" + src + ")")
-                        .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://preev.com/btc/" + currency.toLowerCase()))));
+                    .visible(true)
+                    .icon(R.drawable.icon_small)
+                    .status(status)
+                    .expandedTitle(expTitle)
+                    .expandedBody("Current value of "+amount+"BTC (" + src + ")")
+                    .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://preev.com/btc/" + currency.toLowerCase()))));
 
                 tries = 0;
-                Log.d("DUPA", "full update.");
+                Log.d(LOG_TAG, "full update.");
 
             } else if( ++tries<3 ) {
-                Log.d("DUPA", "retrying...");
+                Log.d(LOG_TAG, "retrying...");
                 onUpdateData(0);
 
             } else {
-                Log.d("DUPA", "partial update.");
+                Log.d(LOG_TAG, "partial update.");
 
                 String src = "";
                 if(source==MTGOX) src = " (Mt.Gox)";
@@ -194,22 +197,28 @@ public class BitcoinDashService extends DashClockExtension {
 
                 long lastRead = sp.getLong("epoch", 0);
                 String expandedBody = "";
+                boolean visible = true;
                 if( lastRead!=0 ) {
+                    String ago;
                     long diff = System.currentTimeMillis()/1000 - lastRead;
-//                    String unit = "s";
-//                    if( diff<3600 ) {
-//                        diff
-//                    }
-                    expandedBody =  "" + diff + "s ago " + amount + "BTC was worth" + src;
+                    if( diff<60 ) ago = diff + "s";
+                    else if( diff<=60*60 ) ago = "~" + Math.round( diff/60 ) + "m";
+                    else if( diff<=60*60*24 ) ago = "~" + Math.round( diff/(60*60) ) + "h";
+                    else {
+                        visible = false;
+                        ago = "ages";
+                    }
+
+                    expandedBody =  ago + " ago " + amount + "BTC was worth" + src;
                 }
 
                 publishUpdate(new ExtensionData()
-                        .visible(true)
-                        .icon(R.drawable.icon_small)
-                        .status("---")
-                        .expandedTitle(sp.getString("expTitle", "---"))
-                        .expandedBody(expandedBody)
-                        .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://preev.com/btc/" + currency.toLowerCase()))));
+                    .visible( visible )
+                    .icon( R.drawable.icon_small )
+                    .status("---")
+                    .expandedTitle(sp.getString("expTitle", "---"))
+                    .expandedBody(expandedBody)
+                    .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://preev.com/btc/" + currency.toLowerCase()))));
 
                 tries = 0;
             }
