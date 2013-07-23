@@ -11,6 +11,7 @@
         <item>JPY (¥)</item>
         <item>EUR (€)</item>
         <item>NOK (kr)</item>
+        <item>SGD (SG$)</item>
     </string-array>
     <string-array name="currency_values">
         <item>USD</item>
@@ -21,6 +22,7 @@
         <item>JPY</item>
         <item>EUR</item>
         <item>NOK</item>
+        <item>SGD</item>
     </string-array>
     
     <!-- for sources -->

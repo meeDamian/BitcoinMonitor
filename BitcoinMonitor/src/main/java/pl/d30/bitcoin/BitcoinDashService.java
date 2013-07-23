@@ -147,6 +147,7 @@ public class BitcoinDashService extends DashClockExtension {
                 else if(currency.equals("PLN")) suf="zł";
                 else if(currency.equals("JPY")) pre="¥";
                 else if(currency.equals("NOK")) suf="kr";
+                else if(currency.equals("SGD")) {pre="S$"; pre_e="SG$";}
 
                 SharedPreferences.Editor spe = sp.edit();
 
