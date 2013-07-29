@@ -37,6 +37,7 @@ public class BitcoinDashService extends DashClockExtension {
     private String currency = DEF_CURRENCY;
     private int source = MTGOX;
     private boolean experimental = false;
+    private boolean litecoin = false;
 
     private int tries = 0;
 
@@ -51,9 +52,13 @@ public class BitcoinDashService extends DashClockExtension {
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         source = Integer.parseInt(sp.getString("source", ""+source));
         experimental = sp.getBoolean("experimental", experimental);
+        litecoin = sp.getBoolean("litecoin", false);
 
-        if(!experimental) {
-            if(source==MTGOX) {
+        if( !experimental ) {
+            if( litecoin ) {
+                new DownloadFilesTask().execute("https://btc-e.com/api/2/btc_" + currency + "/ticker");
+
+            } else if(source==MTGOX) {
                 currency = sp.getString("currency", currency);
                 new DownloadFilesTask().execute("https://data.mtgox.com/api/1/BTC" + currency + "/ticker");
 

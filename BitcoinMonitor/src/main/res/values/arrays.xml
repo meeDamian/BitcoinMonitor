@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <!-- for currency -->
+    <!-- for BTC currency -->
     <string-array name="currency_list">
         <item>USD ($)</item>
         <item>GBP (£)</item>
@@ -23,6 +23,16 @@
         <item>EUR</item>
         <item>NOK</item>
         <item>SGD</item>
+    </string-array>
+
+    <!-- for LTC currency -->
+    <string-array name="currency_list_ltc">
+        <item>USD ($)</item>
+        <item>EUR (€)</item>
+    </string-array>
+    <string-array name="currency_values_ltc">
+        <item>USD</item>
+        <item>EUR</item>
     </string-array>
     
     <!-- for sources -->

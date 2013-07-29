@@ -3,7 +3,7 @@
     
     <ListPreference android:key="source"
         android:title="Bitcoin Exchange"
-        android:summary="Change exchange rate source."        
+        android:summary="@string/sources_bitcoin"
         android:entries="@array/source_list"
         android:entryValues="@array/source_values"
         android:defaultValue="0" />
@@ -16,10 +16,15 @@
         android:defaultValue="USD" />
 
     <EditTextPreference android:key="amount"
-        android:title="Custom BTC amount"
-        android:summary="Alter BTC amount of displayed value"
+        android:title="@string/amount_title_btc"
+        android:summary="@string/amount_summary_btc"
 		android:inputType="numberDecimal"
 		android:defaultValue="1.0" />
+
+    <CheckBoxPreference android:key="litecoin"
+        android:title="Litecoin"
+        android:summary="Check for Litecoin rates instead"
+        android:defaultValue="0" />
      
     <CheckBoxPreference android:key="experimental"
         android:title="Experimental mode"
@@ -27,7 +32,7 @@
         android:defaultValue="0" />
     
     <Preference android:key="donate"
-        android:title="Donate (10mBTC)"
+        android:title="Donate (20mBTC)"
         android:summary="If you like my work, please consider donating." />
 
 </PreferenceScreen>
