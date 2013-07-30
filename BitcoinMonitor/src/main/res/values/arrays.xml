@@ -25,15 +25,15 @@
         <item>SGD</item>
     </string-array>
 
-    <!-- for LTC currency -->
-    <string-array name="currency_list_ltc">
-        <item>USD ($)</item>
-        <item>EUR (€)</item>
-    </string-array>
-    <string-array name="currency_values_ltc">
-        <item>USD</item>
-        <item>EUR</item>
-    </string-array>
+    <!--&lt;!&ndash; for LTC currency &ndash;&gt;-->
+    <!--<string-array name="currency_list_ltc">-->
+        <!--<item>USD ($)</item>-->
+        <!--<item>EUR (€)</item>-->
+    <!--</string-array>-->
+    <!--<string-array name="currency_values_ltc">-->
+        <!--<item>USD</item>-->
+        <!--<item>EUR</item>-->
+    <!--</string-array>-->
     
     <!-- for sources -->
     <string-array name="source_list">

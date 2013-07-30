@@ -15,13 +15,17 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
 
 public class BitcoinDashService extends DashClockExtension {
     protected static final int MTGOX = 0;
@@ -53,34 +57,35 @@ public class BitcoinDashService extends DashClockExtension {
         source = Integer.parseInt(sp.getString("source", ""+source));
         experimental = sp.getBoolean("experimental", experimental);
         litecoin = sp.getBoolean("litecoin", false);
+        currency = sp.getString("currency", currency);
 
         if( !experimental ) {
-            if( litecoin ) {
-                new DownloadFilesTask().execute("https://btc-e.com/api/2/btc_" + currency + "/ticker");
-
-            } else if(source==MTGOX) {
-                currency = sp.getString("currency", currency);
-                new DownloadFilesTask().execute("https://data.mtgox.com/api/1/BTC" + currency + "/ticker");
-
-            } else if(source==BTCE) new DownloadFilesTask().execute("https://btc-e.com/api/2/btc_usd/ticker");
+            if( litecoin ) new DownloadFilesTask().execute("https://btc-e.com/api/2/ltc_usd/ticker");
+            else if(source==MTGOX) new DownloadFilesTask().execute("https://data.mtgox.com/api/1/BTC" + currency + "/ticker");
+            else if(source==BTCE) new DownloadFilesTask().execute("https://btc-e.com/api/2/btc_usd/ticker");
             else if(source==BITSTAMP) new DownloadFilesTask().execute("https://www.bitstamp.net/api/ticker/");
 
-
         } else {
-            String s = (source==BITSTAMP) ? "bitstamp" : "mtgox";
-            currency = sp.getString("currency", currency);
-            new DownloadFilesTask().execute("http://bitcoin.30d.pl/api/v3?s="+s+"&c="+currency);
+            String s;
+            if( source==BTCE || litecoin ) s = "btce";
+            else if( source==BITSTAMP ) s = "bitstamp";
+            else s = "mtgox";
+
+            new DownloadFilesTask().execute( "http://bitcoin.30d.pl/api/v3?s=" + s + ( (litecoin) ? "&i=ltc" : "&c=" + currency ) );
         }
     }
 
     private class DownloadFilesTask extends AsyncTask<String, Void, String> {
         protected String doInBackground(String... params) {
-            HttpClient client = new DefaultHttpClient();
+            HttpParams httpParams = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpParams, 7000);
+            HttpClient client = new DefaultHttpClient(httpParams);
             String json = "", p = "0";
             try {
                 String line;
                 HttpGet request = new HttpGet(params[0]);
                 request.getParams().setParameter(CoreProtocolPNames.USER_AGENT, System.getProperty("http.agent"));
+
                 HttpResponse response = client.execute(request);
                 BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                 while((line = rd.readLine()) != null) json += line + System.getProperty("line.separator");
@@ -156,7 +161,15 @@ public class BitcoinDashService extends DashClockExtension {
 
                 SharedPreferences.Editor spe = sp.edit();
 
-                String status = pre+Math.round(Float.parseFloat(result))+suf;
+                float val = Float.parseFloat(result);
+                String val_str;
+                if( val<10 ) {
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    val_str = df.format(val);
+
+                } else val_str = "" + Math.round(Float.parseFloat(result));
+
+                String status = pre + val_str + suf;
                 spe.putString("status", status);
 
                 String expTitle = ((pre_e!=null)?pre_e:pre)+result+suf;
@@ -168,10 +181,10 @@ public class BitcoinDashService extends DashClockExtension {
 
                 publishUpdate(new ExtensionData()
                     .visible(true)
-                    .icon(R.drawable.icon_small)
+                    .icon( (litecoin) ? R.drawable.icon_small_ltc : R.drawable.icon_small )
                     .status(status)
                     .expandedTitle(expTitle)
-                    .expandedBody("Current value of "+amount+"BTC (" + src + ")")
+                    .expandedBody("Current value of "+amount+((litecoin)?"L":"B")+"TC (" + src + ")")
                     .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://preev.com/btc/" + currency.toLowerCase()))));
 
                 tries = 0;
@@ -215,12 +228,12 @@ public class BitcoinDashService extends DashClockExtension {
                         ago = "ages";
                     }
 
-                    expandedBody =  ago + " ago " + amount + "BTC was worth" + src;
+                    expandedBody =  ago + " ago " + amount +((litecoin)?"L":"B") + "TC was worth" + src;
                 }
 
                 publishUpdate(new ExtensionData()
                     .visible( visible )
-                    .icon( R.drawable.icon_small )
+                    .icon( (litecoin) ? R.drawable.icon_small_ltc : R.drawable.icon_small )
                     .status("---")
                     .expandedTitle(sp.getString("expTitle", "---"))
                     .expandedBody(expandedBody)

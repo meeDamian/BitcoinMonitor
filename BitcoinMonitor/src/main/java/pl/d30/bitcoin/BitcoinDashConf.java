@@ -10,7 +10,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -134,9 +133,10 @@ public class BitcoinDashConf extends PreferenceActivity {
                 amount.setTitle(R.string.amount_title_ltc);
                 amount.setSummary(R.string.amount_summary_ltc);
 
-                if( !currency.getValue().matches("USD|EUR") ) currency.setValue(BitcoinDashService.DEF_CURRENCY);
-                currency.setEntryValues(R.array.currency_values_ltc);
-                currency.setEntries(R.array.currency_list_ltc);
+                currency.setValue(BitcoinDashService.DEF_CURRENCY);
+                currency.setEnabled(false);
+//                currency.setEntryValues(R.array.currency_values_ltc);
+//                currency.setEntries(R.array.currency_list_ltc);
 
                 lp.setValue(""+BitcoinDashService.BTCE);
                 lp.setSummary(R.string.sources_litecoin);
@@ -146,11 +146,14 @@ public class BitcoinDashConf extends PreferenceActivity {
                 amount.setTitle(R.string.amount_title_btc);
                 amount.setSummary(R.string.amount_summary_btc);
 
-                currency.setEntryValues(R.array.currency_values);
-                currency.setEntries(R.array.currency_list);
+//                currency.setEntryValues(R.array.currency_values);
+//                currency.setEntries(R.array.currency_list);
 
-                lp.setSummary(R.string.sources_bitcoin);
                 lp.setEnabled(true);
+                lp.setSummary(R.string.sources_bitcoin);
+
+                if( lp.getValue().equals(""+BitcoinDashService.MTGOX) ) enableCurrency(true);
+                else enableCurrency(false);
 
             }
             return true;
