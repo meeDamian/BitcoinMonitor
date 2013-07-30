@@ -53,17 +53,17 @@ public class BitcoinDashConf extends PreferenceActivity {
             lp = (ListPreference) findPreference("source");
             currency = (ListPreference) findPreference("currency");
             amount = (EditTextPreference) findPreference("amount");
-            if(Integer.parseInt(lp.getValue())!=BitcoinDashService.MTGOX) enableCurrency(false);
+            if(Integer.parseInt(lp.getValue())!=BitcoinDashService.SOURCE_MTGOX) enableCurrency(false);
 
             lp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     int nv = Integer.parseInt(newValue.toString());
-                    if(nv==BitcoinDashService.BITSTAMP || nv==BitcoinDashService.BTCE) enableCurrency(false);
-                    else if(nv==BitcoinDashService.MTGOX) enableCurrency(true);
+                    if(nv==BitcoinDashService.SOURCE_BITSTAMP || nv==BitcoinDashService.SOURCE_BTCE) enableCurrency(false);
+                    else if(nv==BitcoinDashService.SOURCE_MTGOX) enableCurrency(true);
 
                     CheckBoxPreference cbp = (CheckBoxPreference) findPreference("experimental");
-                    if(nv==BitcoinDashService.BTCE) {
+                    if(nv==BitcoinDashService.SOURCE_BTCE) {
                         cbp.setChecked(false);
                         cbp.setEnabled(false);
 
@@ -138,7 +138,7 @@ public class BitcoinDashConf extends PreferenceActivity {
 //                currency.setEntryValues(R.array.currency_values_ltc);
 //                currency.setEntries(R.array.currency_list_ltc);
 
-                lp.setValue(""+BitcoinDashService.BTCE);
+                lp.setValue(""+BitcoinDashService.SOURCE_BTCE);
                 lp.setSummary(R.string.sources_litecoin);
                 lp.setEnabled(false);
 
@@ -152,7 +152,7 @@ public class BitcoinDashConf extends PreferenceActivity {
                 lp.setEnabled(true);
                 lp.setSummary(R.string.sources_bitcoin);
 
-                if( lp.getValue().equals(""+BitcoinDashService.MTGOX) ) enableCurrency(true);
+                if( lp.getValue().equals(""+BitcoinDashService.SOURCE_MTGOX) ) enableCurrency(true);
                 else enableCurrency(false);
 
             }

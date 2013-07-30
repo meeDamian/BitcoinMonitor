@@ -42,7 +42,7 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Holo" />
         
-        <!- - DashClock extension -->
+        <!- -DashClock extension BTC-->
         <service android:name=".BitcoinDashService"
                  android:icon="@drawable/icon_small"
                  android:label="Bitcoin Exchange Rate"
@@ -60,6 +60,22 @@
         <activity android:name=".BitcoinDashConf"
                   android:label="Bitcoin Extension Settings"
                   android:exported="true" />
+
+
+        <!-- DashClock extension LTC -->
+        <service android:name=".LitecoinDashService"
+                 android:icon="@drawable/icon_small_ltc"
+                 android:label="Litecoin Exchange Rate"
+                 android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
+
+            <intent-filter>
+                <action android:name="com.google.android.apps.dashclock.Extension" />
+            </intent-filter>
+
+            <meta-data android:name="protocolVersion" android:value="1" />
+            <meta-data android:name="description" android:value="See current exchange rate in selected currency." />
+            <meta-data android:name="settingsActivity" android:value=".BitcoinDashConf" />
+        </service>
 
     </application>
 
