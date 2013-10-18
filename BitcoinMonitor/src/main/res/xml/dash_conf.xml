@@ -2,17 +2,17 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     
     <ListPreference android:key="source"
-        android:title="Bitcoin Exchange"
-        android:summary="@string/sources_bitcoin"
+        android:title="@string/source_title_btc"
+        android:summary="@string/source_summary_btc"
         android:entries="@array/source_list"
         android:entryValues="@array/source_values"
         android:defaultValue="0" />
     
     <ListPreference android:key="currency"
-        android:title="Currency"
-        android:summary="@string/currency_active"
-        android:entries="@array/currency_list"
-        android:entryValues="@array/currency_values"
+        android:title="@string/currency_title"
+        android:summary="@string/currency_summary_active"
+        android:entries="@array/currencies_btc_mtgox_list"
+        android:entryValues="@array/currencies_btc_mtgox_values"
         android:defaultValue="USD" />
 
     <EditTextPreference android:key="amount"
@@ -20,15 +20,11 @@
         android:summary="@string/amount_summary_btc"
 		android:inputType="numberDecimal"
 		android:defaultValue="1.0" />
-
-    <CheckBoxPreference android:key="litecoin"
-        android:title="Litecoin"
-        android:summary="Check for Litecoin rates instead"
-        android:defaultValue="0" />
      
     <CheckBoxPreference android:key="experimental"
         android:title="Experimental mode"
         android:summary="[WARNING] Saves data and battery, but may misbehave"
+        android:enabled="false"
         android:defaultValue="0" />
     
     <Preference android:key="donate"

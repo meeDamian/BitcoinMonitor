@@ -4,20 +4,35 @@
     <string name="app_name">Bitcoin Monitor</string>
     <string name="app_desc">An awesome bitcoin monitor it is!</string>
 
-    <string name="currency_not_supported">Custom currencies are supported only on Mt.Gox</string>
-    <string name="currency_active">Currency to be displayed</string>
+    <string name="bitcoin_label">Bitcoin Exchange Rate</string>
+    <string name="litecoin_label">Litecoin Exchange Rate</string>
+    <string name="dashclock_desc">See current exchange rate in selected currency</string>
 
-    <!-- shits to be removed... -->
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
 
+    <!-- SOURCE -->
+    <string name="source_title_btc">Bitcoin Exchange</string>
+    <string name="source_summary_btc">Change exchange rate source</string>
+
+    <string name="source_title_ltc">Litecoin Exchange</string>
+    <string name="source_summary_ltc">Currently only BTC-e is supported</string>
+
+
+    <!-- CURRENCY -->
+    <string name="currency_title">Currency</string>
+    <string name="currency_summary_not_supported">Custom currencies are not supported with currently chosen Exchange</string>
+    <string name="currency_summary_active">Currency to be displayed</string>
+
+
+    <!-- AMOUNT -->
     <string name="amount_title_btc">Custom BTC amount</string>
-    <string name="amount_title_ltc">Custom LTC amount</string>
-
     <string name="amount_summary_btc">Alter BTC amount of displayed value</string>
+
+    <string name="amount_title_ltc">Custom LTC amount</string>
     <string name="amount_summary_ltc">Alter LTC amount of displayed value</string>
 
-    <string name="sources_bitcoin">Change exchange rate source</string>
-    <string name="sources_litecoin">Only btc-e supports litecoins</string>
+
+
+    <!-- errors -->
+    <string name="error_invalid_amount">Changes NOT saved, invalid value provided.</string>
 
 </resources>

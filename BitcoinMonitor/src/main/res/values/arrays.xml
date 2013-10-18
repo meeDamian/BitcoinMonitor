@@ -2,7 +2,7 @@
 <resources>
     
     <!-- for BTC currency -->
-    <string-array name="currency_list">
+    <string-array name="currencies_btc_mtgox_list">
         <item>USD ($)</item>
         <item>GBP (£)</item>
         <item>CAD (CA$)</item>
@@ -13,7 +13,7 @@
         <item>NOK (kr)</item>
         <item>SGD (SG$)</item>
     </string-array>
-    <string-array name="currency_values">
+    <string-array name="currencies_btc_mtgox_values">
         <item>USD</item>
         <item>GBP</item>
         <item>CAD</item>
@@ -23,6 +23,15 @@
         <item>EUR</item>
         <item>NOK</item>
         <item>SGD</item>
+    </string-array>
+
+    <string-array name="currencies_btce_list">
+        <item>USD ($)</item>
+        <item>EUR (€)</item>
+    </string-array>
+    <string-array name="currencie_btce_values">
+        <item>USD</item>
+        <item>EUR</item>
     </string-array>
 
     <!--&lt;!&ndash; for LTC currency &ndash;&gt;-->
@@ -49,23 +58,6 @@
     <string-array name="source_defaults">
         <item>0</item>
     </string-array>
-    
-    <!-- for intervals -->
-    <string-array name="interval_list">
-        <item>15s (madman mode)</item>
-        <item>1min (still-crazy mode)</item>
-        <item>10min (frequent enough for most mortals)</item>
-        <item>30min (take-it-easy mode)</item>
-        <item>3h (i-don\'t-really-care mode)</item>
-    </string-array>
-    <string-array name="interval_values">
-        <item>15</item>
-        <item>60</item>
-        <item>600</item>
-        <item>1800</item>
-        <item>10800</item>
-    </string-array>
-    
     
     <string-array name="empty_array">
 
