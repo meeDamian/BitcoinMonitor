@@ -38,10 +38,13 @@
 
     <!-- DONATE -->
     <string name="donate_title">Donate (20mBTC)</string>
-    <string name="donate_title_ltc">Donate (1LTC)</string>
+    <string name="donate_title_ltc">Donate (2LTC)</string>
     <string name="donate_summary">If you like my work, please consider donating</string>
+
 
     <!-- errors -->
     <string name="error_invalid_amount">Changes NOT saved, invalid value provided.</string>
+    <string name="warn_no_wallet_btc">No Bitcoin wallet installed. Try that one!</string>
+    <string name="warn_no_wallet_ltc">No Litecoin wallet installed. Try that one!</string>
 
 </resources>

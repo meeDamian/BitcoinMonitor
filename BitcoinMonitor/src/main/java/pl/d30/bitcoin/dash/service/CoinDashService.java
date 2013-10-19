@@ -50,12 +50,10 @@ public class CoinDashService extends DashClockExtension {
             .setCallback(new FutureCallback<JsonObject>() {
                 @Override
                 public void onCompleted(Exception e, JsonObject json) {
-                    if( e!=null) Log.d(D30.LOG, e.toString());
-                    if( json!=null) Log.d(D30.LOG, json.toString());
+                if( e!=null) Log.d(D30.LOG, e.toString());
+                if( json!=null) Log.d(D30.LOG, json.toString());
                 }
             });
-
-
     }
 
     protected String getBtcUrl() {
