@@ -31,4 +31,8 @@
         android:title="@string/donate_title"
         android:summary="@string/donate_summary" />
 
+    <Preference android:key="donateLTC"
+        android:title="@string/donate_title_ltc"
+        android:summary="@string/donate_summary" />
+
 </PreferenceScreen>

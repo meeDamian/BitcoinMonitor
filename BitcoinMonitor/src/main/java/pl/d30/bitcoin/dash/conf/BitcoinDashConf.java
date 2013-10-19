@@ -23,8 +23,12 @@ import pl.d30.bitcoin.R;
 public class BitcoinDashConf extends PreferenceActivity {
 
     private static final String BITCOIN_ADDRESS = "1NEDwbKeTH4isApMg94R2C4y72i8qu63GG";
-    private static final String DEFAULT_DONATION = "0.02";
-    private static final String ALTERNATIVE_APP = "piuk.blockchain.android";
+    private static final String BITCOIN_DEFAULT_DONATION = "0.02";
+    private static final String BITCOIN_ALTERNATIVE_APP = "piuk.blockchain.android";
+
+    private static final String LITECOIN_ADDRESS = "LKpdDVpnWWk8tNtrBbyxCSrQKTMcRbJcop";
+    private static final String LITECOIN_DEFAULT_DONATION = "1";
+    private static final String LITECOIN_ALTERNATIVE_APP = "de.schildbach.wallet.litecoin";
 
     private Context context;
 
@@ -126,11 +130,26 @@ public class BitcoinDashConf extends PreferenceActivity {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                     try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("bitcoin:" + BITCOIN_ADDRESS + "?amount=" + DEFAULT_DONATION)));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("bitcoin:" + BITCOIN_ADDRESS + "?amount=" + BITCOIN_DEFAULT_DONATION)));
                     } catch(ActivityNotFoundException e) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id="+ALTERNATIVE_APP)));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id="+ BITCOIN_ALTERNATIVE_APP)));
                     }
                     return false;
+                    }
+                });
+            }
+
+            Preference donateLTC = findPreference("donateLTC");
+            if( donateLTC!=null ) {
+                donateLTC.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("litecoin:" + LITECOIN_ADDRESS + "?amount=" + LITECOIN_DEFAULT_DONATION)));
+                        } catch(ActivityNotFoundException e) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id="+ LITECOIN_ALTERNATIVE_APP)));
+                        }
+                        return false;
                     }
                 });
             }
