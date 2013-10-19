@@ -25,7 +25,7 @@ public class LitecoinDashConf extends BitcoinDashConf {
             source.setEnabled(false);
 
             currency.setEntries(R.array.currencies_btce_list);
-            currency.setEntryValues(R.array.currencie_btce_values);
+            currency.setEntryValues(R.array.currencies_btce_values);
 
             amount.setTitle(R.string.amount_title_ltc);
             amount.setSummary(R.string.amount_summary_ltc);

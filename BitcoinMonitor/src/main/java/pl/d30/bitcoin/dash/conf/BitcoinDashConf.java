@@ -154,7 +154,7 @@ public class BitcoinDashConf extends PreferenceActivity {
 
                 } else {
                     currency.setEntries(R.array.currencies_btce_list);
-                    currency.setEntryValues(R.array.currencie_btce_values);
+                    currency.setEntryValues(R.array.currencies_btce_values);
                 }
             }
         }

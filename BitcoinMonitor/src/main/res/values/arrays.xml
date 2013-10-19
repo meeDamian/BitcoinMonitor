@@ -29,7 +29,7 @@
         <item>USD ($)</item>
         <item>EUR (€)</item>
     </string-array>
-    <string-array name="currencie_btce_values">
+    <string-array name="currencies_btce_values">
         <item>USD</item>
         <item>EUR</item>
     </string-array>
