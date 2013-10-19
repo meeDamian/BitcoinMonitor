@@ -1,4 +1,4 @@
-package pl.d30.bitcoin;
+package pl.d30.bitcoin.dash.service;
 
 public class LitecoinDashService extends VirtualCoinDashService {
 

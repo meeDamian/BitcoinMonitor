@@ -2,6 +2,7 @@ package pl.d30.bitcoin.dash.conf;
 
 import android.os.Bundle;
 
+import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
 
 public class LitecoinDashConf extends BitcoinDashConf {
@@ -33,7 +34,7 @@ public class LitecoinDashConf extends BitcoinDashConf {
 
         @Override
         protected void setPreferenceFiles() {
-            pm.setSharedPreferencesName("ltc");
+            pm.setSharedPreferencesName(D30.PREF_FILE_LTC);
         }
     }
 }

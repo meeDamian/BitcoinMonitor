@@ -1,4 +1,4 @@
-package pl.d30.bitcoin;
+package pl.d30.bitcoin.dash.service;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -27,19 +27,21 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 
+import pl.d30.bitcoin.R;
+
 public class VirtualCoinDashService extends DashClockExtension {
 
-    protected static final int ITEM_BTC = 0;
-    protected static final int ITEM_LTC = 1;
+    public static final int ITEM_BTC = 0;
+    public static final int ITEM_LTC = 1;
 
-    protected static final int SOURCE_MTGOX = 0;
-    protected static final int SOURCE_BITSTAMP = 1;
-    protected static final int SOURCE_BTCE = 2;
+    public static final int SOURCE_MTGOX = 0;
+    public static final int SOURCE_BITSTAMP = 1;
+    public static final int SOURCE_BTCE = 2;
 
-    protected static final String DEF_CURRENCY = "USD";
-    protected static final String DEF_AMOUNT = "1.0";
-    protected static final int DEF_ITEM = ITEM_BTC;
-    protected static final int DEF_SOURCE = SOURCE_MTGOX;
+    public static final String DEF_CURRENCY = "USD";
+    public static final String DEF_AMOUNT = "1.0";
+    public static final int DEF_ITEM = ITEM_BTC;
+    public static final int DEF_SOURCE = SOURCE_MTGOX;
 
     public static final String LOG_TAG = "BTC_APP";
     private static final String FAIL = "FAIL";
@@ -138,6 +140,8 @@ public class VirtualCoinDashService extends DashClockExtension {
 
             if ( !result.equals(FAIL) && !result.trim().equals("") ) {
                 String pre_e = null, pre = "", suf = "", src = "";
+
+                if( sp==null ) return;
 
                 String amount = sp.getString("amount", DEF_AMOUNT);
                 float a;

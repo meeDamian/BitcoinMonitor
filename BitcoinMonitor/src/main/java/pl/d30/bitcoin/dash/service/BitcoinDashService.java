@@ -1,10 +1,9 @@
-package pl.d30.bitcoin;
+package pl.d30.bitcoin.dash.service;
 
 public class BitcoinDashService extends VirtualCoinDashService {
 
     @Override
     protected void onUpdateData(int reason) {
-
         if( !experimental ) new DownloadFilesTask().execute( getBtcUrl() );
         else new DownloadFilesTask().execute( "http://bitcoin.30d.pl/api/v3?s=" + getSourceName(source) + "&c=" + currency );
 

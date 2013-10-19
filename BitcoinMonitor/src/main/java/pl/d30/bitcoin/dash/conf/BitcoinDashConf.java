@@ -15,6 +15,8 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.Arrays;
+
 import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
 
@@ -135,7 +137,7 @@ public class BitcoinDashConf extends PreferenceActivity {
         }
 
         protected void setPreferenceFiles() {
-            pm.setSharedPreferencesName("btc");
+            pm.setSharedPreferencesName(D30.PREF_FILE_BTC);
         }
 
         private void adjustCurrencies(int source) {
@@ -153,6 +155,9 @@ public class BitcoinDashConf extends PreferenceActivity {
                     currency.setEntryValues(R.array.currencies_btc_mtgox_values);
 
                 } else {
+                    if( !Arrays.asList(getResources().getStringArray(R.array.currencies_btce_values)).contains(currency.getValue()) )
+                        currency.setValue( D30.DEF_CURRENCY );
+
                     currency.setEntries(R.array.currencies_btce_list);
                     currency.setEntryValues(R.array.currencies_btce_values);
                 }
