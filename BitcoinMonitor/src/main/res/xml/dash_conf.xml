@@ -22,13 +22,13 @@
 		android:defaultValue="1.0" />
      
     <CheckBoxPreference android:key="experimental"
-        android:title="Experimental mode"
-        android:summary="[WARNING] Saves data and battery, but may misbehave"
+        android:title="@string/experimental_title"
+        android:summary="@string/experimental_summary"
         android:enabled="false"
         android:defaultValue="0" />
     
     <Preference android:key="donate"
-        android:title="Donate (20mBTC)"
-        android:summary="If you like my work, please consider donating." />
+        android:title="@string/donate_title"
+        android:summary="@string/donate_summary" />
 
 </PreferenceScreen>

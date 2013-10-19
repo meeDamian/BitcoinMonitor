@@ -31,6 +31,17 @@
     <string name="amount_summary_ltc">Alter LTC amount of displayed value</string>
 
 
+    <!-- EXPERIMENTAL -->
+    <string name="experimental_title">Experimental mode</string>
+    <string name="experimental_summary">[WARNING] Saves data and battery, but may misbehave</string>
+
+
+    <!-- DONATE -->
+    <string name="donate_title">Donate (20mBTC)</string>
+    <string name="donate_summary">If you like my work, please consider donating</string>
+
+
+
 
     <!-- errors -->
     <string name="error_invalid_amount">Changes NOT saved, invalid value provided.</string>
