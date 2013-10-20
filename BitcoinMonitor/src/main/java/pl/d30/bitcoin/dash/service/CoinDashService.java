@@ -19,11 +19,11 @@ public class CoinDashService extends DashClockExtension {
 
     protected String currency = D30.DEF_CURRENCY;
     protected int source = D30.SOURCE_MTGOX;
+    protected float amount;
 
     protected int tries = 0;
 
-    private String versionName = null;
-    private int versionCode = -1;
+    private String cachedVersionString = null;
 
     @Override
     protected void onInitialize(boolean isReconnect) {
@@ -33,7 +33,6 @@ public class CoinDashService extends DashClockExtension {
         sp = getSharedPreferences(D30.PREF_FILE_BTC, MODE_PRIVATE);
 
         getAppVersion();
-
     }
 
     @Override
@@ -43,16 +42,13 @@ public class CoinDashService extends DashClockExtension {
         currency = sp.getString(D30.IDX_CURRENCY, currency);
 
         Ion.with(getApplicationContext(), getUrl())
-            .setHeader("User-Agent", "DashClock Bitcoin Monitor " + getAppVersion() + ", " + getDeviceInfo())
+            .setHeader("User-Agent", "DashClock Bitcoin Monitor " + getCachedVersion() + ", " + getDeviceInfo())
             .asJsonObject()
             .setCallback(new FutureCallback<JsonObject>() {
                 @Override
                 public void onCompleted(Exception e, JsonObject json) {
-                if( e!=null) Log.d(D30.LOG, e.toString());
-                if( json!=null) {
-                    Log.d(D30.LOG, json.toString());
-
-                }
+                if( e!=null) Log.w(D30.LOG, e.toString());
+                if( json!=null) updateWidget( getLastValue(json) );
                 }
             });
     }
@@ -66,7 +62,108 @@ public class CoinDashService extends DashClockExtension {
         }
     }
 
-    protected String getSourceName(int source, boolean pretty) {
+    protected String getCachedVersion() {
+        if( cachedVersionString==null ) cachedVersionString = getAppVersion();
+        return cachedVersionString;
+    }
+
+    protected String getAppVersion() {
+        PackageManager pm = getPackageManager();
+        if( pm!=null ) {
+            try {
+                PackageInfo pi = pm.getPackageInfo(getPackageName(), 0);
+                return pi.versionName + " (" + pi.versionCode + ")";
+
+            } catch( PackageManager.NameNotFoundException ignored ) {}
+        }
+        return null;
+    }
+
+    protected String getLastValue(JsonObject j) {
+        switch( source ) {
+            case D30.SOURCE_MTGOX: return getFromMtgox(j);
+            case D30.SOURCE_BITSTAMP: return getFromBitstamp(j);
+            case D30.SOURCE_BTCE: return getFromBtce(j);
+            default: return null;
+        }
+    }
+
+    protected String getFormattedValue(String value) {
+        // TODO: change to X.XX format
+        return "";
+    }
+    protected String getFormattedValue(String value, String amount) {
+        // TODO: multiply value by amount
+        return getFormattedValue( value + amount );
+    }
+
+    protected String getPrintableValue(String v, boolean compact) {
+
+        // Prefixed:
+        if( currency.equals("USD") ) return "$" + v;
+        else if( currency.equals("GBP") ) return "£" + v;
+        else if( currency.equals("JPY") ) return "¥" + v;
+
+        // Suffixed:
+        else if( currency.equals("EUR") ) return v + "€";
+        else if( currency.equals("PLN") ) return v + "zł";
+        else if( currency.equals("NOK") ) return v + "kr";
+
+        // Prefixed w/long form
+        else if( currency.equals("AUD") ) return (compact ? "A$" : "AU$") + v;
+        else if( currency.equals("CAD") ) return (compact ? "C$" : "CA$") + v;
+        else if( currency.equals("SGD") ) return (compact ? "S$" : "SG$") + v;
+
+        else return null;
+    }
+
+    protected void updateWidget(String newValue) {
+
+        String a = sp.getString(D30.IDX_AMOUNT, "");
+        if( !a.isEmpty() ) {
+            try {
+                amount = Float.parseFloat( a );
+
+            } catch(NumberFormatException e) {
+                fixAmount();
+            }
+
+        } else fixAmount();
+
+        if( amount!=1.0f ) {
+
+        }
+
+
+
+    }
+
+    protected void fixAmount() {
+        sp.edit().putString(D30.IDX_AMOUNT, Float.toString(amount = 1f)).apply();
+    }
+
+
+
+
+
+    // STATIC
+    protected static String getFromMtgox(JsonObject j) {
+        j = D30.Json.getObject(j, "return");
+        if( j!=null ) {
+            j = D30.Json.getObject(j, "last");
+            if( j!=null ) return D30.Json.getString(j, "value");
+        }
+        return null;
+    }
+    protected static String getFromBitstamp(JsonObject j) {
+        return D30.Json.getString(j, "last");
+    }
+    protected static String getFromBtce(JsonObject j) {
+        j = D30.Json.getObject(j, "ticker");
+        return j!=null ? D30.Json.getString(j, "last") : null;
+    }
+
+    protected static String getSourceName(int source, boolean pretty) {
         switch( source ) {
             default:
             case D30.SOURCE_MTGOX: return pretty ? "Mt.Gox" : "mtgox";
@@ -74,27 +171,9 @@ public class CoinDashService extends DashClockExtension {
             case D30.SOURCE_BITSTAMP: return pretty? "Bitstamp" : "bitstamp";
         }
     }
-    protected String getSourceName(int source) { return getSourceName(source, false); }
+    protected static String getSourceName(int source) { return getSourceName(source, false); }
 
-    protected String getAppVersion() {
-        if( versionName==null || versionCode==-1 ) {
-            PackageManager pm = getPackageManager();
-            if( pm!=null ) {
-                try {
-                    PackageInfo pi = pm.getPackageInfo(getPackageName(), 0);
-                    versionName = pi.versionName;
-                    versionCode = pi.versionCode;
-
-                } catch(PackageManager.NameNotFoundException e) {
-                    versionName = "unknown";
-                    versionCode = -1;
-                }
-            }
-        }
-        return versionName + " (" + versionCode + ")";
-    }
-
-    protected String getDeviceInfo() {
+    protected static String getDeviceInfo() {
         return Build.MANUFACTURER + " " + Build.MODEL + "[" + Build.DEVICE + "|" + Build.PRODUCT + "|" + Build.SERIAL + "], OS: " + Build.VERSION.RELEASE;
     }
 }

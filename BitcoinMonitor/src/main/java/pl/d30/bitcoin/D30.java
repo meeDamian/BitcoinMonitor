@@ -1,5 +1,8 @@
 package pl.d30.bitcoin;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 public class D30 {
 
     public static final String LOG = "BtcManager";
@@ -26,6 +29,19 @@ public class D30 {
 
     // DEFAULTS
     public static final String DEF_CURRENCY = "USD";
+
+    public static class Json {
+
+        public static JsonObject getObject(JsonObject j, String n) {
+            JsonElement e = j.get(n);
+            return e!=null && e.isJsonObject() ? e.getAsJsonObject() : null;
+        }
+
+        public static String getString(JsonObject j, String n) {
+            JsonElement e = j.get(n);
+            return e!=null && e.isJsonPrimitive() ? e.getAsString() : null;
+        }
+    }
 
 
 }
