@@ -71,7 +71,7 @@ public class CoinDashService extends DashClockExtension {
         if( !amount.isEmpty() ) {
             try {
                 a = Float.parseFloat( amount );
-                if( a==0 ) fixAmount();
+                if( a<=0 ) fixAmount();
             }
             catch(NumberFormatException e) { fixAmount(); }
 

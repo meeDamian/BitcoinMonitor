@@ -113,7 +113,7 @@ public class BitcoinDashConf extends PreferenceActivity {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object newValue) {
                         try {
-                            if( Float.parseFloat(newValue.toString())==0 ) throw new NumberFormatException();
+                            if( Float.parseFloat(newValue.toString())<=0 ) throw new NumberFormatException();
 
                         } catch(NumberFormatException e) {
                             Toast.makeText(context, getString(R.string.error_invalid_amount), Toast.LENGTH_SHORT).show();
