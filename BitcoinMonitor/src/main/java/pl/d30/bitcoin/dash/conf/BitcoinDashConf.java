@@ -99,8 +99,8 @@ public class BitcoinDashConf extends PreferenceActivity {
 
 //                        CheckBoxPreference cbp = (CheckBoxPreference) findPreference("experimental");
 //                        if( cbp!=null ) {
-//                            cbp.setEnabled( nv==D30.SOURCE_BTCE );
-//                            if( nv==D30.SOURCE_BTCE ) cbp.setChecked(false);
+//                            cbp.setEnabled( nv==D30.BTCE );
+//                            if( nv==D30.BTCE ) cbp.setChecked(false);
 //                        }
                         return true;
                     }
@@ -130,10 +130,10 @@ public class BitcoinDashConf extends PreferenceActivity {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                     try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("bitcoin:" + BITCOIN_ADDRESS + "?amount=" + BITCOIN_DEFAULT_DONATION)));
+                        startActivity(new Intent(Intent.ACTION_VIEW, getPaymentUri(D30.BTC) ));
                     } catch(ActivityNotFoundException e) {
                         Toast.makeText(context, R.string.warn_no_wallet_btc, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id="+ BITCOIN_ALTERNATIVE_APP)));
+                        startActivity(new Intent(Intent.ACTION_VIEW, getStoreUri(D30.BTC) ));
                     }
                     return false;
                     }
@@ -146,10 +146,10 @@ public class BitcoinDashConf extends PreferenceActivity {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                     try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("litecoin:" + LITECOIN_ADDRESS + "?amount=" + LITECOIN_DEFAULT_DONATION)));
+                        startActivity(new Intent(Intent.ACTION_VIEW, getPaymentUri(D30.LTC) ));
                     } catch(ActivityNotFoundException e) {
                         Toast.makeText(context, R.string.warn_no_wallet_ltc, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id="+ LITECOIN_ALTERNATIVE_APP)));
+                        startActivity(new Intent(Intent.ACTION_VIEW, getStoreUri(D30.LTC) ));
                     }
                     return false;
                     }
@@ -162,7 +162,7 @@ public class BitcoinDashConf extends PreferenceActivity {
         }
 
         private void adjustCurrencies(int source) {
-            if( source==D30.SOURCE_BITSTAMP ) {
+            if( source==D30.BITSTAMP) {
                 currency.setValue( D30.DEF_CURRENCY );
                 currency.setEnabled(false);
                 currency.setSummary(R.string.currency_summary_not_supported);
@@ -171,7 +171,7 @@ public class BitcoinDashConf extends PreferenceActivity {
                 currency.setEnabled(true);
                 currency.setSummary(R.string.currency_summary_active);
 
-                if( source==D30.SOURCE_MTGOX ) {
+                if( source==D30.MTGOX) {
                     currency.setEntries(R.array.currencies_btc_mtgox_list);
                     currency.setEntryValues(R.array.currencies_btc_mtgox_values);
 
@@ -183,6 +183,16 @@ public class BitcoinDashConf extends PreferenceActivity {
                     currency.setEntryValues(R.array.currencies_btce_values);
                 }
             }
+        }
+
+        private Uri getPaymentUri(int item) {
+            return Uri.parse( item==D30.LTC
+                ? "litecoin:" + LITECOIN_ADDRESS + "?amount=" + LITECOIN_DEFAULT_DONATION
+                : "bitcoin:" + BITCOIN_ADDRESS + "?amount=" + BITCOIN_DEFAULT_DONATION
+            );
+        }
+        private Uri getStoreUri(int item) {
+            return Uri.parse("\"http://play.google.com/store/apps/details?id=" + (item==D30.LTC ? LITECOIN_ALTERNATIVE_APP : BITCOIN_ALTERNATIVE_APP));
         }
     }
 }

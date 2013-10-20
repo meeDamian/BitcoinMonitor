@@ -1,25 +1,31 @@
 package pl.d30.bitcoin.dash.service;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
 import com.google.android.apps.dashclock.api.DashClockExtension;
+import com.google.android.apps.dashclock.api.ExtensionData;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
+import java.text.DecimalFormat;
+
 import pl.d30.bitcoin.D30;
+import pl.d30.bitcoin.R;
 
 public class CoinDashService extends DashClockExtension {
 
     protected SharedPreferences sp;
 
     protected String currency = D30.DEF_CURRENCY;
-    protected int source = D30.SOURCE_MTGOX;
-    protected float amount;
+    protected int source = D30.MTGOX;
+    protected float a;
 
     protected int tries = 0;
 
@@ -39,7 +45,9 @@ public class CoinDashService extends DashClockExtension {
     protected void onUpdateData(int reason) {
 
         source = Integer.parseInt(sp.getString(D30.IDX_SOURCE, "" + source));
+
         currency = sp.getString(D30.IDX_CURRENCY, currency);
+        validateCurrency();
 
         Ion.with(getApplicationContext(), getUrl())
             .setHeader("User-Agent", "DashClock Bitcoin Monitor " + getCachedVersion() + ", " + getDeviceInfo())
@@ -47,18 +55,75 @@ public class CoinDashService extends DashClockExtension {
             .setCallback(new FutureCallback<JsonObject>() {
                 @Override
                 public void onCompleted(Exception e, JsonObject json) {
-                if( e!=null) Log.w(D30.LOG, e.toString());
-                if( json!=null) updateWidget( getLastValue(json) );
+                    if( e!=null) Log.w(D30.LOG, e.toString());
+                    if( json!=null) updateWidget( getCurrentValue(json) );
                 }
             });
     }
 
+    protected void updateWidget(String newValue) {
+
+        final float finalValue = Float.parseFloat(newValue);
+        float value = finalValue;
+
+        // get amount
+        String amount = sp.getString(D30.IDX_AMOUNT, "");
+        if( !amount.isEmpty() ) {
+            try { a = Float.parseFloat( amount ); }
+            catch(NumberFormatException e) { fixAmount(); }
+
+        } else fixAmount();
+
+
+        // process amount
+        if( a==1.0f ) amount = "1";
+        else {
+            value *= a;
+
+            String[] tmp = amount.split("\\.");
+            amount = tmp[0].replaceFirst("^0+(?!$)", "");
+            if( amount.equals("") ) amount = "0";
+            if( tmp.length>1 ) {
+                String decimals = tmp[1].replaceAll("[0]+$", "");
+                if(!decimals.equals("")) amount += "." + decimals;
+            }
+        }
+
+
+        publishUpdate(
+            getPrintableValue(getFormattedValue(value), true),
+            getPrintableValue(newValue, false),
+            "Current value of "+amount+"BTC (" + getSourceName(source) + ")"
+        );
+
+        logEntry( finalValue );
+
+    }
+
+    protected void publishUpdate(String status, String expTitle, String expBody) {
+        publishUpdate(new ExtensionData()
+            .visible(true)
+            .icon(R.drawable.icon_small)
+            .status(status)
+            .expandedTitle(expTitle)
+            .expandedBody(expBody)
+            .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://preev.com/btc/" + currency.toLowerCase()))));
+    }
+
+
+
+    protected void validateCurrency() {
+        if( source==D30.BITSTAMP && !currency.equals(D30.USD) ) fixCurrency();
+        else if( source==D30.BTCE && !currency.equals(D30.USD) && !currency.equals(D30.EUR) ) fixCurrency();
+    }
+
+
     protected String getUrl() {
         switch( source ) {
-            case D30.SOURCE_BTCE: return "https://btc-e.com/api/2/btc_" + currency + "/ticker";
-            case D30.SOURCE_BITSTAMP: return "https://www.bitstamp.net/api/ticker/";
+            case D30.BTCE: return "https://btc-e.com/api/2/btc_" + currency.toLowerCase() + "/ticker";
+            case D30.BITSTAMP: return "https://www.bitstamp.net/api/ticker/";
             default:
-            case D30.SOURCE_MTGOX: return "https://data.mtgox.com/api/1/BTC" + currency + "/ticker";
+            case D30.MTGOX: return "https://data.mtgox.com/api/1/BTC" + currency.toUpperCase() + "/ticker";
         }
     }
 
@@ -79,22 +144,17 @@ public class CoinDashService extends DashClockExtension {
         return null;
     }
 
-    protected String getLastValue(JsonObject j) {
+    protected String getCurrentValue(JsonObject j) {
         switch( source ) {
-            case D30.SOURCE_MTGOX: return getFromMtgox(j);
-            case D30.SOURCE_BITSTAMP: return getFromBitstamp(j);
-            case D30.SOURCE_BTCE: return getFromBtce(j);
+            case D30.MTGOX: return getFromMtgox( j );
+            case D30.BITSTAMP: return getFromBitstamp( j );
+            case D30.BTCE: return getFromBtce( j );
             default: return null;
         }
     }
 
-    protected String getFormattedValue(String value) {
-        // TODO: change to X.XX format
-        return "";
-    }
-    protected String getFormattedValue(String value, String amount) {
-        // TODO: multiply value by amount
-        return getFormattedValue( value + amount );
+    protected String getFormattedValue(float value) {
+        return value<10 ? new DecimalFormat("#.##").format(value) : "" + Math.round(value);
     }
 
     protected String getPrintableValue(String v, boolean compact) {
@@ -117,29 +177,22 @@ public class CoinDashService extends DashClockExtension {
         else return null;
     }
 
-    protected void updateWidget(String newValue) {
-
-        String a = sp.getString(D30.IDX_AMOUNT, "");
-        if( !a.isEmpty() ) {
-            try {
-                amount = Float.parseFloat( a );
-
-            } catch(NumberFormatException e) {
-                fixAmount();
-            }
-
-        } else fixAmount();
-
-        if( amount!=1.0f ) {
-
-        }
 
 
-
+    protected void logEntry(float value) {
+        sp.edit()
+            .putFloat("prevValue", value)
+            .putLong("prevEpoch", System.currentTimeMillis() / 1000)
+            .putInt("prevSource", source)
+            .putString("prevCurrency", currency)
+            .apply();
     }
 
+    protected void fixCurrency() {
+        sp.edit().putString(D30.DEF_CURRENCY, currency = D30.USD).apply();
+    }
     protected void fixAmount() {
-        sp.edit().putString(D30.IDX_AMOUNT, Float.toString(amount = 1f)).apply();
+        sp.edit().putString(D30.IDX_AMOUNT, Float.toString(a = 1f)).apply();
     }
 
 
@@ -166,12 +219,12 @@ public class CoinDashService extends DashClockExtension {
     protected static String getSourceName(int source, boolean pretty) {
         switch( source ) {
             default:
-            case D30.SOURCE_MTGOX: return pretty ? "Mt.Gox" : "mtgox";
-            case D30.SOURCE_BTCE: return pretty ? "BTC-e" : "btce";
-            case D30.SOURCE_BITSTAMP: return pretty? "Bitstamp" : "bitstamp";
+            case D30.MTGOX: return pretty ? "Mt.Gox" : "mtgox";
+            case D30.BTCE: return pretty ? "BTC-e" : "btce";
+            case D30.BITSTAMP: return pretty? "Bitstamp" : "bitstamp";
         }
     }
-    protected static String getSourceName(int source) { return getSourceName(source, false); }
+    protected static String getSourceName(int source) { return getSourceName(source, true); }
 
     protected static String getDeviceInfo() {
         return Build.MANUFACTURER + " " + Build.MODEL + "[" + Build.DEVICE + "|" + Build.PRODUCT + "|" + Build.SERIAL + "], OS: " + Build.VERSION.RELEASE;

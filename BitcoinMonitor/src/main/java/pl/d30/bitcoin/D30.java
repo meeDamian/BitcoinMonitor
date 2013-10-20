@@ -11,6 +11,7 @@ public class D30 {
     public static final String PREF_FILE_BTC = "btc";
     public static final String PREF_FILE_LTC = "ltc";
 
+
     //configuration indexes
     public static final String IDX_SOURCE = "source";
     public static final String IDX_CURRENCY = "currency";
@@ -18,13 +19,16 @@ public class D30 {
     public static final String IDX_EXPERIMENTAL = "experimental";
 
 
-    // integer values
-    public static final int ITEM_BTC = 0;
-    public static final int ITEM_LTC = 1;
+    //values
+    public static final int BTC = 0;
+    public static final int LTC = 1;
 
-    public static final int SOURCE_MTGOX = 0;
-    public static final int SOURCE_BITSTAMP = 1;
-    public static final int SOURCE_BTCE = 2;
+    public static final int MTGOX = 0;
+    public static final int BITSTAMP = 1;
+    public static final int BTCE = 2;
+
+    public static final String USD = "USD";
+    public static final String EUR = "EUR";
 
 
     // DEFAULTS

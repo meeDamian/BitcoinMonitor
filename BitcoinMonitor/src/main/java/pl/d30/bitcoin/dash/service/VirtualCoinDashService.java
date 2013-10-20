@@ -143,13 +143,13 @@ public class VirtualCoinDashService extends DashClockExtension {
 
                 if( sp==null ) return;
 
-                String amount = sp.getString("amount", DEF_AMOUNT);
+                String amount = sp.getString("a", DEF_AMOUNT);
                 float a;
                 try {
                     a = Float.parseFloat(amount);
                 } catch(NumberFormatException e) {
                     a = 1f;
-                    sp.edit().putString("amount", Float.toString(a)).apply();
+                    sp.edit().putString("a", Float.toString(a)).apply();
                 }
                 if( a!=1.0f ) {
                     result = String.format("%.6f", a * Float.parseFloat(result));
@@ -197,12 +197,12 @@ public class VirtualCoinDashService extends DashClockExtension {
                 spe.apply();
 
                 publishUpdate(new ExtensionData()
-                        .visible(true)
-                        .icon( R.drawable.icon_small )
-                        .status(status)
-                        .expandedTitle(expTitle)
-                        .expandedBody("Current value of "+amount+"BTC (" + src + ")")
-                        .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://preev.com/btc/" + currency.toLowerCase()))));
+                    .visible(true)
+                    .icon( R.drawable.icon_small )
+                    .status(status)
+                    .expandedTitle(expTitle)
+                    .expandedBody("Current value of "+amount+"BTC (" + src + ")")
+                    .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://preev.com/btc/" + currency.toLowerCase()))));
 
                 tries = 0;
                 Log.d(LOG_TAG, "full update.");
@@ -219,7 +219,7 @@ public class VirtualCoinDashService extends DashClockExtension {
                 else if(source==SOURCE_BITSTAMP) src = " (Bitstamp)";
                 else if(source==SOURCE_BTCE) src = " (BTC-e)";
 
-                String amount = sp.getString("amount", DEF_AMOUNT);
+                String amount = sp.getString("a", DEF_AMOUNT);
                 if( amount!=DEF_AMOUNT ) {
                     String tmp[] = amount.split("\\.");
                     amount = tmp[0].replaceFirst("^0+(?!$)", "");

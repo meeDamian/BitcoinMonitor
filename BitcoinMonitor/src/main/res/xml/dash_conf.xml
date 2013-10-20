@@ -21,11 +21,11 @@
 		android:inputType="numberDecimal"
 		android:defaultValue="1.0" />
      
-    <CheckBoxPreference android:key="experimental"
-        android:title="@string/experimental_title"
-        android:summary="@string/experimental_summary"
-        android:enabled="false"
-        android:defaultValue="0" />
+    <!--<CheckBoxPreference android:key="experimental"-->
+        <!--android:title="@string/experimental_title"-->
+        <!--android:summary="@string/experimental_summary"-->
+        <!--android:enabled="false"-->
+        <!--android:defaultValue="0" />-->
     
     <Preference android:key="donate"
         android:title="@string/donate_title"
