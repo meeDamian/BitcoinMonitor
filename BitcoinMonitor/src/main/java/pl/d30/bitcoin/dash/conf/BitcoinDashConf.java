@@ -15,6 +15,8 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 import java.util.Arrays;
 
 import pl.d30.bitcoin.D30;
@@ -35,6 +37,8 @@ public class BitcoinDashConf extends PreferenceActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setEasyTracker();
 
         context = getApplicationContext();
 
@@ -61,11 +65,24 @@ public class BitcoinDashConf extends PreferenceActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unsetEasyTracker();
+    }
+
     protected void setFragment() {
         getFragmentManager()
             .beginTransaction()
             .replace(android.R.id.content, new BitcoinConfFragment())
             .commit();
+    }
+
+    protected void setEasyTracker() {
+        EasyTracker.getInstance().activityStart(this);
+    }
+    protected void unsetEasyTracker() {
+        EasyTracker.getInstance().activityStop(this);
     }
 
 
@@ -186,9 +203,9 @@ public class BitcoinDashConf extends PreferenceActivity {
         }
 
         private Uri getPaymentUri(int item) {
-            return Uri.parse( item==D30.LTC
-                ? "litecoin:" + LITECOIN_ADDRESS + "?amount=" + LITECOIN_DEFAULT_DONATION
-                : "bitcoin:" + BITCOIN_ADDRESS + "?amount=" + BITCOIN_DEFAULT_DONATION
+            return Uri.parse(item == D30.LTC
+                    ? "litecoin:" + LITECOIN_ADDRESS + "?amount=" + LITECOIN_DEFAULT_DONATION
+                    : "bitcoin:" + BITCOIN_ADDRESS + "?amount=" + BITCOIN_DEFAULT_DONATION
             );
         }
         private Uri getStoreUri(int item) {

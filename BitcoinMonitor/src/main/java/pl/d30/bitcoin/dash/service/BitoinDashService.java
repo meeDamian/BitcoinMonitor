@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
 import com.google.gson.JsonObject;
@@ -36,9 +37,16 @@ public class BitoinDashService extends DashClockExtension {
         super.onInitialize(isReconnect);
         setUpdateWhenScreenOn(true);
 
+        EasyTracker.getInstance().setContext(this);
+
         sp = getSharedPreferences(D30.PREF_FILE_BTC, MODE_PRIVATE);
 
         getAppVersion();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override

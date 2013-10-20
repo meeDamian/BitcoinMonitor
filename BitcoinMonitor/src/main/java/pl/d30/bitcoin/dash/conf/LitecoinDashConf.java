@@ -2,6 +2,8 @@ package pl.d30.bitcoin.dash.conf;
 
 import android.os.Bundle;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
 
@@ -13,6 +15,13 @@ public class LitecoinDashConf extends BitcoinDashConf {
             .beginTransaction()
             .replace(android.R.id.content, new LitecoinConfFragment())
             .commit();
+    }
+
+    protected void setEasyTracker() {
+        EasyTracker.getInstance().activityStart(this);
+    }
+    protected void unsetEasyTracker() {
+        EasyTracker.getInstance().activityStop(this);
     }
 
     protected class LitecoinConfFragment extends BitcoinConfFragment {

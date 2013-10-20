@@ -3,6 +3,7 @@ package pl.d30.bitcoin.dash.service;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.google.android.apps.dashclock.api.ExtensionData;
 
 import pl.d30.bitcoin.D30;
@@ -14,6 +15,8 @@ public class LitecoinDashService extends BitoinDashService {
     protected void onInitialize(boolean isReconnect) {
         super.onInitialize(isReconnect);
         setUpdateWhenScreenOn(true);
+
+        EasyTracker.getInstance().setContext(this);
 
         sp = getSharedPreferences(D30.PREF_FILE_LTC, MODE_PRIVATE);
 

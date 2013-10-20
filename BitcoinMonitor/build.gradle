@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.6.3'
+        classpath 'com.android.tools.build:gradle:0.6.+'
     }
 }
 apply plugin: 'android'
@@ -16,11 +16,13 @@ dependencies {
     compile 'com.android.support:support-v4:+'
     compile 'com.koushikdutta.ion:ion:+'
     compile 'com.google.android.apps.dashclock:dashclock-api:+'
+    compile files('libs/libGoogleAnalyticsV2.jar')
 }
 
 android {
     compileSdkVersion 18
     buildToolsVersion "18.1.1"
+
 
     defaultConfig {
         minSdkVersion 17
