@@ -1,6 +1,6 @@
 package pl.d30.bitcoin.dash.service;
 
-public class LitecoinDashService extends CoinDashService {
+public class LitecoinDashService extends BitoinDashService {
 
     @Override
     protected void onInitialize(boolean isReconnect) {

@@ -19,7 +19,7 @@ import java.text.DecimalFormat;
 import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
 
-public class CoinDashService extends DashClockExtension {
+public class BitoinDashService extends DashClockExtension {
 
     protected SharedPreferences sp;
 
