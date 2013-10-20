@@ -22,7 +22,7 @@ import pl.d30.bitcoin.R;
 
 public class BitcoinDashConf extends PreferenceActivity {
 
-    private static final String BITCOIN_ADDRESS = "1NEDwbKeTH4isApMg94R2C4y72i8qu63GG";
+    private static final String BITCOIN_ADDRESS = "1NycrExPayLpNEPjr539n4uvkRuyMA9fz3";
     private static final String BITCOIN_DEFAULT_DONATION = "0.02";
     private static final String BITCOIN_ALTERNATIVE_APP = "piuk.blockchain.android";
 
