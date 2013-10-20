@@ -45,6 +45,7 @@ public class BitoinDashService extends DashClockExtension {
     protected void onUpdateData(int reason) {
 
         source = Integer.parseInt(sp.getString(D30.IDX_SOURCE, "" + source));
+        validateSource();
 
         currency = sp.getString(D30.IDX_CURRENCY, currency);
         validateCurrency();
@@ -104,7 +105,7 @@ public class BitoinDashService extends DashClockExtension {
         publishUpdate(
             getPrintableValue(getFormattedValue(value), true),
             getPrintableValue(newValue, false),
-            "Current value of " + amount + "BTC (" + getSourceName(source) + ")"
+            amount
         );
 
         // TODO: will be needed for showing when errors during data fetching occur
@@ -113,13 +114,13 @@ public class BitoinDashService extends DashClockExtension {
         return true;
     }
 
-    protected void publishUpdate(String status, String expTitle, String expBody) {
+    protected void publishUpdate(String status, String expTitle, String amount) {
         publishUpdate(new ExtensionData()
             .visible(true)
             .icon(R.drawable.icon_small)
             .status(status)
             .expandedTitle(expTitle)
-            .expandedBody(expBody)
+            .expandedBody(getString(R.string.expanded_body, amount, "BTC", getSourceName(source)))
             .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://preev.com/btc/" + currency.toLowerCase()))));
     }
 
@@ -133,6 +134,9 @@ public class BitoinDashService extends DashClockExtension {
     }
 
 
+    protected void validateSource() {
+        // do nothing - any source is valid
+    }
 
     protected void validateCurrency() {
         if( source==D30.BITSTAMP && !currency.equals(D30.USD) ) fixCurrency();
@@ -200,7 +204,6 @@ public class BitoinDashService extends DashClockExtension {
     }
 
 
-
     protected void logEntry(float value) {
         sp.edit()
             .putFloat("prevValue", value)
@@ -210,8 +213,11 @@ public class BitoinDashService extends DashClockExtension {
             .apply();
     }
 
+    protected void fixSource() {
+        sp.edit().putString(D30.IDX_SOURCE, Integer.toString(source = D30.MTGOX)).apply();
+    }
     protected void fixCurrency() {
-        sp.edit().putString(D30.DEF_CURRENCY, currency = D30.USD).apply();
+        sp.edit().putString(D30.IDX_CURRENCY, currency = D30.USD).apply();
     }
     protected void fixAmount() {
         sp.edit().putString(D30.IDX_AMOUNT, Float.toString(a = 1f)).apply();

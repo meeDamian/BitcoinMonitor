@@ -32,7 +32,7 @@ public class D30 {
 
 
     // DEFAULTS
-    public static final String DEF_CURRENCY = "USD";
+    public static final String DEF_CURRENCY = USD;
 
     public static class Json {
 

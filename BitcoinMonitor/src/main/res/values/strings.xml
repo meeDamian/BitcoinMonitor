@@ -42,6 +42,10 @@
     <string name="donate_summary">If you like my work, please consider donating</string>
 
 
+    <!-- DISPLAY -->
+    <string name="expanded_body">Current value of %1$s%2$s (%3$s)</string>
+
+
     <!-- errors -->
     <string name="error_invalid_amount">Changes NOT saved, invalid value provided.</string>
     <string name="warn_no_wallet_btc">No Bitcoin wallet installed. Try that one!</string>
