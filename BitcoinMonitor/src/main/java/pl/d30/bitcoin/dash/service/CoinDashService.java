@@ -55,15 +55,24 @@ public class CoinDashService extends DashClockExtension {
             .setCallback(new FutureCallback<JsonObject>() {
                 @Override
                 public void onCompleted(Exception e, JsonObject json) {
-                    if( e!=null) Log.w(D30.LOG, e.toString());
-                    if( json!=null) updateWidget( getCurrentValue(json) );
+                    if( e!=null) {
+                        Log.w(D30.LOG, e.toString());
+                    }
+                    if( json!=null && !updateWidget( getCurrentValue(json) ) ) handleError();
                 }
             });
     }
 
-    protected void updateWidget(String newValue) {
+    protected boolean updateWidget(String newValue) {
 
-        final float finalValue = Float.parseFloat(newValue);
+        final float finalValue;
+        try {
+            finalValue = Float.parseFloat(newValue);
+
+        } catch(NumberFormatException e) {
+            return hideUpdate();
+
+        }
         float value = finalValue;
 
         // get amount
@@ -95,11 +104,13 @@ public class CoinDashService extends DashClockExtension {
         publishUpdate(
             getPrintableValue(getFormattedValue(value), true),
             getPrintableValue(newValue, false),
-            "Current value of "+amount+"BTC (" + getSourceName(source) + ")"
+            "Current value of " + amount + "BTC (" + getSourceName(source) + ")"
         );
 
+        // TODO: will be needed for showing when errors during data fetching occur
         logEntry( finalValue );
 
+        return true;
     }
 
     protected void publishUpdate(String status, String expTitle, String expBody) {
@@ -110,6 +121,11 @@ public class CoinDashService extends DashClockExtension {
             .expandedTitle(expTitle)
             .expandedBody(expBody)
             .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://preev.com/btc/" + currency.toLowerCase()))));
+    }
+
+    protected boolean hideUpdate() { // TODO: or show info about outdated data
+        publishUpdate(new ExtensionData().visible(false));
+        return false;
     }
 
     protected void handleError() {
