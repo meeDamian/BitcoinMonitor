@@ -69,7 +69,10 @@ public class CoinDashService extends DashClockExtension {
         // get amount
         String amount = sp.getString(D30.IDX_AMOUNT, "");
         if( !amount.isEmpty() ) {
-            try { a = Float.parseFloat( amount ); }
+            try {
+                a = Float.parseFloat( amount );
+                if( a==0 ) fixAmount();
+            }
             catch(NumberFormatException e) { fixAmount(); }
 
         } else fixAmount();
@@ -89,7 +92,6 @@ public class CoinDashService extends DashClockExtension {
             }
         }
 
-
         publishUpdate(
             getPrintableValue(getFormattedValue(value), true),
             getPrintableValue(newValue, false),
@@ -108,6 +110,10 @@ public class CoinDashService extends DashClockExtension {
             .expandedTitle(expTitle)
             .expandedBody(expBody)
             .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://preev.com/btc/" + currency.toLowerCase()))));
+    }
+
+    protected void handleError() {
+
     }
 
 
