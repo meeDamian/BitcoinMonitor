@@ -3,6 +3,7 @@ package pl.d30.bitcoin.dash.service;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
 
 import com.google.android.apps.dashclock.api.DashClockExtension;
@@ -41,22 +42,22 @@ public class CoinDashService extends DashClockExtension {
         source = Integer.parseInt(sp.getString(D30.IDX_SOURCE, "" + source));
         currency = sp.getString(D30.IDX_CURRENCY, currency);
 
-        // TODO: get url
-        String url = "https://btc-e.com/api/2/ltc_eur/ticker";
-
-        Ion.with(getApplicationContext(), url)
-            .setHeader("User-Agent", "DashClock Bitcoin Monitor " + getAppVersion())
+        Ion.with(getApplicationContext(), getUrl())
+            .setHeader("User-Agent", "DashClock Bitcoin Monitor " + getAppVersion() + ", " + getDeviceInfo())
             .asJsonObject()
             .setCallback(new FutureCallback<JsonObject>() {
                 @Override
                 public void onCompleted(Exception e, JsonObject json) {
                 if( e!=null) Log.d(D30.LOG, e.toString());
-                if( json!=null) Log.d(D30.LOG, json.toString());
+                if( json!=null) {
+                    Log.d(D30.LOG, json.toString());
+
+                }
                 }
             });
     }
 
-    protected String getBtcUrl() {
+    protected String getUrl() {
         switch( source ) {
             case D30.SOURCE_BTCE: return "https://btc-e.com/api/2/btc_" + currency + "/ticker";
             case D30.SOURCE_BITSTAMP: return "https://www.bitstamp.net/api/ticker/";
@@ -91,5 +92,9 @@ public class CoinDashService extends DashClockExtension {
             }
         }
         return versionName + " (" + versionCode + ")";
+    }
+
+    protected String getDeviceInfo() {
+        return Build.MANUFACTURER + " " + Build.MODEL + "[" + Build.DEVICE + "|" + Build.PRODUCT + "|" + Build.SERIAL + "], OS: " + Build.VERSION.RELEASE;
     }
 }
