@@ -1,10 +1,9 @@
 package pl.d30.bitcoin.dash.service;
 
-public class LitecoinDashService extends VirtualCoinDashService {
+public class LitecoinDashService extends CoinDashService {
 
     @Override
     protected void onInitialize(boolean isReconnect) {
-        setItem(ITEM_LTC);
         super.onInitialize(isReconnect);
     }
 
