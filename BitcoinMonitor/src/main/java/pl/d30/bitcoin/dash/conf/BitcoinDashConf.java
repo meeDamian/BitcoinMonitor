@@ -209,7 +209,7 @@ public class BitcoinDashConf extends PreferenceActivity {
             );
         }
         private Uri getStoreUri(int item) {
-            return Uri.parse("\"http://play.google.com/store/apps/details?id=" + (item==D30.LTC ? LITECOIN_ALTERNATIVE_APP : BITCOIN_ALTERNATIVE_APP));
+            return Uri.parse("http://play.google.com/store/apps/details?id=" + (item==D30.LTC ? LITECOIN_ALTERNATIVE_APP : BITCOIN_ALTERNATIVE_APP));
         }
     }
 }
