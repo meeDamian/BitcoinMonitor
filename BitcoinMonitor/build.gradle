@@ -21,12 +21,12 @@ dependencies {
 
 android {
     compileSdkVersion 18
-    buildToolsVersion "18.1.1"
+    buildToolsVersion "19.0.0"
 
 
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 18
+        targetSdkVersion 19
     }
 
     signingConfigs {
@@ -35,12 +35,7 @@ android {
 
     buildTypes {
         release {
-            versionNameSuffix "-RELEASE"
             signingConfig signingConfigs.release
-        }
-
-        debug {
-            versionNameSuffix "-DEBUG"
         }
     }
 }
