@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pl.d30.bitcoin"
-    android:versionCode="20"
-    android:versionName="1.5.2" >
+    android:versionCode="21"
+    android:versionName="1.5.3" >
 
     <uses-sdk
         android:minSdkVersion="17"
@@ -37,6 +37,10 @@
                 android:value="@string/dashclock_desc" />
 
             <meta-data
+                android:name="worldReadable"
+                android:value="true" />
+
+            <meta-data
                 android:name="settingsActivity"
                 android:value=".dash.conf.BitcoinDashConf" />
 
@@ -64,6 +68,10 @@
             <meta-data
                 android:name="description"
                 android:value="@string/dashclock_desc" />
+
+            <meta-data
+                android:name="worldReadable"
+                android:value="true" />
 
             <meta-data
                 android:name="settingsActivity"
