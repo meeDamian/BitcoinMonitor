@@ -4,9 +4,15 @@
     <string name="app_name">Bitcoin Monitor</string>
     <string name="app_desc">An awesome bitcoin monitor it is!</string>
 
-    <string name="bitcoin_label">Bitcoin Exchange Rate</string>
-    <string name="litecoin_label">Litecoin Exchange Rate</string>
-    <string name="dashclock_desc">See current exchange rate in selected currency</string>
+    <!-- Monitor (Settings Activity) -->
+    <string name="monitor_btc_label">Bitcoin Exchange Rate</string>
+    <string name="monitor_ltc_label">Litecoin Exchange Rate</string>
+    <string name="monitor_desc">See current exchange rate in selected currency.</string>
+
+    <!-- Arbitrage (Settings Activity) -->
+    <string name="arbitrage_btc_label">Bitcoin Arbitrage values</string>
+    <string name="arbitrage_desc">See % difference between prices from two chosen exchanges.</string>
+
 
 
     <!-- SOURCE -->
@@ -37,8 +43,8 @@
 
 
     <!-- DONATE -->
-    <string name="donate_title">Donate (20mBTC)</string>
-    <string name="donate_title_ltc">Donate (2LTC)</string>
+    <string name="donate_title">Donate (5mBTC)</string>
+    <string name="donate_title_ltc">Donate (0.2LTC)</string>
     <string name="donate_summary">If you like my work, please consider donating</string>
 
 

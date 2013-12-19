@@ -20,7 +20,7 @@ import java.text.DecimalFormat;
 import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
 
-public class BitcoinDashService extends DashClockExtension {
+public class BitcoinMonitorDashService extends DashClockExtension {
 
     protected SharedPreferences sp;
 

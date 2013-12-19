@@ -9,7 +9,7 @@ import com.google.android.apps.dashclock.api.ExtensionData;
 import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
 
-public class LitecoinDashService extends BitcoinDashService {
+public class LitecoinMonitorDashService extends BitcoinMonitorDashService {
 
     @Override
     protected void onInitialize(boolean isReconnect) {
