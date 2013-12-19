@@ -19,7 +19,7 @@
 
 
         <!-- DashClock extension BTC -->
-        <service android:name=".dash.service.BitoinDashService"
+        <service android:name=".dash.service.BitcoinDashService"
             android:icon="@drawable/icon_small"
             android:label="@string/bitcoin_label"
             android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
