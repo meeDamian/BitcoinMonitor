@@ -55,7 +55,7 @@ public class LitecoinMonitorDashService extends BitcoinMonitorDashService {
     protected void publishUpdate(String status, String expTitle, String amount) {
         publishUpdate(new ExtensionData()
             .visible(true)
-            .icon(R.drawable.icon_small_ltc)
+            .icon(R.drawable.ic_ltc)
             .status(status)
             .expandedTitle(expTitle)
             .expandedBody(getString(R.string.expanded_body, amount, "LTC", getSourceName(source)))

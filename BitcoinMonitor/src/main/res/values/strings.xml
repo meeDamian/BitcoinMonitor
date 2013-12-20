@@ -10,8 +10,8 @@
     <string name="monitor_desc">See current exchange rate in selected currency.</string>
 
     <!-- Arbitrage (Settings Activity) -->
-    <string name="arbitrage_btc_label">Bitcoin Arbitrage values</string>
-    <string name="arbitrage_desc">See % difference between prices from two chosen exchanges.</string>
+    <string name="arbitrage_btc_label">Bitcoin Arbitrage</string>
+    <string name="arbitrage_desc">See difference between prices from chosen exchanges.</string>
 
 
 

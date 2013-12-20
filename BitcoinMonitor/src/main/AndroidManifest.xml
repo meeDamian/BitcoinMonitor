@@ -20,7 +20,7 @@
 
         <!-- DashClock BTC Monitor extension -->
         <service android:name=".dash.service.BitcoinMonitorDashService"
-            android:icon="@drawable/icon_small"
+            android:icon="@drawable/ic_btc"
             android:label="@string/monitor_btc_label"
             android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
 
@@ -47,13 +47,14 @@
         </service>
         <activity android:name=".dash.conf.BitcoinMonitorDashConf"
             android:label="@string/monitor_btc_label"
+            android:icon="@drawable/ic_btc"
             android:exported="true" />
 
 
 
         <!-- DashClock LTC Monitor extension  -->
         <service android:name=".dash.service.LitecoinMonitorDashService"
-            android:icon="@drawable/icon_small_ltc"
+            android:icon="@drawable/ic_ltc"
             android:label="@string/monitor_ltc_label"
             android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
 
@@ -80,12 +81,13 @@
         </service>
         <activity android:name=".dash.conf.LitecoinMonitorDashConf"
             android:label="@string/monitor_ltc_label"
+            android:icon="@drawable/ic_ltc"
             android:exported="true" />
 
 
         <!-- DashClock BTC Arbitrage Monitor -->
         <service android:name=".dash.service.BitcoinArbitrageDashService"
-            android:icon="@drawable/icon_small"
+            android:icon="@drawable/ic_btc"
             android:label="@string/arbitrage_btc_label"
             android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
 
@@ -99,7 +101,7 @@
 
             <meta-data
                 android:name="description"
-                android:value="See % difference between two chosen exchanges" />
+                android:value="@string/arbitrage_desc" />
 
             <meta-data
                 android:name="worldReadable"
@@ -111,9 +113,9 @@
 
         </service>
         <activity android:name=".dash.conf.BitcoinArbitrageDashConf"
+            android:icon="@drawable/ic_btc"
             android:label="@string/arbitrage_btc_label"
             android:exported="true" />
-
 
 
     </application>

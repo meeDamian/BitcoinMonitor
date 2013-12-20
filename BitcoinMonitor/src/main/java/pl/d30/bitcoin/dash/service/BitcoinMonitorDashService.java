@@ -125,7 +125,7 @@ public class BitcoinMonitorDashService extends DashClockExtension {
     protected void publishUpdate(String status, String expTitle, String amount) {
         publishUpdate(new ExtensionData()
             .visible(true)
-            .icon(R.drawable.icon_small)
+            .icon(R.drawable.ic_btc)
             .status(status)
             .expandedTitle(expTitle)
             .expandedBody(getString(R.string.expanded_body, amount, "BTC", getSourceName(source)))

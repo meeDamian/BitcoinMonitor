@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Buy source">
+
+        <ListPreference
+            android:key="exchange_buy"
+            android:title="Exchange"
+            android:summary="Buying point for your coins"
+            android:icon="@drawable/ic_bitstamp"
+            android:entries="@array/source_list"
+            android:entryValues="@array/source_values"
+            android:defaultValue="1" />
+
+        <SwitchPreference
+            android:key="buy_price"
+            android:title="Used price"
+            android:summary="Price used in calculations"
+            android:defaultValue="true"
+            android:switchTextOn="Buy"
+            android:switchTextOff="Last" />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="Sell source">
+
+        <ListPreference
+            android:key="exchange_sell"
+            android:title="Exchange"
+            android:summary="Selling point for your coins"
+            android:icon="@drawable/ic_mtgox"
+            android:entries="@array/source_list"
+            android:entryValues="@array/source_values"
+            android:defaultValue="0" />
+
+        <SwitchPreference
+            android:key="sell_price"
+            android:title="Used price"
+            android:summary="Price used in calculations"
+            android:defaultValue="true"
+            android:switchTextOn="Sell"
+            android:switchTextOff="Last" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="other">
+
+        <SwitchPreference
+            android:key="priority"
+            android:title="Difference priority"
+            android:summary="What's more important"
+            android:defaultValue="true"
+            android:switchTextOn="  %  "
+            android:switchTextOff="  $  " />
+
+        <SwitchPreference
+            android:key="order_book"
+            android:title="Order Book"
+            android:summary="Analyze Order Book for difference calculations"
+            android:defaultValue="false"
+            android:enabled="false" />
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>
