@@ -24,6 +24,11 @@ public class LitecoinMonitorDashConf extends BitcoinMonitorDashConf {
         EasyTracker.getInstance().activityStop(this);
     }
 
+    @Override
+    protected boolean isValidFragment(String fragmentName) {
+        return LitecoinMonitorConfFragment.class.getName().equals(fragmentName);
+    }
+
     protected class LitecoinMonitorConfFragment extends BitcoinMonitorConfFragment {
 
         @Override

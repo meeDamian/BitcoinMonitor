@@ -69,6 +69,11 @@ public class BitcoinMonitorDashConf extends PreferenceActivity {
         unsetEasyTracker();
     }
 
+    @Override
+    protected boolean isValidFragment(String fragmentName) {
+        return BitcoinMonitorConfFragment.class.getName().equals(fragmentName);
+    }
+
     protected void setFragment() {
         getFragmentManager()
             .beginTransaction()

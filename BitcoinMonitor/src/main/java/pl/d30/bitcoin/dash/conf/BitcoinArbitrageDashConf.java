@@ -52,6 +52,11 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
             .commit();
     }
 
+    @Override
+    protected boolean isValidFragment(String fragmentName) {
+        return BitcoinArbitrageConfFragment.class.getName().equals(fragmentName);
+    }
+
     protected class BitcoinArbitrageConfFragment extends PreferenceFragment {
 
         protected PreferenceManager pm;
@@ -138,7 +143,5 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
             exchangeSell.setEntryValues( tmpValues.toArray(new CharSequence[tmpValues.size()]) );
         }
     }
-
-
 
 }
