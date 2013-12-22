@@ -94,7 +94,7 @@ public abstract class Exchange {
     protected static String getPriceTypeName(int priceType) {
         switch( priceType ) {
             case PRICE_LAST: return "last";
-            case PRICE_BUY: return "buy";
+            case PRICE_BUY:  return "buy";
             case PRICE_SELL: return "sell";
         }
         return null;
@@ -127,6 +127,15 @@ public abstract class Exchange {
         }
         return null;
     }
+    public static Exchange getExchange(int exchange, Context context) {
+        switch( exchange ) {
+            case Exchange.MTGOX:    return MtGoxExchange.getInstance(context);
+            case Exchange.BITSTAMP: return BitStampExchange.getInstance(context);
+            case Exchange.BTCE:     return BtceExchange.getInstance(context);
+        }
+        return null;
+    }
+
     public abstract String getName();
     public abstract String getPrettyName();
     public abstract boolean isCurrencySupported(int currency);

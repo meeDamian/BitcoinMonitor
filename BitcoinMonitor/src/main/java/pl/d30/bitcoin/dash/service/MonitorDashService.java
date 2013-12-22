@@ -10,10 +10,7 @@ import com.google.android.apps.dashclock.api.ExtensionData;
 
 import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
-import pl.d30.bitcoin.dash.exchange.BitStampExchange;
-import pl.d30.bitcoin.dash.exchange.BtceExchange;
 import pl.d30.bitcoin.dash.exchange.Exchange;
-import pl.d30.bitcoin.dash.exchange.MtGoxExchange;
 
 public abstract class MonitorDashService extends DashClockExtension {
 
@@ -38,25 +35,11 @@ public abstract class MonitorDashService extends DashClockExtension {
     protected void onUpdateData(int reason) {
 
         source = Integer.parseInt(sp.getString(D30.IDX_SOURCE, "" + source));
-        switch( source ) {
-            case Exchange.MTGOX:
-                exchange = MtGoxExchange.getInstance(this);
-                break;
-
-            case Exchange.BITSTAMP:
-                exchange = BitStampExchange.getInstance(this);
-                break;
-
-            case Exchange.BTCE:
-                exchange = BtceExchange.getInstance(this);
-                break;
-        }
+        exchange = Exchange.getExchange(source, this);
         if( !exchange.isItemSupported(getItem()) ) fixSource();
-
 
         currency = Integer.parseInt(sp.getString(D30.IDX_CURRENCY, "" + currency));
         if( !exchange.isCurrencySupported(currency) ) fixCurrency();
-
 
         exchange.getTicker(currency, Exchange.PRICE_LAST, getItem(), new Exchange.OnTickerDataAvailable() {
             @Override
