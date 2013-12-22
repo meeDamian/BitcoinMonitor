@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
 import com.google.gson.JsonObject;
@@ -21,9 +22,18 @@ public abstract class MonitorDashService extends DashClockExtension {
 
     protected int currency = Exchange.USD;
     protected int source = Exchange.MTGOX;
-    protected int item = Exchange.BTC;
 
     protected Exchange exchange;
+
+    @Override
+    protected void onInitialize(boolean isReconnect) {
+        super.onInitialize(isReconnect);
+        setUpdateWhenScreenOn(true);
+
+        EasyTracker.getInstance().setContext(this);
+
+        sp = getSharedPreferences(getConfFile(), MODE_PRIVATE);
+    }
 
     @Override
     protected void onUpdateData(int reason) {
@@ -42,14 +52,14 @@ public abstract class MonitorDashService extends DashClockExtension {
                 exchange = BtceExchange.getInstance(this);
                 break;
         }
-        if( !exchange.isItemSupported(item) ) fixSource();
+        if( !exchange.isItemSupported(getItem()) ) fixSource();
 
 
         currency = Integer.parseInt(sp.getString(D30.IDX_CURRENCY, "" + currency));
         if( !exchange.isCurrencySupported(currency) ) fixCurrency();
 
 
-        exchange.getTicker(currency, Exchange.PRICE_LAST, item, new Exchange.OnTickerDataAvailable() {
+        exchange.getTicker(currency, Exchange.PRICE_LAST, getItem(), new Exchange.OnTickerDataAvailable() {
             @Override
             public void onTicker(Exchange.LastValue lastValue, JsonObject rawResponse) {
             if( !updateWidget(lastValue) ) handleError();
@@ -83,10 +93,10 @@ public abstract class MonitorDashService extends DashClockExtension {
     protected void publishUpdate(Exchange.LastValue value) {
         publishUpdate(new ExtensionData()
             .visible(true)
-            .icon(Exchange.getItemDrawable(item))
+            .icon(Exchange.getItemDrawable(getItem()))
             .status(value.getCompact())
             .expandedTitle(value.getString())
-            .expandedBody(getString(R.string.expanded_body, value.getPrettyAmount(), Exchange.getItemName(item), exchange.getPrettyName()))
+            .expandedBody(getString(R.string.expanded_body, value.getPrettyAmount(), Exchange.getItemName(getItem()), exchange.getPrettyName()))
             .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(getIntentAddress()))));
     }
     protected boolean hideUpdate() { // TODO: or show info about outdated data
@@ -108,6 +118,8 @@ public abstract class MonitorDashService extends DashClockExtension {
     }
 
     protected abstract String getIntentAddress();
+    protected abstract int getItem();
+    protected abstract String getConfFile();
 
     protected void fixSource() {
         sp.edit().putString(D30.IDX_SOURCE, Integer.toString(source = Exchange.MTGOX)).apply();
