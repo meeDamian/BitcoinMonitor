@@ -52,7 +52,7 @@ public abstract class MonitorDashService extends DashClockExtension {
         exchange.getTicker(currency, Exchange.PRICE_LAST, item, new Exchange.OnTickerDataAvailable() {
             @Override
             public void onTicker(Exchange.LastValue lastValue, JsonObject rawResponse) {
-                if( !updateWidget(lastValue) ) handleError();
+            if( !updateWidget(lastValue) ) handleError();
             }
         });
     }
@@ -71,6 +71,7 @@ public abstract class MonitorDashService extends DashClockExtension {
         }
 
         // TODO: if( lastValue.getTimestamp() older than 15 minutes ) hideUpdate()
+        // NOTE this TODO above is stupid as hell
 
         publishUpdate(lastValue);
 

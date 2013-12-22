@@ -29,10 +29,12 @@
     
     <Preference android:key="donate"
         android:title="@string/donate_title"
+        android:icon="@drawable/ic_btc_blue"
         android:summary="@string/donate_summary" />
 
     <Preference android:key="donateLTC"
         android:title="@string/donate_title_ltc"
+        android:icon="@drawable/ic_ltc_blue"
         android:summary="@string/donate_summary" />
 
 </PreferenceScreen>
