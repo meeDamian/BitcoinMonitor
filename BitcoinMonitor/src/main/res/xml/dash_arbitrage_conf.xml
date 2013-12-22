@@ -4,7 +4,7 @@
     <PreferenceCategory android:title="Buy source">
 
         <ListPreference
-            android:key="exchange_buy"
+            android:key="buy_exchange"
             android:title="Exchange"
             android:summary="Buying point for your coins"
             android:icon="@drawable/ic_bitstamp"
@@ -26,7 +26,7 @@
     <PreferenceCategory android:title="Sell source">
 
         <ListPreference
-            android:key="exchange_sell"
+            android:key="sell_exchange"
             android:title="Exchange"
             android:summary="Selling point for your coins"
             android:icon="@drawable/ic_mtgox"

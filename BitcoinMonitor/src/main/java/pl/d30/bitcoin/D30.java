@@ -17,11 +17,18 @@ public class D30 {
     public static final String PREF_FILE_LTC = "ltc";
 
 
-    //configuration indexes
-    public static final String IDX_SOURCE = "source";
-    public static final String IDX_CURRENCY = "currency";
-    public static final String IDX_AMOUNT= "amount";
+    //configuration indexes for monitor
+    public static final String IDX_SOURCE       = "source";
+    public static final String IDX_CURRENCY     = "currency";
+    public static final String IDX_AMOUNT       = "amount";
     public static final String IDX_EXPERIMENTAL = "experimental";
+
+    // configuration indexes for arbitrage
+    public static final String IDX_BUY_SRC      = "buy_exchange";
+    public static final String IDX_BUY_PRICE    = "buy_price";
+    public static final String IDX_SELL_SRC     = "sell_exchange";
+    public static final String IDX_SELL_PRICE   = "sell_price";
+    public static final String IDX_PRIORITY     = "priority";
 
 
     // Json helper class:
@@ -43,7 +50,6 @@ public class D30 {
         }
 
     }
-
 
 
     // App/Device version extractors

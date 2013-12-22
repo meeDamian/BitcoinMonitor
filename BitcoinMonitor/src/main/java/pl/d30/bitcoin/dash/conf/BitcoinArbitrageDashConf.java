@@ -1,7 +1,6 @@
 package pl.d30.bitcoin.dash.conf;
 
 import android.app.ActionBar;
-import android.content.Context;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -17,13 +16,9 @@ import pl.d30.bitcoin.R;
 
 public class BitcoinArbitrageDashConf extends PreferenceActivity {
 
-    private Context context;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-
-        context = getApplicationContext();
 
         final ActionBar ab = getActionBar();
         if( ab!=null ) ab.setDisplayHomeAsUpEnabled(true);
@@ -78,18 +73,18 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
             exchangeNames = getResources().getTextArray(R.array.source_list);
             exchangeValues = getResources().getTextArray(R.array.source_values);
 
-            exchangeSell = (ListPreference) findPreference("exchange_sell");
-            exchangeBuy = (ListPreference) findPreference("exchange_buy");
+            exchangeBuy = (ListPreference) findPreference(D30.IDX_BUY_SRC);
+            exchangeSell = (ListPreference) findPreference(D30.IDX_SELL_SRC);
 
             if( exchangeBuy!=null ) {
                 updateIcon(exchangeBuy, Integer.parseInt(exchangeBuy.getValue()));
                 exchangeBuy.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        int position = Integer.parseInt(newValue.toString());
-                        updateIcon(preference, position);
-                        hideExchange(position);
-                        return true;
+                    int position = Integer.parseInt(newValue.toString());
+                    updateIcon(preference, position);
+                    hideExchange(position);
+                    return true;
                     }
                 });
             }
@@ -99,8 +94,8 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
                 exchangeSell.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        updateIcon(preference, Integer.parseInt(newValue.toString()));
-                        return true;
+                    updateIcon(preference, Integer.parseInt(newValue.toString()));
+                    return true;
                     }
                 });
             }
