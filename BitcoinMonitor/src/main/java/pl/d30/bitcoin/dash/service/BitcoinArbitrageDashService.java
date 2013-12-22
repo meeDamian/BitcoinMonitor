@@ -1,12 +1,22 @@
 package pl.d30.bitcoin.dash.service;
 
-import com.google.android.apps.dashclock.api.DashClockExtension;
+import pl.d30.bitcoin.D30;
+import pl.d30.bitcoin.dash.exchange.Exchange;
 
-public class BitcoinArbitrageDashService extends DashClockExtension {
+public class BitcoinArbitrageDashService extends ArbitrageDashService {
 
     @Override
-    protected void onUpdateData(int i) {
-
+    protected int getItem() {
+        return Exchange.BTC;
     }
 
+    @Override
+    protected String getConfFile() {
+        return D30.PREF_FILE_BTC;
+    }
+
+    @Override
+    protected String getIntendAddress() {
+        return "https://cointhink.com/arbitrage/btcusd";
+    }
 }
