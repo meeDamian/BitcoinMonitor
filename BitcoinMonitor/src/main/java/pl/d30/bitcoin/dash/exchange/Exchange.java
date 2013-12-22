@@ -10,6 +10,7 @@ import com.koushikdutta.ion.Ion;
 import java.text.DecimalFormat;
 
 import pl.d30.bitcoin.D30;
+import pl.d30.bitcoin.R;
 
 public abstract class Exchange {
 
@@ -82,6 +83,13 @@ public abstract class Exchange {
         switch( item ) {
             case BTC: return "BTC";
             case LTC: return "LTC";
+        }
+        return null;
+    }
+    public static Integer getItemDrawable(int item) {
+        switch( item ) {
+            case BTC: return R.drawable.ic_btc;
+            case LTC: return R.drawable.ic_ltc;
         }
         return null;
     }
