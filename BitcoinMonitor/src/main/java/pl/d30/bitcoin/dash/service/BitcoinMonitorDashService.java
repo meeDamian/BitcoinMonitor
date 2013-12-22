@@ -6,11 +6,6 @@ import pl.d30.bitcoin.dash.exchange.Exchange;
 public class BitcoinMonitorDashService extends MonitorDashService {
 
     @Override
-    protected String getIntentAddress() {
-        return "http://preev.com/btc/" + Exchange.getCurrencyName(currency).toLowerCase();
-    }
-
-    @Override
     protected int getItem() {
         return Exchange.BTC;
     }
@@ -18,6 +13,11 @@ public class BitcoinMonitorDashService extends MonitorDashService {
     @Override
     protected String getConfFile() {
         return D30.PREF_FILE_BTC;
+    }
+
+    @Override
+    protected String getIntentAddress() {
+        return "http://preev.com/btc/" + Exchange.getCurrencyName(currency).toLowerCase();
     }
 
 }

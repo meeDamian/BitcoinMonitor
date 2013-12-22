@@ -19,11 +19,16 @@ public class BtceExchange extends Exchange {
     }
 
     @Override
-    protected void processResponse(JsonObject json, int currency, int priceType, OnTickerDataAvailable cb) {
+    protected void processResponse(JsonObject json, int currency, int item, int priceType, OnTickerDataAvailable cb) {
         JsonObject ticker = D30.Json.getObject(json, "ticker");
         if( ticker!=null ) {
             float price = D30.Json.getFloat(ticker, getPriceTypeName(priceType));
-            if( cb!=null ) cb.onTicker(lastValue = new LastValue(price, currency), json);
+            lastValue = new LastValue(price, currency, item);
+
+            long ts = D30.Json.getLong(ticker, "updated");
+            if( ts>0 ) lastValue.setTimestamp(ts);
+
+            if( cb!=null ) cb.onTicker(lastValue);
         }
     }
 

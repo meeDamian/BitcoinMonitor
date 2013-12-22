@@ -17,11 +17,24 @@ public class MtGoxExchange extends Exchange {
         super(context);
     }
 
-    protected void processResponse(JsonObject json, int currency, int priceType, OnTickerDataAvailable cb) {
+    protected void processResponse(JsonObject json, int currency, int item, int priceType, OnTickerDataAvailable cb) {
         JsonObject price = D30.Json.getObject(json, "data");
         if( price!=null ) {
+
+            long ts;
+            try {
+                ts = Long.parseLong(D30.Json.getString(price, "now"));
+
+            } catch(NumberFormatException ignored) {
+                ts = 0l;
+            }
+
             price = D30.Json.getObject(price, getPriceTypeName(priceType));
-            if( price!=null && cb!=null ) cb.onTicker(lastValue = new LastValue(extractValue(price), currency), json);
+            if( price!=null ) {
+                lastValue = new LastValue(extractValue(price), currency, item);
+                if( ts>0 ) lastValue.setTimestamp(ts/1000000);
+                if( cb!=null ) cb.onTicker(lastValue);
+            }
         }
     }
 

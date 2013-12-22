@@ -6,11 +6,6 @@ import pl.d30.bitcoin.dash.exchange.Exchange;
 public class LitecoinMonitorDashService extends MonitorDashService {
 
     @Override
-    protected String getIntentAddress() {
-        return "http://www.litecoinrates.com";
-    }
-
-    @Override
     protected int getItem() {
         return Exchange.LTC;
     }
@@ -18,6 +13,11 @@ public class LitecoinMonitorDashService extends MonitorDashService {
     @Override
     protected String getConfFile() {
         return D30.PREF_FILE_LTC;
+    }
+
+    @Override
+    protected String getIntentAddress() {
+        return "http://www.litecoinrates.com";
     }
 
     @Override

@@ -34,11 +34,17 @@ public abstract class Exchange {
     public static final int NOK = 7;
     public static final int SGD = 8;
 
-
+    // prices:
     public static final int PRICE_LAST = 0;
     public static final int PRICE_BUY = 1;
     public static final int PRICE_SELL = 2;
 
+    // priorities:
+    public static final boolean PERCENTAGE = true;
+    public static final boolean CURRENCY = false;
+
+    // other:
+    private static final long FRESHNESS = 30;
 
     protected Context context;
     protected LastValue lastValue;
@@ -48,23 +54,37 @@ public abstract class Exchange {
     }
 
     public void getTicker(int currency, int priceType, int item, OnTickerDataAvailable cb) {
-        downloadResponse( currency, priceType, item,  cb);
+        if(
+            lastValue!=null
+            &&
+            lastValue.isFresh()
+            &&
+            lastValue.getCurrency()==currency
+            &&
+            lastValue.getItem()==item
+            &&
+            lastValue.getPrice()==priceType
+
+        ) {
+            cb.onTicker(lastValue);
+
+        } else downloadResponse( currency, priceType, item,  cb);
     }
 
-    protected void downloadResponse(final int currency, final int priceType, int item, final OnTickerDataAvailable cb) {
+    protected void downloadResponse(final int currency, final int priceType, final int item, final OnTickerDataAvailable cb) {
         Ion.with(context, getUrl(currency, item))
             .setHeader("User-Agent", "DashClock Bitcoin Monitor " + D30.getAppVersion(context) + ", " + D30.getDeviceInfo())
             .asJsonObject()
             .setCallback(new FutureCallback<JsonObject>() {
                 @Override
                 public void onCompleted(Exception e, JsonObject json) {
-                    if( e!=null ) Log.w(D30.LOG, e.toString());
-                    if( json!=null ) processResponse(json, currency, priceType, cb);
+                if( e!=null ) Log.w(D30.LOG, e.toString());
+                if( json!=null ) processResponse(json, currency, item, priceType, cb);
                 }
             });
     }
 
-    protected abstract void processResponse(JsonObject json, int currency, int priceType, OnTickerDataAvailable cb);
+    protected abstract void processResponse(JsonObject json, int currency, int item, int priceType, OnTickerDataAvailable cb);
     protected abstract String getUrl(int currency, int item);
 
     public LastValue getLastValue() {
@@ -114,7 +134,7 @@ public abstract class Exchange {
 
 
     public interface OnTickerDataAvailable {
-        public void onTicker(LastValue lastValue, JsonObject rawResponse);
+        public void onTicker(LastValue lastValue);
     }
 
     public class LastValue {
@@ -122,18 +142,30 @@ public abstract class Exchange {
         private float numericValue;
 
         private int currency;
+        private int item;
+        private int price;
 
-        private long ts;
+        private long ts = 0;
         private float amount = 1;
         private String prettyAmount = "1";
 
-        public LastValue(float value, int currency) {
-            this.currency = currency;
-            numericValue = value;
+        public LastValue(float value, int currency, int item) {
+            constructorsCallMe(value, currency, item, Exchange.PRICE_LAST);
         }
-        public LastValue(String value, int currency) {
+        public LastValue(String value, int currency, int item) {
+            constructorsCallMe(value, currency, item, Exchange.PRICE_LAST);
+        }
+        public LastValue(float value, int currency, int item, int price) {
+            constructorsCallMe(value, currency, item, price);
+        }
+        private void constructorsCallMe(String value, int currency, int item, int price) {
+            constructorsCallMe(convertToFloat(value), currency, item, price);
+        }
+        private void constructorsCallMe(float value, int currency, int item, int price) {
+            numericValue = value;
             this.currency = currency;
-            numericValue = convertToFloat(value);
+            this.item = item;
+            this.price = price;
         }
 
         // handle amount
@@ -161,6 +193,15 @@ public abstract class Exchange {
             this.ts = timestamp;
         }
         public long getTimestamp() { return ts; }
+        public boolean isFresh() {
+            return ts!=0 && ts + FRESHNESS > System.currentTimeMillis() / 100;
+        }
+
+
+        public int getCurrency() { return currency; }
+        public int getItem() { return item; }
+        public int getPrice() { return price; }
+
 
         // different getters for a value
         public float getFloat() {
@@ -179,6 +220,8 @@ public abstract class Exchange {
         }
 
 
+
+        // methods used internally
         private float convertToFloat(String strValue) {
             return Float.parseFloat(strValue);
         }

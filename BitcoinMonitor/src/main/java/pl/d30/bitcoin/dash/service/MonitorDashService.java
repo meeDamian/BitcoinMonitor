@@ -7,7 +7,6 @@ import android.net.Uri;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
-import com.google.gson.JsonObject;
 
 import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
@@ -61,7 +60,7 @@ public abstract class MonitorDashService extends DashClockExtension {
 
         exchange.getTicker(currency, Exchange.PRICE_LAST, getItem(), new Exchange.OnTickerDataAvailable() {
             @Override
-            public void onTicker(Exchange.LastValue lastValue, JsonObject rawResponse) {
+            public void onTicker(Exchange.LastValue lastValue) {
             if( !updateWidget(lastValue) ) handleError();
             }
         });
@@ -117,9 +116,9 @@ public abstract class MonitorDashService extends DashClockExtension {
 
     }
 
-    protected abstract String getIntentAddress();
     protected abstract int getItem();
     protected abstract String getConfFile();
+    protected abstract String getIntentAddress();
 
     protected void fixSource() {
         sp.edit().putString(D30.IDX_SOURCE, Integer.toString(source = Exchange.MTGOX)).apply();
