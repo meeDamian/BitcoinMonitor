@@ -20,21 +20,12 @@ public class LitecoinMonitorDashService extends BitcoinMonitorDashService {
         EasyTracker.getInstance().setContext(this);
 
         sp = getSharedPreferences(D30.PREF_FILE_LTC, MODE_PRIVATE);
+        item = Exchange.LTC;
     }
 
     @Override
     protected void onUpdateData(int reason) {
         super.onUpdateData(reason);
-    }
-
-
-    @Override
-    protected void validateSource() {
-        if( source!= Exchange.BTCE ) fixSource();
-    }
-    @Override
-    protected void validateCurrency() {
-        if( !currency.equals(D30.USD) && !currency.equals(D30.EUR) ) fixCurrency();
     }
 
     @Override
@@ -43,21 +34,13 @@ public class LitecoinMonitorDashService extends BitcoinMonitorDashService {
     }
 
     @Override
-    protected String getUrl() {
-        switch( source ) {
-            default:
-            case Exchange.BTCE: return "https://btc-e.com/api/2/ltc_" + currency.toLowerCase() + "/ticker";
-        }
-    }
-
-    @Override
-    protected void publishUpdate(String status, String expTitle, String amount) {
+    protected void publishUpdate(Exchange.LastValue value) {
         publishUpdate(new ExtensionData()
             .visible(true)
             .icon(R.drawable.ic_ltc)
-            .status(status)
-            .expandedTitle(expTitle)
-            .expandedBody(getString(R.string.expanded_body, amount, "LTC", getSourceName(source)))
+            .status(value.getCompact())
+            .expandedTitle(value.getString())
+            .expandedBody(getString(R.string.expanded_body, value.getPrettyAmount(), Exchange.getItemName(item), exchange.getPrettyName()))
             .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://www.litecoinrates.com"))));
     }
 }

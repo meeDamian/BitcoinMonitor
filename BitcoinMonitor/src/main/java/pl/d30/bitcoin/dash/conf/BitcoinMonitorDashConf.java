@@ -184,7 +184,7 @@ public class BitcoinMonitorDashConf extends PreferenceActivity {
 
         private void adjustCurrencies(int source) {
             if( source==Exchange.BITSTAMP ) {
-                currency.setValue( D30.DEF_CURRENCY );
+                currency.setValue( "" + Exchange.USD );
                 currency.setEnabled(false);
                 currency.setSummary(R.string.currency_summary_not_supported);
 
@@ -198,7 +198,7 @@ public class BitcoinMonitorDashConf extends PreferenceActivity {
 
                 } else {
                     if( !Arrays.asList(getResources().getStringArray(R.array.currencies_btce_values)).contains(currency.getValue()) )
-                        currency.setValue( D30.DEF_CURRENCY );
+                        currency.setValue( "" + Exchange.USD );
 
                     currency.setEntries(R.array.currencies_btce_list);
                     currency.setEntryValues(R.array.currencies_btce_values);

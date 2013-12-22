@@ -13,7 +13,7 @@
         android:summary="@string/currency_summary_active"
         android:entries="@array/currencies_btc_mtgox_list"
         android:entryValues="@array/currencies_btc_mtgox_values"
-        android:defaultValue="USD" />
+        android:defaultValue="0" />
 
     <EditTextPreference android:key="amount"
         android:title="@string/amount_title_btc"

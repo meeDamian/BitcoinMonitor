@@ -34,9 +34,9 @@ public abstract class Exchange {
     public static final int SGD = 8;
 
 
-    protected static final int PRICE_LAST = 0;
-    protected static final int PRICE_BUY = 1;
-    protected static final int PRICE_SELL = 2;
+    public static final int PRICE_LAST = 0;
+    public static final int PRICE_BUY = 1;
+    public static final int PRICE_SELL = 2;
 
 
     protected Context context;
@@ -101,6 +101,8 @@ public abstract class Exchange {
     }
     public abstract String getName();
     public abstract String getPrettyName();
+    public abstract boolean isCurrencySupported(int currency);
+    public abstract boolean isItemSupported(int item);
 
 
     public interface OnTickerDataAvailable {
@@ -150,6 +152,7 @@ public abstract class Exchange {
         public void setTimestamp(long timestamp) {
             this.ts = timestamp;
         }
+        public long getTimestamp() { return ts; }
 
         // different getters for a value
         public float getFloat() {

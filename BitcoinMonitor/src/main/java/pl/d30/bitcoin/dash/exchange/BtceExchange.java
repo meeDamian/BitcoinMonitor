@@ -40,6 +40,16 @@ public class BtceExchange extends Exchange {
         return PRETTY_NAME;
     }
 
+    @Override
+    public boolean isCurrencySupported(int currency) {
+        return currency==USD || currency==EUR;
+    }
+
+    @Override
+    public boolean isItemSupported(int item) {
+        return item==BTC || item==LTC;
+    }
+
     // singleton magic
     private static BtceExchange mInstance = null;
     public static BtceExchange getInstance(Context context) {

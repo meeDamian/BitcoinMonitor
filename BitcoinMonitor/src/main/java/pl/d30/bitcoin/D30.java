@@ -24,15 +24,6 @@ public class D30 {
     public static final String IDX_EXPERIMENTAL = "experimental";
 
 
-    //values
-    public static final String USD = "USD";
-    public static final String EUR = "EUR";
-
-
-    // DEFAULTS
-    public static final String DEF_CURRENCY = USD;
-
-
     // Json helper class:
     public static class Json {
 

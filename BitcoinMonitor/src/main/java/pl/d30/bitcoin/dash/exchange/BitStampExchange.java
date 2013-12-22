@@ -44,6 +44,16 @@ public class BitStampExchange extends Exchange {
         return PRETTY_NAME;
     }
 
+    @Override
+    public boolean isCurrencySupported(int currency) {
+        return currency==USD;
+    }
+
+    @Override
+    public boolean isItemSupported(int item) {
+        return item==BTC;
+    }
+
     // singleton magic
     private static BitStampExchange mInstance = null;
     public static BitStampExchange getInstance(Context context) {

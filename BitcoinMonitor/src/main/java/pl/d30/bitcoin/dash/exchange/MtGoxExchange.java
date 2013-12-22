@@ -42,6 +42,16 @@ public class MtGoxExchange extends Exchange {
         return PRETTY_NAME;
     }
 
+    @Override
+    public boolean isCurrencySupported(int currency) {
+        return true;
+    }
+
+    @Override
+    public boolean isItemSupported(int item) {
+        return item==BTC;
+    }
+
     // singleton magic
     private static MtGoxExchange mInstance = null;
     public static MtGoxExchange getInstance(Context context) {
