@@ -21,6 +21,7 @@ import java.util.Arrays;
 
 import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
+import pl.d30.bitcoin.dash.exchange.Exchange;
 
 public class BitcoinMonitorDashConf extends PreferenceActivity {
 
@@ -150,10 +151,10 @@ public class BitcoinMonitorDashConf extends PreferenceActivity {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                     try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, getPaymentUri(D30.BTC) ));
+                        startActivity(new Intent(Intent.ACTION_VIEW, getPaymentUri(Exchange.BTC) ));
                     } catch(ActivityNotFoundException e) {
                         Toast.makeText(context, R.string.warn_no_wallet_btc, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Intent.ACTION_VIEW, getStoreUri(D30.BTC) ));
+                        startActivity(new Intent(Intent.ACTION_VIEW, getStoreUri(Exchange.BTC) ));
                     }
                     return false;
                     }
@@ -166,10 +167,10 @@ public class BitcoinMonitorDashConf extends PreferenceActivity {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                     try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, getPaymentUri(D30.LTC) ));
+                        startActivity(new Intent(Intent.ACTION_VIEW, getPaymentUri(Exchange.LTC) ));
                     } catch(ActivityNotFoundException e) {
                         Toast.makeText(context, R.string.warn_no_wallet_ltc, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Intent.ACTION_VIEW, getStoreUri(D30.LTC) ));
+                        startActivity(new Intent(Intent.ACTION_VIEW, getStoreUri(Exchange.LTC) ));
                     }
                     return false;
                     }
@@ -182,7 +183,7 @@ public class BitcoinMonitorDashConf extends PreferenceActivity {
         }
 
         private void adjustCurrencies(int source) {
-            if( source==D30.BITSTAMP ) {
+            if( source==Exchange.BITSTAMP ) {
                 currency.setValue( D30.DEF_CURRENCY );
                 currency.setEnabled(false);
                 currency.setSummary(R.string.currency_summary_not_supported);
@@ -191,7 +192,7 @@ public class BitcoinMonitorDashConf extends PreferenceActivity {
                 currency.setEnabled(true);
                 currency.setSummary(R.string.currency_summary_active);
 
-                if( source==D30.MTGOX) {
+                if( source==Exchange.MTGOX) {
                     currency.setEntries(R.array.currencies_btc_mtgox_list);
                     currency.setEntryValues(R.array.currencies_btc_mtgox_values);
 
@@ -206,13 +207,13 @@ public class BitcoinMonitorDashConf extends PreferenceActivity {
         }
 
         private Uri getPaymentUri(int item) {
-            return Uri.parse(item == D30.LTC
+            return Uri.parse(item == Exchange.LTC
                 ? "litecoin:" + LITECOIN_ADDRESS + "?amount=" + LITECOIN_DEFAULT_DONATION
                 : "bitcoin:" + BITCOIN_ADDRESS + "?amount=" + BITCOIN_DEFAULT_DONATION
             );
         }
         private Uri getStoreUri(int item) {
-            return Uri.parse("http://play.google.com/store/apps/details?id=" + (item==D30.LTC ? LITECOIN_ALTERNATIVE_APP : BITCOIN_ALTERNATIVE_APP));
+            return Uri.parse("http://play.google.com/store/apps/details?id=" + (item==Exchange.LTC ? LITECOIN_ALTERNATIVE_APP : BITCOIN_ALTERNATIVE_APP));
         }
     }
 }

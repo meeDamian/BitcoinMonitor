@@ -1,5 +1,10 @@
 package pl.d30.bitcoin;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -20,13 +25,6 @@ public class D30 {
 
 
     //values
-    public static final int BTC = 0;
-    public static final int LTC = 1;
-
-    public static final int MTGOX = 0;
-    public static final int BITSTAMP = 1;
-    public static final int BTCE = 2;
-
     public static final String USD = "USD";
     public static final String EUR = "EUR";
 
@@ -34,6 +32,8 @@ public class D30 {
     // DEFAULTS
     public static final String DEF_CURRENCY = USD;
 
+
+    // Json helper class:
     public static class Json {
 
         public static JsonObject getObject(JsonObject j, String n) {
@@ -45,7 +45,33 @@ public class D30 {
             JsonElement e = j.get(n);
             return e!=null && e.isJsonPrimitive() ? e.getAsString() : null;
         }
+
+        public static Float getFloat(JsonObject j, String n) {
+            JsonElement e = j.get(n);
+            return e!=null && e.isJsonPrimitive() ? e.getAsFloat() : null;
+        }
+
     }
 
+
+
+    // App/Device version extractors
+    private static String appVersion = null;
+    public static String getAppVersion(Context c) {
+        if( appVersion!=null ) return appVersion;
+
+        PackageManager pm = c.getPackageManager();
+        if( pm!=null ) {
+            try {
+                PackageInfo pi = pm.getPackageInfo(c.getPackageName(), 0);
+                return appVersion = pi.versionName + " (" + pi.versionCode + ")";
+
+            } catch( PackageManager.NameNotFoundException ignored ) {}
+        }
+        return null;
+    }
+    public static String getDeviceInfo() {
+        return Build.MANUFACTURER + " " + Build.MODEL + "[" + Build.DEVICE + "|" + Build.PRODUCT + "|" + Build.SERIAL + "], OS: " + Build.VERSION.RELEASE;
+    }
 
 }

@@ -2,10 +2,7 @@ package pl.d30.bitcoin.dash.service;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.util.Log;
 
 import com.google.analytics.tracking.android.EasyTracker;
@@ -19,18 +16,17 @@ import java.text.DecimalFormat;
 
 import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
+import pl.d30.bitcoin.dash.exchange.Exchange;
 
 public class BitcoinMonitorDashService extends DashClockExtension {
 
     protected SharedPreferences sp;
 
     protected String currency = D30.DEF_CURRENCY;
-    protected int source = D30.MTGOX;
+    protected int source = Exchange.MTGOX;
     protected float a;
 
     protected int tries = 0;
-
-    private String cachedVersionString = null;
 
     @Override
     protected void onInitialize(boolean isReconnect) {
@@ -40,8 +36,6 @@ public class BitcoinMonitorDashService extends DashClockExtension {
         EasyTracker.getInstance().setContext(this);
 
         sp = getSharedPreferences(D30.PREF_FILE_BTC, MODE_PRIVATE);
-
-        getAppVersion();
     }
 
     @Override
@@ -59,15 +53,13 @@ public class BitcoinMonitorDashService extends DashClockExtension {
         validateCurrency();
 
         Ion.with(getApplicationContext(), getUrl())
-            .setHeader("User-Agent", "DashClock Bitcoin Monitor " + getCachedVersion() + ", " + getDeviceInfo())
+            .setHeader("User-Agent", "DashClock Bitcoin Monitor " + D30.getAppVersion(getApplicationContext()) + ", " + D30.getDeviceInfo())
             .asJsonObject()
             .setCallback(new FutureCallback<JsonObject>() {
                 @Override
                 public void onCompleted(Exception e, JsonObject json) {
-                    if( e!=null) {
-                        Log.w(D30.LOG, e.toString());
-                    }
-                    if( json!=null && !updateWidget( getCurrentValue(json) ) ) handleError();
+                if( e!=null) Log.w(D30.LOG, e.toString());
+                if( json!=null && !updateWidget( getCurrentValue(json) ) ) handleError();
                 }
             });
     }
@@ -147,42 +139,25 @@ public class BitcoinMonitorDashService extends DashClockExtension {
     }
 
     protected void validateCurrency() {
-        if( source==D30.BITSTAMP && !currency.equals(D30.USD) ) fixCurrency();
-        else if( source==D30.BTCE && !currency.equals(D30.USD) && !currency.equals(D30.EUR) ) fixCurrency();
+        if( source==Exchange.BITSTAMP && !currency.equals(D30.USD) ) fixCurrency();
+        else if( source==Exchange.BTCE && !currency.equals(D30.USD) && !currency.equals(D30.EUR) ) fixCurrency();
     }
 
 
     protected String getUrl() {
         switch( source ) {
-            case D30.BTCE: return "https://btc-e.com/api/2/btc_" + currency.toLowerCase() + "/ticker";
-            case D30.BITSTAMP: return "https://www.bitstamp.net/api/ticker/";
+            case Exchange.BTCE: return "https://btc-e.com/api/2/btc_" + currency.toLowerCase() + "/ticker";
+            case Exchange.BITSTAMP: return "https://www.bitstamp.net/api/ticker/";
             default:
-            case D30.MTGOX: return "https://data.mtgox.com/api/1/BTC" + currency.toUpperCase() + "/ticker";
+            case Exchange.MTGOX: return "https://data.mtgox.com/api/1/BTC" + currency.toUpperCase() + "/ticker";
         }
-    }
-
-    protected String getCachedVersion() {
-        if( cachedVersionString==null ) cachedVersionString = getAppVersion();
-        return cachedVersionString;
-    }
-
-    protected String getAppVersion() {
-        PackageManager pm = getPackageManager();
-        if( pm!=null ) {
-            try {
-                PackageInfo pi = pm.getPackageInfo(getPackageName(), 0);
-                return pi.versionName + " (" + pi.versionCode + ")";
-
-            } catch( PackageManager.NameNotFoundException ignored ) {}
-        }
-        return null;
     }
 
     protected String getCurrentValue(JsonObject j) {
         switch( source ) {
-            case D30.MTGOX: return getFromMtgox( j );
-            case D30.BITSTAMP: return getFromBitstamp( j );
-            case D30.BTCE: return getFromBtce( j );
+            case Exchange.MTGOX: return getFromMtgox( j );
+            case Exchange.BITSTAMP: return getFromBitstamp( j );
+            case Exchange.BTCE: return getFromBtce( j );
             default: return null;
         }
     }
@@ -222,7 +197,7 @@ public class BitcoinMonitorDashService extends DashClockExtension {
     }
 
     protected void fixSource() {
-        sp.edit().putString(D30.IDX_SOURCE, Integer.toString(source = D30.MTGOX)).apply();
+        sp.edit().putString(D30.IDX_SOURCE, Integer.toString(source = Exchange.MTGOX)).apply();
     }
     protected void fixCurrency() {
         sp.edit().putString(D30.IDX_CURRENCY, currency = D30.USD).apply();
@@ -255,14 +230,10 @@ public class BitcoinMonitorDashService extends DashClockExtension {
     protected static String getSourceName(int source, boolean pretty) {
         switch( source ) {
             default:
-            case D30.MTGOX: return pretty ? "Mt.Gox" : "mtgox";
-            case D30.BTCE: return pretty ? "BTC-e" : "btce";
-            case D30.BITSTAMP: return pretty? "Bitstamp" : "bitstamp";
+            case Exchange.MTGOX: return pretty ? "Mt.Gox" : "mtgox";
+            case Exchange.BTCE: return pretty ? "BTC-e" : "btce";
+            case Exchange.BITSTAMP: return pretty? "Bitstamp" : "bitstamp";
         }
     }
     protected static String getSourceName(int source) { return getSourceName(source, true); }
-
-    protected static String getDeviceInfo() {
-        return Build.MANUFACTURER + " " + Build.MODEL + "[" + Build.DEVICE + "|" + Build.PRODUCT + "|" + Build.SERIAL + "], OS: " + Build.VERSION.RELEASE;
-    }
 }

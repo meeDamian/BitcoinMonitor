@@ -8,6 +8,7 @@ import com.google.android.apps.dashclock.api.ExtensionData;
 
 import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
+import pl.d30.bitcoin.dash.exchange.Exchange;
 
 public class LitecoinMonitorDashService extends BitcoinMonitorDashService {
 
@@ -19,8 +20,6 @@ public class LitecoinMonitorDashService extends BitcoinMonitorDashService {
         EasyTracker.getInstance().setContext(this);
 
         sp = getSharedPreferences(D30.PREF_FILE_LTC, MODE_PRIVATE);
-
-        getAppVersion();
     }
 
     @Override
@@ -31,7 +30,7 @@ public class LitecoinMonitorDashService extends BitcoinMonitorDashService {
 
     @Override
     protected void validateSource() {
-        if( source!=D30.BTCE ) fixSource();
+        if( source!= Exchange.BTCE ) fixSource();
     }
     @Override
     protected void validateCurrency() {
@@ -40,14 +39,14 @@ public class LitecoinMonitorDashService extends BitcoinMonitorDashService {
 
     @Override
     protected void fixSource() {
-        sp.edit().putString(D30.IDX_SOURCE, Integer.toString(source = D30.BTCE)).apply();
+        sp.edit().putString(D30.IDX_SOURCE, Integer.toString(source = Exchange.BTCE)).apply();
     }
 
     @Override
     protected String getUrl() {
         switch( source ) {
             default:
-            case D30.BTCE: return "https://btc-e.com/api/2/ltc_" + currency.toLowerCase() + "/ticker";
+            case Exchange.BTCE: return "https://btc-e.com/api/2/ltc_" + currency.toLowerCase() + "/ticker";
         }
     }
 
