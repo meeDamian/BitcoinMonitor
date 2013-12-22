@@ -34,6 +34,14 @@ public class MtGoxExchange extends Exchange {
         return String.format(URL, getItemName(item), getCurrencyName(currency));
     }
 
+    public String getName() {
+        return NAME;
+    }
+
+    public String getPrettyName() {
+        return PRETTY_NAME;
+    }
+
     // singleton magic
     private static MtGoxExchange mInstance = null;
     public static MtGoxExchange getInstance(Context context) {

@@ -34,7 +34,6 @@ public abstract class Exchange {
     public static final int SGD = 8;
 
 
-
     protected static final int PRICE_LAST = 0;
     protected static final int PRICE_BUY = 1;
     protected static final int PRICE_SELL = 2;
@@ -100,6 +99,8 @@ public abstract class Exchange {
         }
         return null;
     }
+    public abstract String getName();
+    public abstract String getPrettyName();
 
 
     public interface OnTickerDataAvailable {

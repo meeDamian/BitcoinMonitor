@@ -32,6 +32,14 @@ public class BtceExchange extends Exchange {
         return String.format(URL, getItemName(item).toLowerCase(), getCurrencyName(currency).toLowerCase());
     }
 
+    public String getName() {
+        return NAME;
+    }
+
+    public String getPrettyName() {
+        return PRETTY_NAME;
+    }
+
     // singleton magic
     private static BtceExchange mInstance = null;
     public static BtceExchange getInstance(Context context) {

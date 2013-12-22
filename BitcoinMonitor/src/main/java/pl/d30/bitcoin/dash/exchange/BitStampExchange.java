@@ -36,6 +36,14 @@ public class BitStampExchange extends Exchange {
         return Exchange.getPriceTypeName(priceType);
     }
 
+    public String getName() {
+        return NAME;
+    }
+
+    public String getPrettyName() {
+        return PRETTY_NAME;
+    }
+
     // singleton magic
     private static BitStampExchange mInstance = null;
     public static BitStampExchange getInstance(Context context) {
