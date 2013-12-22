@@ -49,6 +49,11 @@ public class D30 {
             return e!=null && e.isJsonPrimitive() ? e.getAsFloat() : null;
         }
 
+        public static Long getLong(JsonObject j, String n) {
+            JsonElement e = j.get(n);
+            return e!=null && e.isJsonPrimitive() ? e.getAsLong() : null;
+        }
+
     }
 
 
