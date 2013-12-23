@@ -38,8 +38,11 @@ public abstract class MonitorDashService extends DashClockExtension {
         exchange = Exchange.getExchange(source, this);
         if( !exchange.isItemSupported(getItem()) ) fixSource();
 
-        currency = Integer.parseInt(sp.getString(D30.IDX_CURRENCY, "" + currency));
-        if( !exchange.isCurrencySupported(currency) ) fixCurrency();
+        try {
+            currency = Integer.parseInt(sp.getString(D30.IDX_CURRENCY, "" + currency));
+            if( !exchange.isCurrencySupported(currency) ) fixCurrency();
+
+        } catch(NumberFormatException e) { fixCurrency(); }
 
         exchange.getTicker(currency, getItem(), new Exchange.OnTickerDataAvailable() {
             @Override
@@ -74,7 +77,7 @@ public abstract class MonitorDashService extends DashClockExtension {
             .visible(true)
             .icon(Exchange.getItemDrawable(getItem()))
             .status(value.getCompact(priceType))
-            .expandedTitle(value.getString(priceType) + " (" + Exchange.getPriceTypeName(priceType) + ")" )
+            .expandedTitle(value.getString(priceType) + " (" + Exchange.getPriceTypeName(priceType) + ")")
             .expandedBody(getString(R.string.expanded_body_monitor, value.getPrettyAmount(), Exchange.getItemName(getItem()), exchange.getPrettyName()))
             .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(getIntentAddress()))));
     }
