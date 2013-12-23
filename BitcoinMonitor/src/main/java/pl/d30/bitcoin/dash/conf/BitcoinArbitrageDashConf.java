@@ -108,15 +108,15 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
         protected void updateIcon(Preference p, int item) {
             switch( item ) {
                 case 0:
-                    p.setIcon( R.drawable.ic_mtgox );
+                    p.setIcon( R.drawable.ic_mtgox_blue);
                     break;
 
                 case 1:
-                    p.setIcon( R.drawable.ic_bitstamp );
+                    p.setIcon( R.drawable.ic_bitstamp_blue);
                     break;
 
                 case 2:
-                    p.setIcon( R.drawable.icon );
+                    p.setIcon( R.drawable.ic_btce_blue);
                     break;
             }
         }

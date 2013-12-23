@@ -7,7 +7,7 @@
             android:key="buy_exchange"
             android:title="Exchange"
             android:summary="Buying point for your coins"
-            android:icon="@drawable/ic_bitstamp"
+            android:icon="@drawable/ic_bitstamp_blue"
             android:entries="@array/source_list"
             android:entryValues="@array/source_values"
             android:defaultValue="1" /><!-- default:BitStamp -->
@@ -29,7 +29,7 @@
             android:key="sell_exchange"
             android:title="Exchange"
             android:summary="Selling point for your coins"
-            android:icon="@drawable/ic_mtgox"
+            android:icon="@drawable/ic_mtgox_blue"
             android:entries="@array/source_list"
             android:entryValues="@array/source_values"
             android:defaultValue="0" /><!-- default:MtGox -->
