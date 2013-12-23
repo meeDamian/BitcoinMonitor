@@ -14,6 +14,12 @@
     <string name="arbitrage_desc">See difference between prices from chosen exchanges.</string>
 
 
+    <!-- CATEGORIES -->
+    <string name="cat_buy_source">Buy Source</string>
+    <string name="cat_sell_source">Sell Source</string>
+    <string name="cat_other">Other</string>
+    <string name="cat_donate">Donations</string>
+
 
     <!-- SOURCE -->
     <string name="source_title_btc">Bitcoin Exchange</string>

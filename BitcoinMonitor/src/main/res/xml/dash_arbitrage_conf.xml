@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Buy source">
+    <PreferenceCategory android:title="@string/cat_buy_source">
 
         <ListPreference
             android:key="buy_exchange"
@@ -23,7 +23,7 @@
     </PreferenceCategory>
 
 
-    <PreferenceCategory android:title="Sell source">
+    <PreferenceCategory android:title="@string/cat_sell_source">
 
         <ListPreference
             android:key="sell_exchange"
@@ -44,7 +44,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="other">
+    <PreferenceCategory android:title="@string/cat_other">
 
         <SwitchPreference
             android:key="priority"
@@ -60,6 +60,20 @@
             android:summary="Analyze Order Book for difference calculations"
             android:defaultValue="false"
             android:enabled="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/cat_donate">
+
+        <Preference android:key="donate"
+            android:title="@string/donate_title"
+            android:icon="@drawable/ic_btc_blue"
+            android:summary="@string/donate_summary" />
+
+        <Preference android:key="donateLTC"
+            android:title="@string/donate_title_ltc"
+            android:icon="@drawable/ic_ltc_blue"
+            android:summary="@string/donate_summary" />
 
     </PreferenceCategory>
 

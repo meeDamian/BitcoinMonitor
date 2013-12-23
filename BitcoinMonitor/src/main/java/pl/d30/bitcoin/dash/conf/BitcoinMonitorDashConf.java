@@ -25,13 +25,7 @@ import pl.d30.bitcoin.dash.exchange.Exchange;
 
 public class BitcoinMonitorDashConf extends PreferenceActivity {
 
-    private static final String BITCOIN_ADDRESS = "1NycrExPayLpNEPjr539n4uvkRuyMA9fz3";
-    private static final String BITCOIN_DEFAULT_DONATION = "0.005";
-    private static final String BITCOIN_ALTERNATIVE_APP = "piuk.blockchain.android";
 
-    private static final String LITECOIN_ADDRESS = "LKpdDVpnWWk8tNtrBbyxCSrQKTMcRbJcop";
-    private static final String LITECOIN_DEFAULT_DONATION = "0.1";
-    private static final String LITECOIN_ALTERNATIVE_APP = "de.schildbach.wallet.litecoin";
 
     private Context context;
 
@@ -105,9 +99,9 @@ public class BitcoinMonitorDashConf extends PreferenceActivity {
 
             addPreferencesFromResource(R.xml.dash_monitor_conf);
 
-            currency = (ListPreference) findPreference("currency");
+            currency = (ListPreference) findPreference(D30.IDX_CURRENCY);
 
-            source = (ListPreference) findPreference("source");
+            source = (ListPreference) findPreference(D30.IDX_SOURCE);
             if( source!=null ) {
                 adjustCurrencies( Integer.parseInt(source.getValue()) );
 
@@ -128,7 +122,7 @@ public class BitcoinMonitorDashConf extends PreferenceActivity {
                 });
             }
 
-            amount = (EditTextPreference) findPreference("amount");
+            amount = (EditTextPreference) findPreference(D30.IDX_AMOUNT);
             if( amount!=null ) {
                 amount.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                     @Override
@@ -145,13 +139,14 @@ public class BitcoinMonitorDashConf extends PreferenceActivity {
                 });
             }
 
-            Preference donate = findPreference("donate");
+            Preference donate = findPreference(D30.IDX_DONATE);
             if( donate!=null ) {
                 donate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, getPaymentUri(Exchange.BTC) ));
+
                     } catch(ActivityNotFoundException e) {
                         Toast.makeText(context, R.string.warn_no_wallet_btc, Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Intent.ACTION_VIEW, getStoreUri(Exchange.BTC) ));
@@ -161,13 +156,14 @@ public class BitcoinMonitorDashConf extends PreferenceActivity {
                 });
             }
 
-            Preference donateLTC = findPreference("donateLTC");
+            Preference donateLTC = findPreference(D30.IDX_DONATE_LTC);
             if( donateLTC!=null ) {
                 donateLTC.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, getPaymentUri(Exchange.LTC) ));
+
                     } catch(ActivityNotFoundException e) {
                         Toast.makeText(context, R.string.warn_no_wallet_ltc, Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Intent.ACTION_VIEW, getStoreUri(Exchange.LTC) ));
@@ -208,12 +204,12 @@ public class BitcoinMonitorDashConf extends PreferenceActivity {
 
         private Uri getPaymentUri(int item) {
             return Uri.parse(item == Exchange.LTC
-                ? "litecoin:" + LITECOIN_ADDRESS + "?amount=" + LITECOIN_DEFAULT_DONATION
-                : "bitcoin:" + BITCOIN_ADDRESS + "?amount=" + BITCOIN_DEFAULT_DONATION
+                ? "litecoin:" + D30.LITECOIN_ADDRESS + "?amount=" + D30.LITECOIN_DEFAULT_DONATION
+                : "bitcoin:" + D30.BITCOIN_ADDRESS + "?amount=" + D30.BITCOIN_DEFAULT_DONATION
             );
         }
         private Uri getStoreUri(int item) {
-            return Uri.parse("http://play.google.com/store/apps/details?id=" + (item==Exchange.LTC ? LITECOIN_ALTERNATIVE_APP : BITCOIN_ALTERNATIVE_APP));
+            return Uri.parse("http://play.google.com/store/apps/details?id=" + (item==Exchange.LTC ? D30.LITECOIN_ALTERNATIVE_APP : D30.BITCOIN_ALTERNATIVE_APP));
         }
     }
 }
