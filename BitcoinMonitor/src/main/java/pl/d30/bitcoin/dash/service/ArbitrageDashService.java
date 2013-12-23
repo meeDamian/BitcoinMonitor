@@ -75,8 +75,8 @@ public abstract class ArbitrageDashService extends DashClockExtension {
 
         String expBody = getString(
             R.string.expanded_body_arbitrage,
-            buyExchange.getPrettyName(), Exchange.getPriceTypeName(buyPrice), buyValue.getCompact(buyPrice),
-            sellExchange.getPrettyName(), Exchange.getPriceTypeName(sellPrice), sellValue.getCompact(sellPrice)
+            buyExchange.getPrettyName(), Exchange.getPriceTypeName(buyPrice), buyValue.getCompact(buyPrice, 3),
+            sellExchange.getPrettyName(), Exchange.getPriceTypeName(sellPrice), sellValue.getCompact(sellPrice, 3)
         );
 
         publishUpdate(new ExtensionData()

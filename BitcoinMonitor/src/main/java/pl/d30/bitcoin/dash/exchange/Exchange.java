@@ -222,18 +222,20 @@ public abstract class Exchange {
             }
             return amount * tmp;
         }
-        public String getCompact(int priceType) {
+        public String getCompact(int priceType, int decimalPlaces) {
             float tmp = getFloat(priceType);
 
-            return getFormattedValue(
-                tmp<10 ? new DecimalFormat("#.##").format(tmp) : "" + Math.round(tmp),
+            // TODO: this is ugly, and should be prettified
+            return getFormattedValue(decimalPlaces==-1
+                ? (tmp<10 ? new DecimalFormat("#.##").format(tmp) : "" + Math.round(tmp))
+                : new DecimalFormat("#." + new String(new char[decimalPlaces]).replace('\0', '#')).format(tmp),
                 true
             );
         }
+        public String getCompact(int priceType) { return getCompact(priceType, -1); }
         public String getString(int priceType) {
             return getFormattedValue("" + getFloat(priceType), false);
         }
-
 
 
         // methods used internally
