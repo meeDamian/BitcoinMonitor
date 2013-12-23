@@ -32,7 +32,7 @@ public class BitStampExchange extends Exchange {
 
         } catch(NumberFormatException ignored) {}
 
-        if( cb!=null ) cb.onTicker(lastValue);
+        if( cb!=null ) cb.onTicker(getId(), lastValue);
     }
 
     @Override
@@ -40,12 +40,17 @@ public class BitStampExchange extends Exchange {
         return URL;
     }
 
-    protected static String getPriceTypeName(int priceType) {
+    public static String getPriceTypeName(int priceType) {
         switch( priceType ) {
             case PRICE_BUY: return "ask";
             case PRICE_SELL: return "bid";
         }
         return Exchange.getPriceTypeName(priceType);
+    }
+
+    @Override
+    public int getId() {
+        return BITSTAMP;
     }
 
     public String getName() {

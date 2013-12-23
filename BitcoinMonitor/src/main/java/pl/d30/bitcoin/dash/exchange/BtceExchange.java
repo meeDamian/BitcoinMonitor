@@ -30,13 +30,18 @@ public class BtceExchange extends Exchange {
              long ts = D30.Json.getLong(ticker, "updated");
             if( ts>0 ) lastValue.setTimestamp(ts);
 
-            if( cb!=null ) cb.onTicker(lastValue);
+            if( cb!=null ) cb.onTicker(getId(), lastValue);
         }
     }
 
     @Override
     protected String getUrl(int currency, int item) {
         return String.format(URL, getItemName(item).toLowerCase(), getCurrencyName(currency).toLowerCase());
+    }
+
+    @Override
+    public int getId() {
+        return BTCE;
     }
 
     public String getName() {

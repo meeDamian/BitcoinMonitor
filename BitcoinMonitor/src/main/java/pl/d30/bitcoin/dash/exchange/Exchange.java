@@ -64,7 +64,7 @@ public abstract class Exchange {
             lastValue.getItem()==item
 
         ) {
-            cb.onTicker(lastValue);
+            cb.onTicker(getId(), lastValue);
 
         } else downloadResponse( currency, item,  cb);
     }
@@ -85,7 +85,7 @@ public abstract class Exchange {
     protected abstract void processResponse(JsonObject json, int currency, int item, OnTickerDataAvailable cb);
     protected abstract String getUrl(int currency, int item);
 
-    protected static String getPriceTypeName(int priceType) {
+    public static String getPriceTypeName(int priceType) {
         switch( priceType ) {
             case PRICE_LAST: return "last";
             case PRICE_BUY:  return "buy";
@@ -130,6 +130,7 @@ public abstract class Exchange {
         return null;
     }
 
+    public abstract int getId();
     public abstract String getName();
     public abstract String getPrettyName();
     public abstract boolean isCurrencySupported(int currency);
@@ -137,7 +138,7 @@ public abstract class Exchange {
 
 
     public interface OnTickerDataAvailable {
-        public void onTicker(LastValue lastValue);
+        public void onTicker(int source, LastValue lastValue);
     }
 
     public class LastValue {

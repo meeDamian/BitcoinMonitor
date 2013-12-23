@@ -49,7 +49,8 @@
 
 
     <!-- DISPLAY -->
-    <string name="expanded_body">Current value of %1$s%2$s (%3$s)</string>
+    <string name="expanded_body_monitor">Current value of %1$s%2$s on %3$s</string>
+    <string name="expanded_body_arbitrage">%1$s|%2$s: %3$s\n%4$s|%5$s: %6$s</string>
 
 
     <!-- errors -->

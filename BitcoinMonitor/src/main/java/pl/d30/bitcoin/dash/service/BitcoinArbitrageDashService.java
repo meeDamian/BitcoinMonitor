@@ -11,12 +11,17 @@ public class BitcoinArbitrageDashService extends ArbitrageDashService {
     }
 
     @Override
+    protected int getCurrency() {
+        return Exchange.USD;
+    }
+
+    @Override
     protected String getConfFile() {
         return D30.PREF_FILE_BTC;
     }
 
     @Override
-    protected String getIntendAddress() {
+    protected String getIntentAddress() {
         return "https://cointhink.com/arbitrage/btcusd";
     }
 }

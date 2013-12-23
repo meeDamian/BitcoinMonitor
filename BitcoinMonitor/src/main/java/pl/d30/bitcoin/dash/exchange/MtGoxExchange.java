@@ -40,7 +40,7 @@ public class MtGoxExchange extends Exchange {
                 JsonObject priceBuy = D30.Json.getObject(price, getPriceTypeName(PRICE_BUY));
                 lastValue.setBuyValue( extractValue(priceBuy) );
 
-                if( cb!=null ) cb.onTicker(lastValue);
+                if( cb!=null ) cb.onTicker(getId(), lastValue);
             }
         }
     }
@@ -52,6 +52,11 @@ public class MtGoxExchange extends Exchange {
 
     protected String getUrl(int currency, int item) {
         return String.format(URL, getItemName(item), getCurrencyName(currency));
+    }
+
+    @Override
+    public int getId() {
+        return MTGOX;
     }
 
     public String getName() {

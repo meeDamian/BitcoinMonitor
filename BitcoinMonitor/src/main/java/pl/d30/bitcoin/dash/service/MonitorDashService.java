@@ -43,7 +43,7 @@ public abstract class MonitorDashService extends DashClockExtension {
 
         exchange.getTicker(currency, getItem(), new Exchange.OnTickerDataAvailable() {
             @Override
-            public void onTicker(Exchange.LastValue lastValue) {
+            public void onTicker(int source, Exchange.LastValue lastValue) {
             if( !updateWidget(lastValue, Exchange.PRICE_LAST) ) handleError();
             }
         });
@@ -74,8 +74,8 @@ public abstract class MonitorDashService extends DashClockExtension {
             .visible(true)
             .icon(Exchange.getItemDrawable(getItem()))
             .status(value.getCompact(priceType))
-            .expandedTitle(value.getString(priceType))
-            .expandedBody(getString(R.string.expanded_body, value.getPrettyAmount(), Exchange.getItemName(getItem()), exchange.getPrettyName()))
+            .expandedTitle(value.getString(priceType) + " (" + Exchange.getPriceTypeName(priceType) + ")" )
+            .expandedBody(getString(R.string.expanded_body_monitor, value.getPrettyAmount(), Exchange.getItemName(getItem()), exchange.getPrettyName()))
             .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(getIntentAddress()))));
     }
     protected boolean hideUpdate() { // TODO: or show info about outdated data
