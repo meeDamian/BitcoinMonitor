@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
+import pl.d30.bitcoin.dash.exchange.Exchange;
 
 public class BitcoinArbitrageDashConf extends PreferenceActivity {
 
@@ -77,12 +78,12 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
             exchangeSell = (ListPreference) findPreference(D30.IDX_SELL_SRC);
 
             if( exchangeBuy!=null ) {
-                updateIcon(exchangeBuy, Integer.parseInt(exchangeBuy.getValue()));
+                exchangeBuy.setIcon( getIcon(exchangeBuy.getValue()) );
                 exchangeBuy.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object newValue) {
                     int position = Integer.parseInt(newValue.toString());
-                    updateIcon(preference, position);
+                    preference.setIcon( getIcon(position) );
                     hideExchange(position);
                     return true;
                     }
@@ -90,49 +91,49 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
             }
 
             if( exchangeSell!=null ) {
-                updateIcon(exchangeSell, Integer.parseInt(exchangeSell.getValue()));
+                exchangeSell.setIcon( getIcon(exchangeSell.getValue()) );
+                hideExchange( Integer.parseInt(exchangeBuy.getValue()) );
                 exchangeSell.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    updateIcon(preference, Integer.parseInt(newValue.toString()));
+                    preference.setIcon( getIcon(newValue.toString()) );
                     return true;
                     }
                 });
             }
+
         }
 
         protected void setPreferenceFiles() {
             pm.setSharedPreferencesName(D30.PREF_FILE_BTC);
         }
 
-        protected void updateIcon(Preference p, int item) {
-            switch( item ) {
-                case 0:
-                    p.setIcon( R.drawable.ic_mtgox_blue);
-                    break;
-
-                case 1:
-                    p.setIcon( R.drawable.ic_bitstamp_blue);
-                    break;
-
-                case 2:
-                    p.setIcon( R.drawable.ic_btce_blue);
-                    break;
+        protected Integer getIcon(int item) {
+            switch(item) {
+                case Exchange.MTGOX: return R.drawable.ic_mtgox_blue;
+                case Exchange.BITSTAMP: return R.drawable.ic_bitstamp_blue;
+                case Exchange.BTCE: return R.drawable.ic_btce_blue;
             }
+            return null;
+        }
+        protected Integer getIcon(String item) {
+            return getIcon( Integer.parseInt(item) );
         }
 
         // NOTE: isn't like the ugliest code ever? (:
         protected void hideExchange(int position) {
             ArrayList<CharSequence> tmpNames = new ArrayList<CharSequence>();
             ArrayList<CharSequence> tmpValues = new ArrayList<CharSequence>();
-            for(int i=0; i<exchangeNames.length && i!=position; i++) {
-                tmpNames.add( exchangeNames[i] );
-                tmpValues.add( exchangeValues[i] );
+            for(int i=0; i<exchangeNames.length; i++) {
+                if( i!=position ) {
+                    tmpNames.add( exchangeNames[i] );
+                    tmpValues.add( exchangeValues[i] );
+                }
             }
             if( Integer.parseInt(exchangeSell.getValue())==position ) {
                 String newValue = tmpValues.get(0).toString();
                 exchangeSell.setValue(newValue);
-                updateIcon(exchangeSell, Integer.parseInt(newValue));
+                exchangeSell.setIcon( getIcon(newValue) );
             }
             exchangeSell.setEntries( tmpNames.toArray(new CharSequence[tmpNames.size()]) );
             exchangeSell.setEntryValues( tmpValues.toArray(new CharSequence[tmpValues.size()]) );
