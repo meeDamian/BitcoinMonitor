@@ -81,7 +81,7 @@ public abstract class ArbitrageDashService extends DashClockExtension {
 
         publishUpdate(new ExtensionData()
             .visible(true)
-            .icon(Exchange.getItemDrawable(getItem())) // TODO: change this icon into something easier to comprehend quickly
+            .icon(R.drawable.ic_mtgox_blue) // TODO: change this icon into something easier to quickly comprehend
             .status(getStatus(percentageDiff, currencyDiff))
             .expandedTitle(getTitle(percentageDiff, currencyDiff))
             .expandedBody(expBody)
