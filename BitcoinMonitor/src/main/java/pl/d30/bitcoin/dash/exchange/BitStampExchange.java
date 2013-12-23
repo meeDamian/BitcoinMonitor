@@ -18,10 +18,13 @@ public class BitStampExchange extends Exchange {
     }
 
     @Override
-    protected void processResponse(JsonObject json, int currency, int item, int priceType, OnTickerDataAvailable cb) {
+    protected void processResponse(JsonObject json, int currency, int item, OnTickerDataAvailable cb) {
 
-        String price = D30.Json.getString(json, getPriceTypeName(priceType));
+        String price = D30.Json.getString(json, getPriceTypeName(PRICE_LAST));
         lastValue = new LastValue(price, currency, item);
+
+        lastValue.setSellValue( D30.Json.getString(json, getPriceTypeName(PRICE_SELL)) );
+        lastValue.setBuyValue( D30.Json.getString(json, getPriceTypeName(PRICE_BUY)) );
 
         try {
             long ts = Long.parseLong(D30.Json.getString(json, "timestamp"));

@@ -17,7 +17,7 @@ public class MtGoxExchange extends Exchange {
         super(context);
     }
 
-    protected void processResponse(JsonObject json, int currency, int item, int priceType, OnTickerDataAvailable cb) {
+    protected void processResponse(JsonObject json, int currency, int item, OnTickerDataAvailable cb) {
         JsonObject price = D30.Json.getObject(json, "data");
         if( price!=null ) {
 
@@ -29,10 +29,17 @@ public class MtGoxExchange extends Exchange {
                 ts = 0l;
             }
 
-            price = D30.Json.getObject(price, getPriceTypeName(priceType));
-            if( price!=null ) {
-                lastValue = new LastValue(extractValue(price), currency, item);
+            JsonObject priceLast = D30.Json.getObject(price, getPriceTypeName(PRICE_LAST));
+            if( priceLast!=null ) {
+                lastValue = new LastValue(extractValue(priceLast), currency, item);
                 if( ts>0 ) lastValue.setTimestamp(ts/1000000);
+
+                JsonObject priceSell = D30.Json.getObject(price, getPriceTypeName(PRICE_SELL));
+                lastValue.setSellValue( extractValue(priceSell) );
+
+                JsonObject priceBuy = D30.Json.getObject(price, getPriceTypeName(PRICE_BUY));
+                lastValue.setBuyValue( extractValue(priceBuy) );
+
                 if( cb!=null ) cb.onTicker(lastValue);
             }
         }

@@ -41,15 +41,15 @@ public abstract class MonitorDashService extends DashClockExtension {
         currency = Integer.parseInt(sp.getString(D30.IDX_CURRENCY, "" + currency));
         if( !exchange.isCurrencySupported(currency) ) fixCurrency();
 
-        exchange.getTicker(currency, Exchange.PRICE_LAST, getItem(), new Exchange.OnTickerDataAvailable() {
+        exchange.getTicker(currency, getItem(), new Exchange.OnTickerDataAvailable() {
             @Override
             public void onTicker(Exchange.LastValue lastValue) {
-            if( !updateWidget(lastValue) ) handleError();
+            if( !updateWidget(lastValue, Exchange.PRICE_LAST) ) handleError();
             }
         });
     }
 
-    protected boolean updateWidget(Exchange.LastValue lastValue) {
+    protected boolean updateWidget(Exchange.LastValue lastValue, int priceType) {
 
         String amount = sp.getString(D30.IDX_AMOUNT, "");
         if( !amount.isEmpty() ) {
@@ -62,22 +62,19 @@ public abstract class MonitorDashService extends DashClockExtension {
             }
         }
 
-        // TODO: if( lastValue.getTimestamp() older than 15 minutes ) hideUpdate()
-        // NOTE this TODO above is stupid as hell
+        publishUpdate( lastValue, priceType );
 
-        publishUpdate(lastValue);
-
-        logEntry( lastValue.getFloat() );
+        logEntry( lastValue );
 
         return true;
     }
 
-    protected void publishUpdate(Exchange.LastValue value) {
+    protected void publishUpdate(Exchange.LastValue value, int priceType) {
         publishUpdate(new ExtensionData()
             .visible(true)
             .icon(Exchange.getItemDrawable(getItem()))
-            .status(value.getCompact())
-            .expandedTitle(value.getString())
+            .status(value.getCompact(priceType))
+            .expandedTitle(value.getString(priceType))
             .expandedBody(getString(R.string.expanded_body, value.getPrettyAmount(), Exchange.getItemName(getItem()), exchange.getPrettyName()))
             .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(getIntentAddress()))));
     }
@@ -86,9 +83,11 @@ public abstract class MonitorDashService extends DashClockExtension {
         return false;
     }
 
-    protected void logEntry(float value) {
+    protected void logEntry(Exchange.LastValue value) {
         sp.edit()
-            .putFloat("prevValue", value)
+            .putFloat("prevLastValue", value.getFloat(Exchange.PRICE_LAST))
+            .putFloat("prevSellValue", value.getFloat(Exchange.PRICE_SELL))
+            .putFloat("prevBuyValue", value.getFloat(Exchange.PRICE_BUY))
             .putLong("prevEpoch", System.currentTimeMillis() / 1000)
             .putInt("prevSource", source)
             .putString("prevCurrency", Exchange.getCurrencyName(currency))

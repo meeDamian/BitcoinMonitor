@@ -53,7 +53,7 @@ public abstract class Exchange {
         this.context = context;
     }
 
-    public void getTicker(int currency, int priceType, int item, OnTickerDataAvailable cb) {
+    public void getTicker(int currency, int item, OnTickerDataAvailable cb) {
         if(
             lastValue!=null
             &&
@@ -62,16 +62,14 @@ public abstract class Exchange {
             lastValue.getCurrency()==currency
             &&
             lastValue.getItem()==item
-            &&
-            lastValue.getPrice()==priceType
 
         ) {
             cb.onTicker(lastValue);
 
-        } else downloadResponse( currency, priceType, item,  cb);
+        } else downloadResponse( currency, item,  cb);
     }
 
-    protected void downloadResponse(final int currency, final int priceType, final int item, final OnTickerDataAvailable cb) {
+    protected void downloadResponse(final int currency, final int item, final OnTickerDataAvailable cb) {
         Ion.with(context, getUrl(currency, item))
             .setHeader("User-Agent", "DashClock Bitcoin Monitor " + D30.getAppVersion(context) + ", " + D30.getDeviceInfo())
             .asJsonObject()
@@ -79,17 +77,13 @@ public abstract class Exchange {
                 @Override
                 public void onCompleted(Exception e, JsonObject json) {
                 if( e!=null ) Log.w(D30.LOG, e.toString());
-                if( json!=null ) processResponse(json, currency, item, priceType, cb);
+                if( json!=null ) processResponse(json, currency, item, cb);
                 }
             });
     }
 
-    protected abstract void processResponse(JsonObject json, int currency, int item, int priceType, OnTickerDataAvailable cb);
+    protected abstract void processResponse(JsonObject json, int currency, int item, OnTickerDataAvailable cb);
     protected abstract String getUrl(int currency, int item);
-
-    public LastValue getLastValue() {
-        return lastValue;
-    }
 
     protected static String getPriceTypeName(int priceType) {
         switch( priceType ) {
@@ -148,33 +142,30 @@ public abstract class Exchange {
 
     public class LastValue {
 
-        private float numericValue;
+        private float lastValue;
+        private float buyValue;
+        private float sellValue;
 
         private int currency;
         private int item;
-        private int price;
 
         private long ts = 0;
         private float amount = 1;
         private String prettyAmount = "1";
 
-        public LastValue(float value, int currency, int item) {
-            constructorsCallMe(value, currency, item, Exchange.PRICE_LAST);
+        public LastValue(float lastValue, int currency, int item) {
+            constructorsCallMe(lastValue, currency, item);
         }
-        public LastValue(String value, int currency, int item) {
-            constructorsCallMe(value, currency, item, Exchange.PRICE_LAST);
+        public LastValue(String lastValue, int currency, int item) {
+            constructorsCallMe(lastValue, currency, item);
         }
-        public LastValue(float value, int currency, int item, int price) {
-            constructorsCallMe(value, currency, item, price);
+        private void constructorsCallMe(String lastValue, int currency, int item) {
+            constructorsCallMe(convertToFloat(lastValue), currency, item);
         }
-        private void constructorsCallMe(String value, int currency, int item, int price) {
-            constructorsCallMe(convertToFloat(value), currency, item, price);
-        }
-        private void constructorsCallMe(float value, int currency, int item, int price) {
-            numericValue = value;
+        private void constructorsCallMe(float lastValue, int currency, int item) {
+            this.lastValue = lastValue;
             this.currency = currency;
             this.item = item;
-            this.price = price;
         }
 
         // handle amount
@@ -190,9 +181,6 @@ public abstract class Exchange {
                 if(!decimals.equals("")) prettyAmount += "." + decimals;
             }
         }
-        public float getAmount() {
-            return amount;
-        }
         public String getPrettyAmount() {
             return prettyAmount;
         }
@@ -201,7 +189,6 @@ public abstract class Exchange {
         public void setTimestamp(long timestamp) {
             this.ts = timestamp;
         }
-        public long getTimestamp() { return ts; }
         public boolean isFresh() {
             return ts!=0 && ts + FRESHNESS > System.currentTimeMillis() / 100;
         }
@@ -209,23 +196,41 @@ public abstract class Exchange {
 
         public int getCurrency() { return currency; }
         public int getItem() { return item; }
-        public int getPrice() { return price; }
 
+        public void setBuyValue(String buyValue) {
+            setBuyValue(convertToFloat(buyValue));
+        }
+        public void setBuyValue(float buyValue) {
+            this.buyValue = buyValue;
+        }
+        public void setSellValue(String sellValue) {
+            setSellValue(convertToFloat(sellValue));
+        }
+        public void setSellValue(float sellValue) {
+            this.sellValue = sellValue;
+        }
 
         // different getters for a value
-        public float getFloat() {
-            return amount * numericValue;
+        public float getFloat(int priceType) {
+            float tmp;
+            switch( priceType ) {
+                case Exchange.PRICE_LAST: tmp = lastValue; break;
+                case Exchange.PRICE_SELL: tmp = sellValue; break;
+                case Exchange.PRICE_BUY: tmp = buyValue; break;
+                default: tmp = 0;
+            }
+            return amount * tmp;
         }
-        public String getCompact() {
-            float tmp = getFloat();
+        public String getCompact(int priceType) {
+            float tmp = getFloat(priceType);
 
             return getFormattedValue(
                 tmp<10 ? new DecimalFormat("#.##").format(tmp) : "" + Math.round(tmp),
                 true
             );
         }
-        public String getString() {
-            return getFormattedValue("" + getFloat(), false);
+        public String getString(int priceType) {
+            return getFormattedValue("" + getFloat(priceType), false);
         }
 
 
