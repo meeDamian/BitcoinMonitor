@@ -1,10 +1,13 @@
 package pl.d30.bitcoin.dash.conf;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -38,8 +41,10 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
-        setFragment();
+        getFragmentManager()
+            .beginTransaction()
+            .add(android.R.id.content, new BitcoinArbitrageConfFragment())
+            .commit();
     }
 
     @Override
@@ -51,10 +56,11 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
         return super.onOptionsItemSelected( item );
     }
 
-    protected void setFragment() {
+    protected void replaceFragment(PreferenceFragment pf) {
         getFragmentManager()
             .beginTransaction()
-            .replace(android.R.id.content, new BitcoinArbitrageConfFragment())
+            .replace(android.R.id.content, pf)
+            .addToBackStack(null)
             .commit();
     }
 
@@ -112,6 +118,49 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
                 });
             }
 
+            final CheckBoxPreference orderBook = (CheckBoxPreference) findPreference("order_book");
+            if( orderBook!=null ) {
+                final DialogInterface.OnClickListener onClicker = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if( AlertDialog.BUTTON_POSITIVE==which )
+                            orderBook.setChecked(true);
+                    }
+                };
+                orderBook.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(final Preference preference, Object newValue) {
+
+                        if( (Boolean)newValue ) {
+                            new AlertDialog.Builder(BitcoinArbitrageDashConf.this)
+                                .setIcon(R.drawable.ic_notice)
+                                .setTitle(R.string.order_book_confirmation_title)
+                                .setMessage(R.string.order_book_confirmation_msg)
+                                .setPositiveButton(android.R.string.ok, onClicker)
+                                .setNegativeButton(android.R.string.cancel, onClicker)
+                                .create()
+                                .show();
+
+                            return false;
+                        }
+
+                        return true;
+                    }
+                });
+
+            }
+
+            Preference notif = findPreference("notif");
+            if( notif!=null ) {
+                notif.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                    replaceFragment(new NotificationsFragment());
+                    return false;
+                    }
+                });
+            }
+
             Preference donate = findPreference(D30.IDX_DONATE_BTC);
             if( donate!=null ) {
                 donate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -152,7 +201,7 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
             pm.setSharedPreferencesName(D30.PREF_FILE_BTC);
         }
         protected Integer getIcon(String item) {
-            return Exchange.getIcon( Integer.parseInt(item) );
+            return Exchange.getIcon(Integer.parseInt(item));
         }
 
         // NOTE: isn't like the ugliest code ever? (:

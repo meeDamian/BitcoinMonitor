@@ -89,6 +89,11 @@
     <string name="order_book_amount_summary">Required to calculate Order Book price</string>
 
 
+    <!-- ORDER BOOK CONFIRMATION DIALOG -->
+    <string name="order_book_confirmation_title">Data usage warning!</string>
+    <string name="order_book_confirmation_msg">Enabling Order Book may use significantly more data</string>
+
+
 <!-- COMMONS ON PREFERENCE SCREENS -->
 
     <string name="notifications">Notifications</string>
