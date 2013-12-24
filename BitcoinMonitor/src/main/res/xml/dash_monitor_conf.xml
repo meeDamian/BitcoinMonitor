@@ -32,7 +32,7 @@
 		android:inputType="numberDecimal"
 		android:defaultValue="1.0" />
 
-    <Preference
+    <Preference android:key="notif"
         android:title="Notifications">
 
     </Preference>

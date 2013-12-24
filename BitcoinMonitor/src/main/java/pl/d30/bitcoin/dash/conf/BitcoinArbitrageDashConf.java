@@ -93,7 +93,7 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object newValue) {
                     int position = Integer.parseInt(newValue.toString());
-                    preference.setIcon( getIcon(position) );
+                    preference.setIcon( Exchange.getIcon(position) );
                     hideExchange(position);
                     return true;
                     }
@@ -151,17 +151,8 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
         protected void setPreferenceFiles() {
             pm.setSharedPreferencesName(D30.PREF_FILE_BTC);
         }
-
-        protected Integer getIcon(int item) {
-            switch(item) {
-                case Exchange.MTGOX: return R.drawable.ic_mtgox_blue;
-                case Exchange.BITSTAMP: return R.drawable.ic_bitstamp_blue;
-                case Exchange.BTCE: return R.drawable.ic_btce_blue;
-            }
-            return null;
-        }
         protected Integer getIcon(String item) {
-            return getIcon( Integer.parseInt(item) );
+            return Exchange.getIcon( Integer.parseInt(item) );
         }
 
         // NOTE: isn't like the ugliest code ever? (:

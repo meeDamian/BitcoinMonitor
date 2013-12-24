@@ -12,6 +12,7 @@ import com.koushikdutta.ion.Ion;
 import java.text.DecimalFormat;
 
 import pl.d30.bitcoin.D30;
+import pl.d30.bitcoin.R;
 
 public abstract class Exchange {
 
@@ -170,6 +171,14 @@ public abstract class Exchange {
             case Exchange.MTGOX:    return MtGoxExchange.getInstance(context);
             case Exchange.BITSTAMP: return BitStampExchange.getInstance(context);
             case Exchange.BTCE:     return BtceExchange.getInstance(context);
+        }
+        return null;
+    }
+    public static Integer getIcon(int item) {
+        switch(item) {
+            case Exchange.MTGOX:    return R.drawable.ic_mtgox_blue;
+            case Exchange.BITSTAMP: return R.drawable.ic_bitstamp_blue;
+            case Exchange.BTCE:     return R.drawable.ic_btce_blue;
         }
         return null;
     }
