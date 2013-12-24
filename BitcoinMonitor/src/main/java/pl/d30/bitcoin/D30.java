@@ -5,6 +5,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -31,6 +32,8 @@ public class D30 {
     public static final String IDX_SELL_SRC     = "sell_exchange";
     public static final String IDX_SELL_PRICE   = "sell_price";
     public static final String IDX_PRIORITY     = "priority";
+    public static final String IDX_ORDER_BOOK   = "order_book";
+    public static final String IDX_ORDER_AMOUNT = "order_book_amount";
 
 
     // donation details
@@ -49,6 +52,11 @@ public class D30 {
         public static JsonObject getObject(JsonObject j, String n) {
             JsonElement e = j.get(n);
             return e!=null && e.isJsonObject() ? e.getAsJsonObject() : null;
+        }
+
+        public static JsonArray getArray(JsonObject j, String n) {
+            JsonElement e = j.get(n);
+            return e!=null && e.isJsonArray() ? e.getAsJsonArray() : null;
         }
 
         public static String getString(JsonObject j, String n) {

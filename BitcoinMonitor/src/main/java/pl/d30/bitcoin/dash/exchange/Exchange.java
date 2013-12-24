@@ -3,6 +3,8 @@ package pl.d30.bitcoin.dash.exchange;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -22,6 +24,10 @@ public abstract class Exchange {
     public static final int MTGOX = 0;
     public static final int BITSTAMP = 1;
     public static final int BTCE = 2;
+
+    // urls:
+    public static final int TICKER = 0;
+    public static final int ORDER_BOOK = 1;
 
     // fiat currencies:
     public static final int USD = 0;
@@ -53,7 +59,7 @@ public abstract class Exchange {
         this.context = context;
     }
 
-    public void getTicker(int currency, int item, OnTickerDataAvailable cb) {
+    public void getTicker(int currency, int item, float amount, OnTickerDataAvailable cb) {
         if(
             lastValue!=null
             &&
@@ -62,28 +68,91 @@ public abstract class Exchange {
             lastValue.getCurrency()==currency
             &&
             lastValue.getItem()==item
+            &&
+            lastValue.isOrderBook()==(amount!=0f)
 
         ) {
             cb.onTicker(getId(), lastValue);
 
-        } else downloadResponse( currency, item,  cb);
+        } else downloadResponse( currency, item, amount, cb);
+    }
+    public void getTicker(int currency, int item, OnTickerDataAvailable cb) {
+        getTicker(currency, item, 0f, cb);
     }
 
-    protected void downloadResponse(final int currency, final int item, final OnTickerDataAvailable cb) {
-        Ion.with(context, getUrl(currency, item))
+    protected void downloadResponse(final int currency, final int item, final float amount, final OnTickerDataAvailable cb) {
+        Ion.with(context, getUrl(currency, item, (amount==0f) ? TICKER : ORDER_BOOK))
             .setHeader("User-Agent", "DashClock Bitcoin Monitor " + D30.getAppVersion(context) + ", " + D30.getDeviceInfo())
             .asJsonObject()
             .setCallback(new FutureCallback<JsonObject>() {
                 @Override
                 public void onCompleted(Exception e, JsonObject json) {
                 if( e!=null ) Log.w(D30.LOG, e.toString());
-                if( json!=null ) processResponse(json, currency, item, cb);
+                if( json!=null ) {
+                    if( amount==0f ) processTickerResponse(json, currency, item, cb);
+                    else processOrderBookResponse(json, currency, item, amount, cb);
+                }
                 }
             });
     }
 
-    protected abstract void processResponse(JsonObject json, int currency, int item, OnTickerDataAvailable cb);
-    protected abstract String getUrl(int currency, int item);
+
+    protected String getUrlSuffix(int requestedData) {
+        switch( requestedData ) {
+            case TICKER: return getTickerUrlSuffix();
+            case ORDER_BOOK: return getOrderBookUrlSuffix();
+        }
+        return "";
+    }
+    protected String getUrl(int currency, int item, int requestedData) {
+        return getBaseUrl(currency, item) + getUrlSuffix(requestedData);
+    }
+    protected abstract void processTickerResponse(JsonObject json, int currency, int item, OnTickerDataAvailable cb);
+    protected void processOrderBookResponse(JsonObject json, int currency, int item, float amount, OnTickerDataAvailable cb) {
+        json = preProcessOrderBookResponse(json);
+
+        JsonArray bids = D30.Json.getArray(json, "bids");
+        float buyPrice = bids!=null ? getPrice(bids, amount) : 0f;
+
+        JsonArray asks = D30.Json.getArray(json, "asks");
+        float sellPrice = asks!=null ? getPrice(asks, amount) : 0f;
+
+        Log.d(D30.LOG, "[*] " + getPrettyName() + ": " + buyPrice + "/" + sellPrice);
+
+        lastValue = new LastValue(buyPrice, sellPrice, currency, item);
+        lastValue.setTimestamp( getTimestamp(json) );
+        if( cb!=null ) cb.onTicker( getId(), lastValue );
+    }
+
+    // this is used in case when our precious data is nested in some retarded way (Looking at you MtGox...)
+    protected JsonObject preProcessOrderBookResponse(JsonObject json) {
+        return json;
+    }
+
+    private float getPrice(JsonArray prices, float amount) {
+
+        float tmpAmount = 0f;
+        float up=0f;
+
+        for(JsonElement price : prices) {
+
+            float a = extractAmount(price);
+            if( tmpAmount+a<amount ) {
+                up += extractPrice(price) * a;
+                tmpAmount += a;
+
+            } else {
+                up += extractPrice(price) * (amount-tmpAmount);
+                break;
+
+            }
+        }
+        return up / amount;
+    }
+
+    protected abstract Float extractPrice(JsonElement e);
+    protected abstract Float extractAmount(JsonElement e);
+    protected abstract Long getTimestamp(JsonObject json);
 
     public static String getPriceTypeName(int priceType) {
         switch( priceType ) {
@@ -133,6 +202,9 @@ public abstract class Exchange {
     public abstract int getId();
     public abstract String getName();
     public abstract String getPrettyName();
+    protected abstract String getBaseUrl(int currency, int item);
+    protected abstract String getTickerUrlSuffix();
+    protected abstract String getOrderBookUrlSuffix();
     public abstract boolean isCurrencySupported(int currency);
     public abstract boolean isItemSupported(int item);
 
@@ -149,24 +221,34 @@ public abstract class Exchange {
 
         private int currency;
         private int item;
+        private boolean orderBook;
 
         private long ts = 0;
         private float amount = 1;
         private String prettyAmount = "1";
 
+        public LastValue(float buyPrice, float sellPrice, int currency, int item) {
+            constructorsCallMe(
+                buyPrice + sellPrice/2, // NOTE: lastPrice here is *kinda* fake ;)
+                currency,
+                item,
+                true
+            );
+            setBuyValue(buyPrice);
+            setSellValue(sellPrice);
+        }
+
         public LastValue(float lastValue, int currency, int item) {
-            constructorsCallMe(lastValue, currency, item);
+            constructorsCallMe(lastValue, currency, item, false);
         }
         public LastValue(String lastValue, int currency, int item) {
-            constructorsCallMe(lastValue, currency, item);
+            constructorsCallMe(convertToFloat(lastValue), currency, item, false);
         }
-        private void constructorsCallMe(String lastValue, int currency, int item) {
-            constructorsCallMe(convertToFloat(lastValue), currency, item);
-        }
-        private void constructorsCallMe(float lastValue, int currency, int item) {
+        private void constructorsCallMe(float lastValue, int currency, int item, boolean orderBook) {
             this.lastValue = lastValue;
             this.currency = currency;
             this.item = item;
+            this.orderBook = orderBook;
         }
 
         // handle amount
@@ -197,6 +279,7 @@ public abstract class Exchange {
 
         public int getCurrency() { return currency; }
         public int getItem() { return item; }
+        public boolean isOrderBook() { return orderBook; }
 
         public void setBuyValue(String buyValue) {
             setBuyValue(convertToFloat(buyValue));

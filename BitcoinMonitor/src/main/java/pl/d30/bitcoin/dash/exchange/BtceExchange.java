@@ -2,24 +2,25 @@ package pl.d30.bitcoin.dash.exchange;
 
 import android.content.Context;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import pl.d30.bitcoin.D30;
 
 public class BtceExchange extends Exchange {
 
-    private static final String URL = "https://btc-e.com/api/2/%s_%s/ticker";;
+    private static final String URL = "https://btc-e.com/api/2/%s_%s/";
+    private static final String URL_TICKER = "ticker";
+    private static final String URL_ORDER_BOOK = "depth";
 
     public static final String NAME = "btce";
     public static final String PRETTY_NAME = "BTC-e";
-
 
     private BtceExchange(Context context) {
         super(context);
     }
 
-    @Override
-    protected void processResponse(JsonObject json, int currency, int item, OnTickerDataAvailable cb) {
+    protected void processTickerResponse(JsonObject json, int currency, int item, OnTickerDataAvailable cb) {
         JsonObject ticker = D30.Json.getObject(json, "ticker");
         if( ticker!=null ) {
             float price = D30.Json.getFloat(ticker, getPriceTypeName(PRICE_LAST));
@@ -34,33 +35,41 @@ public class BtceExchange extends Exchange {
         }
     }
 
-    @Override
-    protected String getUrl(int currency, int item) {
-        return String.format(URL, getItemName(item).toLowerCase(), getCurrencyName(currency).toLowerCase());
+    protected Float extractPrice(JsonElement e) {
+        return e.isJsonArray() ? e.getAsJsonArray().get(0).getAsFloat() : null;
+    }
+    protected Float extractAmount(JsonElement e) {
+        return e.isJsonArray() ? e.getAsJsonArray().get(1).getAsFloat() : null;
+    }
+    protected Long getTimestamp(JsonObject json) {
+        return System.currentTimeMillis()/1000;
     }
 
-    @Override
     public int getId() {
         return BTCE;
     }
-
     public String getName() {
         return NAME;
     }
-
     public String getPrettyName() {
         return PRETTY_NAME;
     }
-
-    @Override
+    protected String getBaseUrl(int currency, int item) {
+        return String.format(URL, getItemName(item).toLowerCase(), getCurrencyName(currency).toLowerCase());
+    }
+    protected String getTickerUrlSuffix() {
+        return URL_TICKER;
+    }
+    protected String getOrderBookUrlSuffix() {
+        return URL_ORDER_BOOK;
+    }
     public boolean isCurrencySupported(int currency) {
         return currency==USD || currency==EUR;
     }
-
-    @Override
     public boolean isItemSupported(int item) {
         return item==BTC || item==LTC;
     }
+
 
     // singleton magic
     private static BtceExchange mInstance = null;

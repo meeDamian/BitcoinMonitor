@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+<!--  TITLES / DESCRIPTIONS -->
     <string name="app_name">Bitcoin Monitor</string>
     <string name="app_desc">An awesome bitcoin monitor it is!</string>
 
@@ -14,17 +15,15 @@
     <string name="arbitrage_desc">See difference between prices from chosen exchanges.</string>
 
 
-    <!-- CATEGORIES -->
-    <string name="cat_buy_source">Buy Source</string>
-    <string name="cat_sell_source">Sell Source</string>
-    <string name="cat_other">Other</string>
-    <string name="cat_donate">Donations</string>
+<!-- MONITOR PREFERENCE SCREENS -->
 
 
     <!-- SOURCE -->
+    <!-- btc -->
     <string name="source_title_btc">Bitcoin Exchange</string>
     <string name="source_summary_btc">Change exchange rate source</string>
 
+    <!-- ltc -->
     <string name="source_title_ltc">Litecoin Exchange</string>
     <string name="source_summary_ltc">Currently only BTC-e is supported</string>
 
@@ -36,9 +35,11 @@
 
 
     <!-- AMOUNT -->
+    <!-- btc-->
     <string name="amount_title_btc">Custom BTC amount</string>
     <string name="amount_summary_btc">Alter BTC amount of displayed value</string>
 
+    <!-- ltc -->
     <string name="amount_title_ltc">Custom LTC amount</string>
     <string name="amount_summary_ltc">Alter LTC amount of displayed value</string>
 
@@ -48,18 +49,61 @@
     <string name="experimental_summary">[WARNING] Saves data and battery, but may misbehave</string>
 
 
+<!-- ARBITRAGE PREFERENCE SCREENS -->
+
+    <!-- CATEGORIES -->
+    <string name="cat_buy_source">Buy Source</string>
+    <string name="cat_sell_source">Sell Source</string>
+    <string name="cat_other">Other</string>
+    <string name="cat_donate">Donations</string>
+
+
+    <!-- EXCHANGES -->
+    <string name="exchange_title">Exchange</string>
+    <string name="exchange_buy_summary">Buying point for your coins</string>
+    <string name="exchange_sell_summary">Selling point for your coins</string>
+
+
+    <!-- PRICE TYPE -->
+    <string name="used_price_title">Used price</string>
+    <string name="used_price_summary">Price used in calculations</string>
+    <string name="used_price_switch_last">Last</string>
+    <string name="used_price_switch_buy">Buy</string>
+    <string name="used_price_switch_sell">Sell</string>
+
+
+    <!-- PRIORITY -->
+    <string name="priority_title">Difference priority</string>
+    <string name="priority_summary">What\'s more important</string>
+    <string name="priority_switch_on">"  %  "</string>
+    <string name="priority_switch_off">"  $  "</string>
+
+
+    <!-- ORDER BOOK -->
+    <string name="order_book_title">Order Book</string>
+    <string name="order_book_summary">Analyze Order Book for difference calculations</string>
+
+
+    <!-- ORDER BOOK AMOUNT -->
+    <string name="order_book_amount_title">Order Book Amount</string>
+    <string name="order_book_amount_summary">Required to calculate Order Book price</string>
+
+
+<!-- COMMONS ON PREFERENCE SCREENS -->
+
     <!-- DONATE -->
     <string name="donate_title">Donate (5mBTC)</string>
     <string name="donate_title_ltc">Donate (0.2LTC)</string>
     <string name="donate_summary">If you like my work, please consider donating</string>
 
 
-    <!-- DISPLAY -->
+<!-- WIDGETS DISPLAY -->
     <string name="expanded_body_monitor">Current value of %1$s%2$s on %3$s</string>
     <string name="expanded_body_arbitrage">%1$s|%2$s: %3$s\n%4$s|%5$s: %6$s</string>
 
 
-    <!-- errors -->
+
+<!-- ERRORS -->
     <string name="error_invalid_amount">Changes NOT saved, invalid value provided.</string>
     <string name="warn_no_wallet_btc">No Bitcoin wallet installed. Try that one!</string>
     <string name="warn_no_wallet_ltc">No Litecoin wallet installed. Try that one!</string>

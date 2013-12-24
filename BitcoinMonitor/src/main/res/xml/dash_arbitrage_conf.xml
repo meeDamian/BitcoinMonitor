@@ -5,8 +5,8 @@
 
         <ListPreference
             android:key="buy_exchange"
-            android:title="Exchange"
-            android:summary="Buying point for your coins"
+            android:title="@string/exchange_title"
+            android:summary="@string/exchange_buy_summary"
             android:icon="@drawable/ic_bitstamp_blue"
             android:entries="@array/source_list"
             android:entryValues="@array/source_values"
@@ -14,11 +14,11 @@
 
         <SwitchPreference
             android:key="buy_price"
-            android:title="Used price"
+            android:title="@string/used_price_title"
             android:summary="Price used in calculations"
             android:defaultValue="true"
-            android:switchTextOn="Buy"
-            android:switchTextOff="Last" />
+            android:switchTextOn="@string/used_price_switch_buy"
+            android:switchTextOff="@string/used_price_switch_last" />
 
     </PreferenceCategory>
 
@@ -27,8 +27,8 @@
 
         <ListPreference
             android:key="sell_exchange"
-            android:title="Exchange"
-            android:summary="Selling point for your coins"
+            android:title="@string/exchange_title"
+            android:summary="@string/exchange_sell_summary"
             android:icon="@drawable/ic_mtgox_blue"
             android:entries="@array/source_list"
             android:entryValues="@array/source_values"
@@ -36,11 +36,11 @@
 
         <SwitchPreference
             android:key="sell_price"
-            android:title="Used price"
+            android:title="@string/used_price_title"
             android:summary="Price used in calculations"
             android:defaultValue="true"
-            android:switchTextOn="Sell"
-            android:switchTextOff="Last" />
+            android:switchTextOn="@string/used_price_switch_sell"
+            android:switchTextOff="@string/used_price_switch_last" />
 
     </PreferenceCategory>
 
@@ -48,18 +48,25 @@
 
         <SwitchPreference
             android:key="priority"
-            android:title="Difference priority"
-            android:summary="What's more important"
+            android:title="@string/priority_title"
+            android:summary="@string/priority_summary"
             android:defaultValue="true"
-            android:switchTextOn="  %  "
-            android:switchTextOff="  $  " />
+            android:switchTextOn="@string/priority_switch_on"
+            android:switchTextOff="@string/priority_switch_off" />
 
         <SwitchPreference
             android:key="order_book"
-            android:title="Order Book"
-            android:summary="Analyze Order Book for difference calculations"
-            android:defaultValue="false"
-            android:enabled="false" />
+            android:title="@string/order_book_title"
+            android:summary="@string/order_book_summary"
+            android:defaultValue="false" />
+
+        <EditTextPreference
+            android:key="order_book_amount"
+            android:dependency="order_book"
+            android:title="@string/order_book_amount_title"
+            android:summary="@string/order_book_amount_summary"
+            android:inputType="numberDecimal"
+            android:defaultValue="1.0" />
 
     </PreferenceCategory>
 

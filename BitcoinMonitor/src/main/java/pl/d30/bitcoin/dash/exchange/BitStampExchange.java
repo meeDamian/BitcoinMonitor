@@ -2,13 +2,16 @@ package pl.d30.bitcoin.dash.exchange;
 
 import android.content.Context;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import pl.d30.bitcoin.D30;
 
 public class BitStampExchange extends Exchange {
 
-    private static final String URL = "https://www.bitstamp.net/api/ticker/";
+    private static final String URL = "https://www.bitstamp.net/api/";
+    private static final String URL_TICKER = "ticker/";
+    private static final String URL_ORDER_BOOK = "order_book/";
 
     public static final String NAME = "bitstamp";
     public static final String PRETTY_NAME = "Bitstamp";
@@ -17,8 +20,7 @@ public class BitStampExchange extends Exchange {
         super(context);
     }
 
-    @Override
-    protected void processResponse(JsonObject json, int currency, int item, OnTickerDataAvailable cb) {
+    protected void processTickerResponse(JsonObject json, int currency, int item, OnTickerDataAvailable cb) {
 
         String price = D30.Json.getString(json, getPriceTypeName(PRICE_LAST));
         lastValue = new LastValue(price, currency, item);
@@ -27,17 +29,21 @@ public class BitStampExchange extends Exchange {
         lastValue.setBuyValue( D30.Json.getString(json, getPriceTypeName(PRICE_BUY)) );
 
         try {
-            long ts = Long.parseLong(D30.Json.getString(json, "timestamp"));
-            lastValue.setTimestamp(ts);
+            lastValue.setTimestamp( getTimestamp(json) );
 
         } catch(NumberFormatException ignored) {}
 
         if( cb!=null ) cb.onTicker(getId(), lastValue);
     }
 
-    @Override
-    protected String getUrl(int currency, int item) {
-        return URL;
+    protected Float extractPrice(JsonElement e) {
+        return e.isJsonArray() ? Float.parseFloat(e.getAsJsonArray().get(0).getAsString()) : null;
+    }
+    protected Float extractAmount(JsonElement e) {
+        return e.isJsonArray() ? Float.parseFloat(e.getAsJsonArray().get(1).getAsString()) : null;
+    }
+    protected Long getTimestamp(JsonObject json) {
+        return Long.parseLong(D30.Json.getString(json, "timestamp"));
     }
 
     public static String getPriceTypeName(int priceType) {
@@ -48,28 +54,31 @@ public class BitStampExchange extends Exchange {
         return Exchange.getPriceTypeName(priceType);
     }
 
-    @Override
     public int getId() {
         return BITSTAMP;
     }
-
     public String getName() {
         return NAME;
     }
-
     public String getPrettyName() {
         return PRETTY_NAME;
     }
-
-    @Override
+    protected String getBaseUrl(int currency, int item) {
+        return URL;
+    }
+    protected String getTickerUrlSuffix() {
+        return URL_TICKER;
+    }
+    protected String getOrderBookUrlSuffix() {
+        return URL_ORDER_BOOK;
+    }
     public boolean isCurrencySupported(int currency) {
         return currency==USD;
     }
-
-    @Override
     public boolean isItemSupported(int item) {
         return item==BTC;
     }
+
 
     // singleton magic
     private static BitStampExchange mInstance = null;

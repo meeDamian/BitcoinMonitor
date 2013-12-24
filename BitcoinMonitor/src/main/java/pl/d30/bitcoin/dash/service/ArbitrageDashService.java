@@ -63,8 +63,24 @@ public abstract class ArbitrageDashService extends DashClockExtension {
 
         displayPriority = sp.getBoolean(D30.IDX_PRIORITY, displayPriority);
 
-        buyExchange.getTicker(getCurrency(), getItem(), callback);
-        sellExchange.getTicker(getCurrency(), getItem(), callback);
+        float orderBookAmount = 0f;
+        boolean useOrderBook = sp.getBoolean(D30.IDX_ORDER_BOOK, false);
+        if( useOrderBook ) {
+            String amount = sp.getString(D30.IDX_ORDER_AMOUNT, "");
+            if( !amount.isEmpty() ) {
+                try {
+                    orderBookAmount = Float.parseFloat(amount);
+
+                } catch(NumberFormatException e) {
+                    orderBookAmount = fixAmount( 1f );
+
+                }
+
+            } else orderBookAmount = fixAmount( 1f );
+        }
+
+        buyExchange.getTicker(getCurrency(), getItem(), orderBookAmount, callback);
+        sellExchange.getTicker(getCurrency(), getItem(), orderBookAmount, callback);
     }
 
     protected void updateWidget(Exchange.LastValue buyValue, Exchange.LastValue sellValue) {
@@ -101,6 +117,11 @@ public abstract class ArbitrageDashService extends DashClockExtension {
     protected String getCurrencyDiff(float v1, float v2) {
         NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
         return nf.format( v2-v1 );
+    }
+
+    protected float fixAmount(float amount) {
+        sp.edit().putString(D30.IDX_ORDER_AMOUNT, Float.toString(amount)).apply();
+        return amount;
     }
 
     // to be implemented by `kids`
