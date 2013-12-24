@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import pl.d30.bitcoin.D30;
+import pl.d30.bitcoin.dash.cryptocoin.Coin;
 
 public class BtceExchange extends Exchange {
 
@@ -55,7 +56,7 @@ public class BtceExchange extends Exchange {
         return PRETTY_NAME;
     }
     protected String getBaseUrl(int currency, int item) {
-        return String.format(URL, getItemName(item).toLowerCase(), getCurrencyName(currency).toLowerCase());
+        return String.format(URL, Coin.getName(item).toLowerCase(), getCurrencyName(currency).toLowerCase());
     }
     protected String getTickerUrlSuffix() {
         return URL_TICKER;
@@ -67,7 +68,7 @@ public class BtceExchange extends Exchange {
         return currency==USD || currency==EUR;
     }
     public boolean isItemSupported(int item) {
-        return item==BTC || item==LTC;
+        return item==Coin.BTC || item==Coin.LTC;
     }
 
 

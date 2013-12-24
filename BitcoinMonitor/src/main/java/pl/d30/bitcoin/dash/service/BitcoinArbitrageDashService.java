@@ -1,13 +1,14 @@
 package pl.d30.bitcoin.dash.service;
 
 import pl.d30.bitcoin.D30;
+import pl.d30.bitcoin.dash.cryptocoin.Coin;
 import pl.d30.bitcoin.dash.exchange.Exchange;
 
 public class BitcoinArbitrageDashService extends ArbitrageDashService {
 
     @Override
     protected int getItem() {
-        return Exchange.BTC;
+        return Coin.BTC;
     }
 
     @Override

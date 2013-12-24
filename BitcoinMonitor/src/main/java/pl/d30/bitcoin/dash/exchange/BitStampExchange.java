@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import pl.d30.bitcoin.D30;
+import pl.d30.bitcoin.dash.cryptocoin.Coin;
 
 public class BitStampExchange extends Exchange {
 
@@ -76,7 +77,7 @@ public class BitStampExchange extends Exchange {
         return currency==USD;
     }
     public boolean isItemSupported(int item) {
-        return item==BTC;
+        return item==Coin.BTC;
     }
 
 

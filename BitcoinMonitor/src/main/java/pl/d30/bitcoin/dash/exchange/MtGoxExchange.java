@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import pl.d30.bitcoin.D30;
+import pl.d30.bitcoin.dash.cryptocoin.Coin;
 
 public class MtGoxExchange extends Exchange {
 
@@ -78,7 +79,7 @@ public class MtGoxExchange extends Exchange {
         return PRETTY_NAME;
     }
     protected String getBaseUrl(int currency, int item) {
-        return String.format(URL, getItemName(item), getCurrencyName(currency));
+        return String.format(URL, Coin.getName(item).toUpperCase(), getCurrencyName(currency).toUpperCase());
     }
     protected String getTickerUrlSuffix() {
         return URL_TICKER;
@@ -90,7 +91,7 @@ public class MtGoxExchange extends Exchange {
         return true;
     }
     public boolean isItemSupported(int item) {
-        return item==BTC;
+        return item==Coin.BTC;
     }
 
 

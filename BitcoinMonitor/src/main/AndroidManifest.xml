@@ -87,7 +87,7 @@
 
         <!-- DashClock BTC Arbitrage Monitor -->
         <service android:name=".dash.service.BitcoinArbitrageDashService"
-            android:icon="@drawable/ic_btc"
+            android:icon="@drawable/ic_arbitrage"
             android:label="@string/arbitrage_btc_label"
             android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
 

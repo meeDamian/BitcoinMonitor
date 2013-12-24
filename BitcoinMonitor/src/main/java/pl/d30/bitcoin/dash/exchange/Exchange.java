@@ -12,13 +12,8 @@ import com.koushikdutta.ion.Ion;
 import java.text.DecimalFormat;
 
 import pl.d30.bitcoin.D30;
-import pl.d30.bitcoin.R;
 
 public abstract class Exchange {
-
-    // virtual currencies:
-    public static final int BTC = 0;
-    public static final int LTC = 1;
 
     // exchanges:
     public static final int MTGOX = 0;
@@ -153,20 +148,6 @@ public abstract class Exchange {
             case PRICE_LAST: return "last";
             case PRICE_BUY:  return "buy";
             case PRICE_SELL: return "sell";
-        }
-        return null;
-    }
-    public static String getItemName(int item) {
-        switch( item ) {
-            case BTC: return "BTC";
-            case LTC: return "LTC";
-        }
-        return null;
-    }
-    public static Integer getItemDrawable(int item) {
-        switch( item ) {
-            case BTC: return R.drawable.ic_btc;
-            case LTC: return R.drawable.ic_ltc;
         }
         return null;
     }

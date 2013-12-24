@@ -72,7 +72,7 @@
 
     <PreferenceCategory android:title="@string/cat_donate">
 
-        <Preference android:key="donate"
+        <Preference android:key="donateBTC"
             android:title="@string/donate_title"
             android:icon="@drawable/ic_btc_blue"
             android:summary="@string/donate_summary" />

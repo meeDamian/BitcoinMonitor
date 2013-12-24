@@ -10,6 +10,7 @@ import com.google.android.apps.dashclock.api.ExtensionData;
 
 import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
+import pl.d30.bitcoin.dash.cryptocoin.Coin;
 import pl.d30.bitcoin.dash.exchange.Exchange;
 
 public abstract class MonitorDashService extends DashClockExtension {
@@ -75,10 +76,10 @@ public abstract class MonitorDashService extends DashClockExtension {
     protected void publishUpdate(Exchange.LastValue value, int priceType) {
         publishUpdate(new ExtensionData()
             .visible(true)
-            .icon(Exchange.getItemDrawable(getItem()))
+            .icon(Coin.getDrawable(getItem()))
             .status(value.getCompact(priceType))
             .expandedTitle(value.getString(priceType) + " (" + Exchange.getPriceTypeName(priceType) + ")")
-            .expandedBody(getString(R.string.expanded_body_monitor, value.getPrettyAmount(), Exchange.getItemName(getItem()), exchange.getPrettyName()))
+            .expandedBody(getString(R.string.expanded_body_monitor, value.getPrettyAmount(), Coin.getName(getItem()), exchange.getPrettyName()))
             .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(getIntentAddress()))));
     }
     protected boolean hideUpdate() { // TODO: or show info about outdated data

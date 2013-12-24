@@ -31,6 +31,11 @@
         android:summary="@string/amount_summary_btc"
 		android:inputType="numberDecimal"
 		android:defaultValue="1.0" />
+
+    <Preference
+        android:title="Notifications">
+
+    </Preference>
      
     <!--<CheckBoxPreference android:key="experimental"-->
         <!--android:title="@string/experimental_title"-->
@@ -38,7 +43,7 @@
         <!--android:enabled="false"-->
         <!--android:defaultValue="0" />-->
     
-    <Preference android:key="donate"
+    <Preference android:key="donateBTC"
         android:title="@string/donate_title"
         android:icon="@drawable/ic_btc_blue"
         android:summary="@string/donate_summary" />

@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -18,6 +17,8 @@ import java.util.ArrayList;
 
 import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
+import pl.d30.bitcoin.dash.cryptocoin.Btc;
+import pl.d30.bitcoin.dash.cryptocoin.Ltc;
 import pl.d30.bitcoin.dash.exchange.Exchange;
 
 public class BitcoinArbitrageDashConf extends PreferenceActivity {
@@ -111,17 +112,17 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
                 });
             }
 
-            Preference donate = findPreference(D30.IDX_DONATE);
+            Preference donate = findPreference(D30.IDX_DONATE_BTC);
             if( donate!=null ) {
                 donate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                     try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, getPaymentUri(Exchange.BTC) ));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Btc.getPaymentUri() ));
 
                     } catch(ActivityNotFoundException e) {
                         Toast.makeText(context, R.string.warn_no_wallet_btc, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Intent.ACTION_VIEW, getStoreUri(Exchange.BTC) ));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Btc.getStoreUri() ));
                     }
                     return false;
                     }
@@ -134,11 +135,11 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                     try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, getPaymentUri(Exchange.LTC) ));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Ltc.getPaymentUri() ));
 
                     } catch(ActivityNotFoundException e) {
                         Toast.makeText(context, R.string.warn_no_wallet_ltc, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Intent.ACTION_VIEW, getStoreUri(Exchange.LTC) ));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Ltc.getStoreUri() ));
                     }
                     return false;
                     }
@@ -180,16 +181,6 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
             }
             exchangeSell.setEntries( tmpNames.toArray(new CharSequence[tmpNames.size()]) );
             exchangeSell.setEntryValues( tmpValues.toArray(new CharSequence[tmpValues.size()]) );
-        }
-
-        private Uri getPaymentUri(int item) {
-            return Uri.parse(item == Exchange.LTC
-                    ? "litecoin:" + D30.LITECOIN_ADDRESS + "?amount=" + D30.LITECOIN_DEFAULT_DONATION
-                    : "bitcoin:" + D30.BITCOIN_ADDRESS + "?amount=" + D30.BITCOIN_DEFAULT_DONATION
-            );
-        }
-        private Uri getStoreUri(int item) {
-            return Uri.parse("http://play.google.com/store/apps/details?id=" + (item==Exchange.LTC ? D30.LITECOIN_ALTERNATIVE_APP : D30.BITCOIN_ALTERNATIVE_APP));
         }
     }
 

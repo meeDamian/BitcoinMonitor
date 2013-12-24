@@ -1,13 +1,14 @@
 package pl.d30.bitcoin.dash.service;
 
 import pl.d30.bitcoin.D30;
+import pl.d30.bitcoin.dash.cryptocoin.Coin;
 import pl.d30.bitcoin.dash.exchange.Exchange;
 
 public class LitecoinMonitorDashService extends MonitorDashService {
 
     @Override
     protected int getItem() {
-        return Exchange.LTC;
+        return Coin.LTC;
     }
 
     @Override

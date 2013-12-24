@@ -11,7 +11,7 @@ import com.google.gson.JsonObject;
 
 public class D30 {
 
-    public static final String LOG = "BtcManager";
+    public static final String LOG = "DashCoin";
 
     // configuration files
     public static final String PREF_FILE_BTC = "btc";
@@ -22,9 +22,9 @@ public class D30 {
     public static final String IDX_SOURCE       = "source";
     public static final String IDX_CURRENCY     = "currency";
     public static final String IDX_AMOUNT       = "amount";
-    public static final String IDX_EXPERIMENTAL = "experimental";
-    public static final String IDX_DONATE       = "donate";
+    public static final String IDX_DONATE_BTC   = "donateBTC";
     public static final String IDX_DONATE_LTC   = "donateLTC";
+//    public static final String IDX_EXPERIMENTAL = "experimental";
 
     // configuration indexes for arbitrage
     public static final String IDX_BUY_SRC      = "buy_exchange";
@@ -34,16 +34,6 @@ public class D30 {
     public static final String IDX_PRIORITY     = "priority";
     public static final String IDX_ORDER_BOOK   = "order_book";
     public static final String IDX_ORDER_AMOUNT = "order_book_amount";
-
-
-    // donation details
-    public static final String BITCOIN_ADDRESS = "1NycrExPayLpNEPjr539n4uvkRuyMA9fz3";
-    public static final String BITCOIN_DEFAULT_DONATION = "0.005";
-    public static final String BITCOIN_ALTERNATIVE_APP = "piuk.blockchain.android";
-
-    public static final String LITECOIN_ADDRESS = "LKpdDVpnWWk8tNtrBbyxCSrQKTMcRbJcop";
-    public static final String LITECOIN_DEFAULT_DONATION = "0.1";
-    public static final String LITECOIN_ALTERNATIVE_APP = "de.schildbach.wallet.litecoin";
 
 
     // Json helper class:

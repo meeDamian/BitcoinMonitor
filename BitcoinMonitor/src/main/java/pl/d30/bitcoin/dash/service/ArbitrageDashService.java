@@ -33,9 +33,9 @@ public abstract class ArbitrageDashService extends DashClockExtension {
     Exchange.OnTickerDataAvailable callback = new Exchange.OnTickerDataAvailable() {
         @Override
         public void onTicker(int source, Exchange.LastValue lastValue) {
-            if( firstDownload==null ) firstDownload = lastValue;
-            else if( buyExchange.getId()==source ) updateWidget( lastValue, firstDownload );
-            else updateWidget( firstDownload, lastValue );
+        if( firstDownload==null ) firstDownload = lastValue;
+        else if( buyExchange.getId()==source ) updateWidget( lastValue, firstDownload );
+        else updateWidget( firstDownload, lastValue );
         }
     };
 
@@ -97,7 +97,7 @@ public abstract class ArbitrageDashService extends DashClockExtension {
 
         publishUpdate(new ExtensionData()
             .visible(true)
-            .icon(R.drawable.ic_mtgox_blue) // TODO: change this icon into something easier to quickly comprehend
+            .icon(R.drawable.ic_arbitrage)
             .status(getStatus(percentageDiff, currencyDiff))
             .expandedTitle(getTitle(percentageDiff, currencyDiff))
             .expandedBody(expBody)
