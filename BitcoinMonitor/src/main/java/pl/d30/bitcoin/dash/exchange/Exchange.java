@@ -117,8 +117,6 @@ public abstract class Exchange {
         JsonArray asks = D30.Json.getArray(json, "asks");
         float sellPrice = asks!=null ? getPrice(asks, amount) : 0f;
 
-        Log.d(D30.LOG, "[*] " + getPrettyName() + ": " + buyPrice + "/" + sellPrice);
-
         lastValue = new LastValue(buyPrice, sellPrice, currency, item);
         lastValue.setTimestamp( getTimestamp(json) );
         if( cb!=null ) cb.onTicker( getId(), lastValue );
@@ -130,24 +128,20 @@ public abstract class Exchange {
     }
 
     private float getPrice(JsonArray prices, float amount) {
-
-        float tmpAmount = 0f;
-        float up=0f;
-
-        for(JsonElement price : prices) {
-
-            float a = extractAmount(price);
-            if( tmpAmount+a<amount ) {
-                up += extractPrice(price) * a;
-                tmpAmount += a;
+        float currentAmount = 0f, sum = 0f;
+        for(JsonElement priceItem : prices) {
+            float tmpAmount = extractAmount(priceItem);
+            if( currentAmount+tmpAmount<amount ) {
+                sum += tmpAmount * extractPrice(priceItem);
+                currentAmount += tmpAmount;
 
             } else {
-                up += extractPrice(price) * (amount-tmpAmount);
+                sum += (amount-currentAmount) * extractPrice(priceItem);
                 break;
 
             }
         }
-        return up / amount;
+        return sum / amount;
     }
 
     protected abstract Float extractPrice(JsonElement e);
