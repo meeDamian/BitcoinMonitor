@@ -82,7 +82,7 @@ public abstract class MonitorDashService extends DashClockExtension {
             .expandedBody(getString(R.string.expanded_body_monitor, value.getPrettyAmount(), Coin.getName(getItem()), exchange.getPrettyName()))
             .clickIntent(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(getIntentAddress()))));
     }
-    protected boolean hideUpdate() { // TODO: or show info about outdated data
+    protected boolean hideUpdate() { // TODO: or show info about outdated data(?)
         publishUpdate(new ExtensionData().visible(false));
         return false;
     }
@@ -98,9 +98,7 @@ public abstract class MonitorDashService extends DashClockExtension {
             .apply();
     }
 
-    protected void handleError() {
-
-    }
+    protected void handleError() { }
 
     protected abstract int getItem();
     protected abstract String getConfFile();

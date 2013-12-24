@@ -91,6 +91,8 @@
 
 <!-- COMMONS ON PREFERENCE SCREENS -->
 
+    <string name="notifications">Notifications</string>
+
     <!-- DONATE -->
     <string name="donate_title">Donate (5mBTC)</string>
     <string name="donate_title_ltc">Donate (0.2LTC)</string>

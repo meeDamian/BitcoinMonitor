@@ -33,9 +33,7 @@
 		android:defaultValue="1.0" />
 
     <Preference android:key="notif"
-        android:title="Notifications">
-
-    </Preference>
+        android:title="@string/notifications" />
      
     <!--<CheckBoxPreference android:key="experimental"-->
         <!--android:title="@string/experimental_title"-->

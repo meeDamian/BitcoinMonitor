@@ -70,6 +70,9 @@
 
     </PreferenceCategory>
 
+    <Preference android:key="notif"
+        android:title="@string/notifications" />
+
     <PreferenceCategory android:title="@string/cat_donate">
 
         <Preference android:key="donateBTC"
