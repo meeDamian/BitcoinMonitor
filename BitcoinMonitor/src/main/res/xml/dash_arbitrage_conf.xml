@@ -54,7 +54,7 @@
             android:switchTextOn="@string/priority_switch_on"
             android:switchTextOff="@string/priority_switch_off" />
 
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="order_book"
             android:title="@string/order_book_title"
             android:summary="@string/order_book_summary"

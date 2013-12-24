@@ -25,8 +25,6 @@ import pl.d30.bitcoin.dash.exchange.Exchange;
 
 public class BitcoinMonitorDashConf extends PreferenceActivity {
 
-
-
     private Context context;
 
     @Override
@@ -99,25 +97,30 @@ public class BitcoinMonitorDashConf extends PreferenceActivity {
 
             addPreferencesFromResource(R.xml.dash_monitor_conf);
 
+            handleNotice();
+
             currency = (ListPreference) findPreference(D30.IDX_CURRENCY);
 
             source = (ListPreference) findPreference(D30.IDX_SOURCE);
             if( source!=null ) {
-                adjustCurrencies( Integer.parseInt(source.getValue()) );
+                int v = Integer.parseInt(source.getValue());
+                adjustCurrencies( v );
+                source.setIcon( getIcon(v) );
 
                 source.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        int nv = Integer.parseInt( newValue.toString() );
+                    int nv = Integer.parseInt( newValue.toString() );
 
-                        adjustCurrencies(nv);
+                    adjustCurrencies(nv);
+                        preference.setIcon( getIcon(nv) );
 
-//                        CheckBoxPreference cbp = (CheckBoxPreference) findPreference("experimental");
-//                        if( cbp!=null ) {
-//                            cbp.setEnabled( nv==D30.BTCE );
-//                            if( nv==D30.BTCE ) cbp.setChecked(false);
-//                        }
-                        return true;
+//                    CheckBoxPreference cbp = (CheckBoxPreference) findPreference("experimental");
+//                    if( cbp!=null ) {
+//                        cbp.setEnabled( nv==D30.BTCE );
+//                        if( nv==D30.BTCE ) cbp.setChecked(false);
+//                    }
+                    return true;
                     }
                 });
             }
@@ -176,6 +179,18 @@ public class BitcoinMonitorDashConf extends PreferenceActivity {
 
         protected void setPreferenceFiles() {
             pm.setSharedPreferencesName(D30.PREF_FILE_BTC);
+        }
+        protected Integer getIcon(int item) {
+            switch(item) {
+                case Exchange.MTGOX: return R.drawable.ic_mtgox_blue;
+                case Exchange.BITSTAMP: return R.drawable.ic_bitstamp_blue;
+                case Exchange.BTCE: return R.drawable.ic_btce_blue;
+            }
+            return null;
+        }
+        protected void handleNotice() {
+            Preference p = findPreference("notice");
+            if( p!=null ) getPreferenceScreen().removePreference(p);
         }
 
         private void adjustCurrencies(int source) {

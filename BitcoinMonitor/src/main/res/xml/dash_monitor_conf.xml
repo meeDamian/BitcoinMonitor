@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+
+    <!-- TEMP -->
+    <!-- Those strings are not in strings.xml on purpose. -->
+    <Preference android:key="notice"
+        android:title="Altcoins will soon be paid!"
+        android:summary="Tap here to get Premium for free (offer valid until next version is published)"
+        android:icon="@drawable/ic_notice"
+        android:persistent="false" />
+    <!-- /TEMP -->
+
     
     <ListPreference android:key="source"
         android:title="@string/source_title_btc"
