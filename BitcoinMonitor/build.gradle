@@ -33,7 +33,6 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:+'
     compile 'com.koushikdutta.ion:ion:+'
     compile 'com.google.android.apps.dashclock:dashclock-api:+'
     compile files('libs/libGoogleAnalyticsV2.jar')
