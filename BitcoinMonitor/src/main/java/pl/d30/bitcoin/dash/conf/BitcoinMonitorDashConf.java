@@ -10,8 +10,7 @@ public class BitcoinMonitorDashConf extends MonitorDashConf {
 
     @Override
     protected boolean isValidFragment(String fragmentName) {
-        return fragmentName.equals( BitcoinMonitorConfFragment.class.getName() )
-            || fragmentName.equals( NotificationsFragment.class.getName() );
+        return fragmentName.equals( BitcoinMonitorConfFragment.class.getName() );
     }
 
     @Override
@@ -28,11 +27,6 @@ public class BitcoinMonitorDashConf extends MonitorDashConf {
         @Override
         protected String getPreferenceFileName() {
             return D30.PREF_FILE_BTC;
-        }
-
-        @Override
-        protected void requestFragmentChange(PreferenceFragment pf) {
-            replaceFragment(pf);
         }
 
 

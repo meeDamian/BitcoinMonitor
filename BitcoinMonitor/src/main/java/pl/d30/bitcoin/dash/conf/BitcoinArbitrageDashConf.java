@@ -56,14 +56,6 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
         return super.onOptionsItemSelected( item );
     }
 
-    protected void replaceFragment(PreferenceFragment pf) {
-        getFragmentManager()
-            .beginTransaction()
-            .replace(android.R.id.content, pf)
-            .addToBackStack(null)
-            .commit();
-    }
-
     @Override
     protected boolean isValidFragment(String fragmentName) {
         return BitcoinArbitrageConfFragment.class.getName().equals(fragmentName);
@@ -148,17 +140,6 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
                     }
                 });
 
-            }
-
-            Preference notif = findPreference("notif");
-            if( notif!=null ) {
-                notif.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                    replaceFragment(new NotificationsFragment());
-                    return false;
-                    }
-                });
             }
 
             Preference donate = findPreference(D30.IDX_DONATE_BTC);

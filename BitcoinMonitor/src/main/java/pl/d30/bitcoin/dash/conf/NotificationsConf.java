@@ -5,11 +5,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
+import android.view.Menu;
 import android.view.MenuItem;
 
-public abstract class MonitorDashConf extends PreferenceActivity {
+import pl.d30.bitcoin.R;
 
-    protected Context context;
+public class NotificationsConf extends PreferenceActivity {
+
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +29,14 @@ public abstract class MonitorDashConf extends PreferenceActivity {
         super.onPostCreate(savedInstanceState);
         getFragmentManager()
             .beginTransaction()
-            .add(android.R.id.content, getFragment())
+            .add(android.R.id.content, new NotificationsFragment())
             .commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.notifications, menu);
+        return true;
     }
 
     @Override
@@ -39,9 +48,13 @@ public abstract class MonitorDashConf extends PreferenceActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected abstract boolean isValidFragment(String fragmentName);
+    public class NotificationsFragment extends PreferenceFragment {
 
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
 
-    protected abstract PreferenceFragment getFragment();
+            addPreferencesFromResource(R.xml.dash_notifications_conf);
+        }
+    }
 }

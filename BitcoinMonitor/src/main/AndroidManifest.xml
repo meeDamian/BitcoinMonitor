@@ -118,6 +118,19 @@
             android:exported="true" />
 
 
+
+        <activity android:name=".dash.conf.NotificationsConf"
+            android:icon="@drawable/ic_notice"
+            android:label="@string/notifications_title"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="dashcoin.intent.action.CONFIGURE_NOTIFICATIONS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+
     </application>
 
 </manifest>

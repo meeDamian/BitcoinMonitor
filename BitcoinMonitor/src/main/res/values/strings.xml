@@ -96,7 +96,8 @@
 
 <!-- COMMONS ON PREFERENCE SCREENS -->
 
-    <string name="notifications">Notifications</string>
+    <string name="notifications_title">Notifications</string>
+    <string name="notifications_summary">Tap to be notified about price changes</string>
 
     <!-- DONATE -->
     <string name="donate_title">Donate (5mBTC)</string>

@@ -33,7 +33,12 @@
 		android:defaultValue="1.0" />
 
     <Preference android:key="notif"
-        android:title="@string/notifications" />
+        android:title="@string/notifications_title"
+        android:summary="@string/notifications_summary">
+
+        <intent android:action="dashcoin.intent.action.CONFIGURE_NOTIFICATIONS" />
+
+    </Preference>
      
     <!--<CheckBoxPreference android:key="experimental"-->
         <!--android:title="@string/experimental_title"-->

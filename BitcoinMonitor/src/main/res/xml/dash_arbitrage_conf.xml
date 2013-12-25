@@ -71,7 +71,12 @@
     </PreferenceCategory>
 
     <Preference android:key="notif"
-        android:title="@string/notifications" />
+        android:title="@string/notifications_title"
+        android:summary="@string/notifications_summary">
+
+        <intent android:action="dashcoin.intent.action.CONFIGURE_NOTIFICATIONS" />
+
+    </Preference>
 
     <PreferenceCategory android:title="@string/cat_donate">
 

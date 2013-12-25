@@ -88,17 +88,6 @@ public abstract class MonitorDashFragment extends PreferenceFragment{
             });
         }
 
-        Preference notif = findPreference("notif");
-        if( notif!=null ) {
-            notif.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                requestFragmentChange(new NotificationsFragment());
-                return false;
-                }
-            });
-        }
-
         Preference donateBTC = findPreference(D30.IDX_DONATE_BTC);
         if( donateBTC!=null ) {
             donateBTC.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -161,5 +150,4 @@ public abstract class MonitorDashFragment extends PreferenceFragment{
 
     protected abstract String getPreferenceFileName();
     protected abstract void handleNotice();
-    protected abstract void requestFragmentChange(PreferenceFragment pf);
 }

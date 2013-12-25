@@ -14,8 +14,7 @@ public class LitecoinMonitorDashConf extends MonitorDashConf {
 
     @Override
     protected boolean isValidFragment(String fragmentName) {
-        return fragmentName.equals( LitecoinMonitorConfFragment.class.getName() )
-            || fragmentName.equals( NotificationsFragment.class.getName() );
+        return fragmentName.equals( LitecoinMonitorConfFragment.class.getName() );
     }
 
     @Override
@@ -47,11 +46,6 @@ public class LitecoinMonitorDashConf extends MonitorDashConf {
         @Override
         protected String getPreferenceFileName() {
             return D30.PREF_FILE_LTC;
-        }
-
-        @Override
-        protected void requestFragmentChange(PreferenceFragment pf) {
-            replaceFragment(pf);
         }
 
 
