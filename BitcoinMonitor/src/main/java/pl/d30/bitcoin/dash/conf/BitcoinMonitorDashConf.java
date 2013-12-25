@@ -30,10 +30,9 @@ public class BitcoinMonitorDashConf extends MonitorDashConf {
         }
 
 
-
         @Override
         protected void handleNotice() {
-            Preference p = findPreference("notice");
+            Preference p = findPreference("notice_category");
             if( p!=null ) getPreferenceScreen().removePreference(p);
         }
     }

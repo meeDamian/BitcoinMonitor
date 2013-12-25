@@ -14,6 +14,9 @@
     <string name="arbitrage_btc_label">Bitcoin Arbitrage</string>
     <string name="arbitrage_desc">See difference between prices from chosen exchanges.</string>
 
+    <!-- Notifications (Settings Activity) -->
+    <string name="notifications_label">Notifications</string>
+
 
 <!-- MONITOR PREFERENCE SCREENS -->
 
@@ -43,6 +46,17 @@
     <string name="amount_title_ltc">Custom LTC amount</string>
     <string name="amount_summary_ltc">Alter LTC amount of displayed value</string>
 
+    <!-- NOTIFICATIONS -->
+    <!-- below -->
+    <string name="notif_price_below_title_off">Price drops below…</string>
+    <string name="notif_price_below_title_on">Price drops below %1$s%2$s</string>
+    <string name="notif_price_below_summary">Get notification when price plunges</string>
+
+    <!-- below -->
+    <string name="notif_price_above_title_off">Price rises above…</string>
+    <string name="notif_price_above_title_on">Price rises above %1$s%2$s</string>
+    <string name="notif_price_above_summary">Get notification when price skyrockets</string>
+
 
     <!-- EXPERIMENTAL -->
     <string name="experimental_title">Experimental mode</string>
@@ -55,6 +69,7 @@
     <string name="cat_buy_source">Buy Source</string>
     <string name="cat_sell_source">Sell Source</string>
     <string name="cat_other">Other</string>
+    <string name="cat_notifications">Notifications</string>
     <string name="cat_donate">Donations</string>
 
 
@@ -86,7 +101,7 @@
 
     <!-- ORDER BOOK AMOUNT -->
     <string name="order_book_amount_title">Order Book Amount</string>
-    <string name="order_book_amount_summary">Required to calculate Order Book price</string>
+    <string name="order_book_amount_summary">Required to properly calculate Order Book price</string>
 
 
     <!-- ORDER BOOK CONFIRMATION DIALOG -->
@@ -94,10 +109,31 @@
     <string name="order_book_confirmation_msg">Enabling Order Book may use significantly more data</string>
 
 
+    <!-- NOTIFICATIONS -->
+    <!-- below -->
+    <string name="notif_diff_below_title_off">Difference narrows below…</string>
+    <string name="notif_diff_below_title_on">Difference narrows below %1$s%2$s</string>
+    <string name="notif_diff_below_summary">Get notification when prices get closer</string>
+
+    <!-- below -->
+    <string name="notif_diff_above_title_off">Difference widens above…</string>
+    <string name="notif_diff_above_title_on">Difference widens above %1$s%2$s</string>
+    <string name="notif_diff_above_summary">Get notification when prices grow apart</string>
+
+
+
+<!-- NOTIFICATION PREFERENCE SCREEN -->
+    <!-- nothing here yet -->
+
+
+
 <!-- COMMONS ON PREFERENCE SCREENS -->
 
-    <string name="notifications_title">Notifications</string>
-    <string name="notifications_summary">Tap to be notified about price changes</string>
+    <!-- NOTIFICATIONS -->
+    <string name="notifications_title">Advanced</string>
+    <string name="notifications_summary">Set more specific and complex notifications</string>
+    <string name="notif_enabled">Set to 0 to disable</string>
+
 
     <!-- DONATE -->
     <string name="donate_title">Donate (5mBTC)</string>

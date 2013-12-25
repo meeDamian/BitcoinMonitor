@@ -75,7 +75,7 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
             super.onCreate(savedInstanceState);
 
             pm = getPreferenceManager();
-            setPreferenceFiles();
+            if( pm!=null ) pm.setSharedPreferencesName(D30.PREF_FILE_BTC);
 
             addPreferencesFromResource(R.xml.dash_arbitrage_conf);
 
@@ -135,7 +135,6 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
 
                             return false;
                         }
-
                         return true;
                     }
                 });
@@ -178,9 +177,6 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
 
         }
 
-        protected void setPreferenceFiles() {
-            pm.setSharedPreferencesName(D30.PREF_FILE_BTC);
-        }
         protected Integer getIcon(String item) {
             return Exchange.getIcon(Integer.parseInt(item));
         }

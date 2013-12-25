@@ -70,13 +70,30 @@
 
     </PreferenceCategory>
 
-    <Preference android:key="notif"
-        android:title="@string/notifications_title"
-        android:summary="@string/notifications_summary">
+    <PreferenceCategory android:title="@string/cat_notifications">
 
-        <intent android:action="dashcoin.intent.action.CONFIGURE_NOTIFICATIONS" />
+        <EditTextPreference android:key="below"
+            android:title="@string/notif_diff_below_title_off"
+            android:summary="@string/notif_diff_below_summary"
+            android:inputType="numberDecimal"
+            android:defaultValue="0.0" />
 
-    </Preference>
+        <EditTextPreference android:key="above"
+            android:title="@string/notif_diff_above_title_off"
+            android:summary="@string/notif_diff_above_summary"
+            android:inputType="numberDecimal"
+            android:defaultValue="0.0" />
+
+        <Preference android:key="notif"
+            android:title="@string/notifications_title"
+            android:summary="@string/notifications_summary">
+
+            <intent android:action="dashcoin.intent.action.CONFIGURE_NOTIFICATIONS" />
+
+        </Preference>
+
+    </PreferenceCategory>
+
 
     <PreferenceCategory android:title="@string/cat_donate">
 

@@ -121,7 +121,7 @@
 
         <activity android:name=".dash.conf.NotificationsConf"
             android:icon="@drawable/ic_notice"
-            android:label="@string/notifications_title"
+            android:label="@string/notifications_label"
             android:exported="true">
 
             <intent-filter>

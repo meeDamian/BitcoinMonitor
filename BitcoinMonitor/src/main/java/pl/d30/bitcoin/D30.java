@@ -14,8 +14,9 @@ public class D30 {
     public static final String LOG = "DashCoin";
 
     // configuration files
-    public static final String PREF_FILE_BTC = "btc";
-    public static final String PREF_FILE_LTC = "ltc";
+    public static final String PREF_FILE_BTC    = "btc";
+    public static final String PREF_FILE_LTC    = "ltc";
+    public static final String PREF_FILE_NOTIF  = "notif";
 
 
     //configuration indexes for monitor
@@ -34,6 +35,9 @@ public class D30 {
     public static final String IDX_PRIORITY     = "priority";
     public static final String IDX_ORDER_BOOK   = "order_book";
     public static final String IDX_ORDER_AMOUNT = "order_book_amount";
+
+    // configuration indexes for notifications
+    public static final String IDX_MASTER_SWITCH= "master_enabled";
 
 
     // Json helper class:

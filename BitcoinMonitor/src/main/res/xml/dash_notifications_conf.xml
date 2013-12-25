@@ -3,6 +3,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference
-        android:title="Tap to add first notification" />
+        android:title="Tap to add your first notification" />
 
 </PreferenceScreen>
