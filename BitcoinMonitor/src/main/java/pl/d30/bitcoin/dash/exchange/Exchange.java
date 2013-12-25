@@ -46,7 +46,7 @@ public abstract class Exchange {
     public static final boolean CURRENCY = false;
 
     // other:
-    private static final long FRESHNESS = 30;
+    private static final long FRESHNESS = 30; // seconds
 
     protected Context context;
     protected LastValue lastValue;
@@ -91,7 +91,6 @@ public abstract class Exchange {
                 }
             });
     }
-
 
     protected String getUrlSuffix(int requestedData) {
         switch( requestedData ) {

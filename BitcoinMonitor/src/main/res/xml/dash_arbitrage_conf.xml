@@ -72,13 +72,13 @@
 
     <PreferenceCategory android:title="@string/cat_notifications">
 
-        <EditTextPreference android:key="diffBelow"
+        <EditTextPreference android:key="diff_below"
             android:title="@string/notif_diff_below_title_off"
             android:summary="@string/notif_diff_below_summary"
             android:inputType="numberDecimal"
             android:defaultValue="0.0" />
 
-        <EditTextPreference android:key="diffAbove"
+        <EditTextPreference android:key="diff_above"
             android:title="@string/notif_diff_above_title_off"
             android:summary="@string/notif_diff_above_summary"
             android:inputType="numberDecimal"

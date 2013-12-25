@@ -23,8 +23,8 @@ public class D30 {
     public static final String IDX_SOURCE       = "source";
     public static final String IDX_CURRENCY     = "currency";
     public static final String IDX_AMOUNT       = "amount";
-    public static final String IDX_DONATE_BTC   = "donateBTC";
-    public static final String IDX_DONATE_LTC   = "donateLTC";
+    public static final String IDX_PRICE_BELOW  = "price_below";
+    public static final String IDX_PRICE_ABOVE  = "price_above";
 //    public static final String IDX_EXPERIMENTAL = "experimental";
 
     // configuration indexes for arbitrage
@@ -35,9 +35,15 @@ public class D30 {
     public static final String IDX_PRIORITY     = "priority";
     public static final String IDX_ORDER_BOOK   = "order_book";
     public static final String IDX_ORDER_AMOUNT = "order_book_amount";
+    public static final String IDX_DIFF_BELOW   = "diff_below";
+    public static final String IDX_DIFF_ABOVE   = "diff_above";
 
     // configuration indexes for notifications
     public static final String IDX_MASTER_SWITCH= "master_enabled";
+
+    // common configurations
+    public static final String IDX_DONATE_BTC   = "donateBTC";
+    public static final String IDX_DONATE_LTC   = "donateLTC";
 
 
     // Json helper class:

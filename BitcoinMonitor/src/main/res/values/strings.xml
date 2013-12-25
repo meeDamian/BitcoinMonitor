@@ -132,7 +132,7 @@
     <!-- NOTIFICATIONS -->
     <string name="notifications_title">Advanced</string>
     <string name="notifications_summary">Set more specific and complex notifications</string>
-    <string name="notif_enabled">Set to 0 to disable</string>
+    <string name="notif_enabled">Notification is set up. Set value to 0 to disable</string>
 
 
     <!-- DONATE -->
