@@ -49,13 +49,13 @@
 
     <PreferenceCategory android:title="@string/cat_notifications">
 
-        <EditTextPreference android:key="below"
+        <EditTextPreference android:key="priceBelow"
             android:title="@string/notif_price_below_title_off"
             android:summary="@string/notif_price_below_summary"
             android:inputType="numberDecimal"
             android:defaultValue="0.0" />
 
-        <EditTextPreference android:key="above"
+        <EditTextPreference android:key="priceAbove"
             android:title="@string/notif_price_above_title_off"
             android:summary="@string/notif_price_above_summary"
             android:inputType="numberDecimal"
@@ -63,7 +63,8 @@
 
         <Preference android:key="notif"
             android:title="@string/notifications_title"
-            android:summary="@string/notifications_summary">
+            android:summary="@string/notifications_summary"
+            android:persistent="false">
 
             <intent android:action="dashcoin.intent.action.CONFIGURE_NOTIFICATIONS" />
 
@@ -76,12 +77,14 @@
         <Preference android:key="donateBTC"
             android:title="@string/donate_title"
             android:icon="@drawable/ic_btc_blue"
-            android:summary="@string/donate_summary" />
+            android:summary="@string/donate_summary"
+            android:persistent="false" />
 
         <Preference android:key="donateLTC"
             android:title="@string/donate_title_ltc"
             android:icon="@drawable/ic_ltc_blue"
-            android:summary="@string/donate_summary" />
+            android:summary="@string/donate_summary"
+            android:persistent="false" />
 
     </PreferenceCategory>
 
