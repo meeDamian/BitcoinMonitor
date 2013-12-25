@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Sadly, it\'s not yet implemented. ou can speed it up however, by doing one of the following:"
+        android:textSize="20sp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:enabled="false"
+        android:layout_marginBottom="10dp" />
+
+    <Button android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Send me an email"
+        android:drawableLeft="@drawable/ic_email"
+        android:drawablePadding="7dp"
+        android:padding="12dp" />
+
+    <Button android:id="@+id/donateBtc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Donate BTC"
+        android:drawableLeft="@drawable/ic_btc_blue"
+        android:drawablePadding="7dp"
+        android:padding="12dp" />
+
+    <Button android:id="@+id/donateLtc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:drawableLeft="@drawable/ic_ltc_blue"
+        android:drawablePadding="7dp"
+        android:text="Donate LTC"
+        android:padding="12dp" />
+
+</LinearLayout>

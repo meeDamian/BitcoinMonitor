@@ -57,11 +57,11 @@ public class LitecoinMonitorDashConf extends MonitorDashConf {
                 p.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "m@urycy.pl", null));
-                        i.putExtra(Intent.EXTRA_SUBJECT, "[DashCoin] Loyal user premium request.");
-                        i.putExtra(Intent.EXTRA_TEXT, "Your email: \n\n*DashClock Bitcoin Widget*\nWhat do you like about it: \nWhat would you change: ");
-                        startActivity(i);
-                        return false;
+                    Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "m@urycy.pl", null));
+                    i.putExtra(Intent.EXTRA_SUBJECT, "[DashCoin] Loyal user premium request.");
+                    i.putExtra(Intent.EXTRA_TEXT, "Your email: \n\n*DashClock Bitcoin Widget*\nWhat do you like about it: \nWhat would you change: ");
+                    startActivity(i);
+                    return false;
                     }
                 });
             }
