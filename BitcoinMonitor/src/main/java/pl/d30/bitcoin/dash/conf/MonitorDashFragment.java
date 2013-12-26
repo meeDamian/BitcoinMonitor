@@ -95,15 +95,15 @@ public abstract class MonitorDashFragment extends PreferenceFragment{
             priceBelow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    try {
-                        Float value = Float.parseFloat(newValue.toString());
-                        updateBelow(preference, value);
-                        return true;
+                try {
+                    Float value = Float.parseFloat(newValue.toString());
+                    updateBelow(preference, value);
+                    return true;
 
-                    } catch(NumberFormatException e) {
-                        Toast.makeText(context, getString(R.string.error_invalid_amount), Toast.LENGTH_LONG).show();
-                        return false;
-                    }
+                } catch(NumberFormatException e) {
+                    Toast.makeText(context, getString(R.string.error_invalid_amount), Toast.LENGTH_LONG).show();
+                    return false;
+                }
                 }
             });
         }
@@ -114,15 +114,15 @@ public abstract class MonitorDashFragment extends PreferenceFragment{
             priceAbove.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    try {
-                        Float value = Float.parseFloat(newValue.toString());
-                        updateAbove(preference, value);
-                        return true;
+                try {
+                    Float value = Float.parseFloat(newValue.toString());
+                    updateAbove(preference, value);
+                    return true;
 
-                    } catch(NumberFormatException e) {
-                        Toast.makeText(context, getString(R.string.error_invalid_amount), Toast.LENGTH_LONG).show();
-                        return false;
-                    }
+                } catch(NumberFormatException e) {
+                    Toast.makeText(context, getString(R.string.error_invalid_amount), Toast.LENGTH_LONG).show();
+                    return false;
+                }
                 }
             });
         }

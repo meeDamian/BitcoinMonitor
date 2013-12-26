@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -141,43 +140,43 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
 
             }
 
-            EditTextPreference diffBelow = (EditTextPreference) findPreference(D30.IDX_DIFF_BELOW);
-            if( diffBelow!=null ) {
-                updateBelow(diffBelow, Float.parseFloat(diffBelow.getText()));
-                diffBelow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        try {
-                            Float value = Float.parseFloat(newValue.toString());
-                            updateBelow(preference, value);
-                            return true;
-
-                        } catch(NumberFormatException e) {
-                            Toast.makeText(context, getString(R.string.error_invalid_amount), Toast.LENGTH_LONG).show();
-                            return false;
-                        }
-                    }
-                });
-            }
-
-            EditTextPreference diffAbove = (EditTextPreference) findPreference(D30.IDX_DIFF_ABOVE);
-            if( diffAbove!=null ) {
-                updateAbove(diffAbove, Float.parseFloat(diffAbove.getText()));
-                diffAbove.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        try {
-                            Float value = Float.parseFloat(newValue.toString());
-                            updateAbove(preference, value);
-                            return true;
-
-                        } catch(NumberFormatException e) {
-                            Toast.makeText(context, getString(R.string.error_invalid_amount), Toast.LENGTH_LONG).show();
-                            return false;
-                        }
-                    }
-                });
-            }
+//            EditTextPreference diffBelow = (EditTextPreference) findPreference(D30.IDX_DIFF_BELOW);
+//            if( diffBelow!=null ) {
+//                updateBelow(diffBelow, Float.parseFloat(diffBelow.getText()));
+//                diffBelow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+//                    @Override
+//                    public boolean onPreferenceChange(Preference preference, Object newValue) {
+//                    try {
+//                        Float value = Float.parseFloat(newValue.toString());
+//                        updateBelow(preference, value);
+//                        return true;
+//
+//                    } catch(NumberFormatException e) {
+//                        Toast.makeText(context, getString(R.string.error_invalid_amount), Toast.LENGTH_LONG).show();
+//                        return false;
+//                    }
+//                    }
+//                });
+//            }
+//
+//            EditTextPreference diffAbove = (EditTextPreference) findPreference(D30.IDX_DIFF_ABOVE);
+//            if( diffAbove!=null ) {
+//                updateAbove(diffAbove, Float.parseFloat(diffAbove.getText()));
+//                diffAbove.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+//                    @Override
+//                    public boolean onPreferenceChange(Preference preference, Object newValue) {
+//                    try {
+//                        Float value = Float.parseFloat(newValue.toString());
+//                        updateAbove(preference, value);
+//                        return true;
+//
+//                    } catch(NumberFormatException e) {
+//                        Toast.makeText(context, getString(R.string.error_invalid_amount), Toast.LENGTH_LONG).show();
+//                        return false;
+//                    }
+//                    }
+//                });
+//            }
 
             Preference donate = findPreference(D30.IDX_DONATE_BTC);
             if( donate!=null ) {

@@ -89,7 +89,7 @@
 
     <!-- PRIORITY -->
     <string name="priority_title">Difference priority</string>
-    <string name="priority_summary">What\'s more important</string>
+    <string name="priority_summary">What is more important</string>
     <string name="priority_switch_on">"  %  "</string>
     <string name="priority_switch_off">"  $  "</string>
 
@@ -114,11 +114,13 @@
     <string name="notif_diff_below_title_off">Difference narrows below…</string>
     <string name="notif_diff_below_title_on">Difference narrows below %1$s%2$s</string>
     <string name="notif_diff_below_summary">Get notification when prices get closer</string>
+    <string name="notif_diff_below_check_label">When difference goes below %s%%</string>
 
     <!-- below -->
     <string name="notif_diff_above_title_off">Difference widens above…</string>
     <string name="notif_diff_above_title_on">Difference widens above %1$s%2$s</string>
     <string name="notif_diff_above_summary">Get notification when prices grow apart</string>
+    <string name="notif_diff_above_check_label">When difference goes above %s%%</string>
 
 
 

@@ -112,7 +112,27 @@ public abstract class ArbitrageDashService extends DashClockExtension {
     }
 
     protected String getPercentageDiff(float v1, float v2) {
-        return String.format("%.3f", 100 - (v1 *100f) / v2) + "%";
+        float value = 100 - (v1 *100f) / v2;
+//        if( value>6 ) {
+//            Notification.BigPictureStyle textStyle = new Notification.BigPictureStyle();
+//            textStyle.bigPicture(BitmapFactory.decodeResource(getResources(), R.drawable.ic_arbitrage))
+//                    .setSummaryText("lolololololo")
+//                    .setBigContentTitle("Dsadasdsa");
+//
+//            Notification.Builder notification = new Notification.Builder(this)
+//                .setContentTitle("aaaaaaa")
+//                .setContentText("bbbbbbbb")
+//                .setSubText("cccccccc")
+//                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_arbitrage))
+//                .setSmallIcon(R.drawable.ic_btc)
+//                .setStyle(textStyle)
+//                .setAutoCancel(true);
+//
+//            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//            nm.notify(0, notification.build());
+//        }
+
+        return String.format("%.3f", value) + "%";
     }
     protected String getCurrencyDiff(float v1, float v2) {
         NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
