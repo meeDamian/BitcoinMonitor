@@ -9,9 +9,14 @@
 
     <CheckBox android:id="@android:id/title"
         tools:text="When diff goes below %s"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp" />
+
+    <TextView android:id="@android:id/summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp" />
 
     <SeekBar android:id="@+id/amount_value"
         android:layout_width="match_parent"

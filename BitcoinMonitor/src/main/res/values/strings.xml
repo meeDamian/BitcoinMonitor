@@ -111,16 +111,22 @@
 
     <!-- NOTIFICATIONS -->
     <!-- below -->
+    <string name="notif_diff_below_title">Prices get closer</string>
+    <string name="notif_diff_below_summary">Get notification when difference shrinks to %1$s%2$s</string>
+
+    <string name="notif_diff_above_title">Prices grow apart</string>
+    <string name="notif_diff_above_summary">Get notification when difference widens to %1$s%2$s</string>
+
+
+
     <string name="notif_diff_below_title_off">Difference narrows below…</string>
     <string name="notif_diff_below_title_on">Difference narrows below %1$s%2$s</string>
-    <string name="notif_diff_below_summary">Get notification when prices get closer</string>
-    <string name="notif_diff_below_check_label">When difference goes below %s%%</string>
+    <string name="notif_diff_below_check_label">Difference goes below %s%%</string>
 
     <!-- below -->
     <string name="notif_diff_above_title_off">Difference widens above…</string>
     <string name="notif_diff_above_title_on">Difference widens above %1$s%2$s</string>
-    <string name="notif_diff_above_summary">Get notification when prices grow apart</string>
-    <string name="notif_diff_above_check_label">When difference goes above %s%%</string>
+    <string name="notif_diff_above_check_label">Difference goes above %s%%</string>
 
 
 

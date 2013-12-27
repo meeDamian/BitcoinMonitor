@@ -2,6 +2,7 @@ package pl.d30.bitcoin.dash.conf;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.preference.Preference;
 import android.util.AttributeSet;
 import android.view.View;
@@ -9,13 +10,18 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import pl.d30.bitcoin.R;
 
 public class AmountPreference extends Preference {
 
+    private static final String PREF_SUFFIX = "_status";
+
     private CheckBox checkBox;
+    private TextView summary;
     private SeekBar seekBar;
+    private Resources res;
 
     public AmountPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -27,44 +33,28 @@ public class AmountPreference extends Preference {
         if( v!=null ) {
 
             checkBox = (CheckBox) v.findViewById(android.R.id.title);
+            summary = (TextView) v.findViewById(android.R.id.summary);
             seekBar = (SeekBar) v.findViewById(R.id.amount_value);
 
-            if( checkBox !=null && seekBar !=null ) {
+            if( checkBox!=null && seekBar !=null ) {
 
                 boolean isEnabled = isSeekBarEnabled();
                 float value = getPersistedFloat( 0f );
 
                 checkBox.setChecked( isEnabled );
-                seekBar.setEnabled( true );
+                seekBar.setEnabled( isEnabled() );
                 seekBar.setMax( 140 );
                 seekBar.setProgress( convertToInt(value) );
 
-                seekBar.setThumb( getContext().getResources().getDrawable( isEnabled
-                    ? R.drawable.sb_thumb
-                    : R.drawable.sb_thumb_disabled
-                ));
-                seekBar.setProgressDrawable( getContext().getResources().getDrawable( isEnabled
-                    ? R.drawable.sb_progress
-                    : R.drawable.sb_track
-                ));
-
+                updateSeekBarAppearance( isEnabled );
                 updateLabel( isEnabled, value );
 
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                        seekBar.setThumb( getContext().getResources().getDrawable( isChecked
-                            ? R.drawable.sb_thumb
-                            : R.drawable.sb_thumb_disabled
-                        ));
-                        seekBar.setProgressDrawable( getContext().getResources().getDrawable( isChecked
-                            ? R.drawable.sb_progress
-                            : R.drawable.sb_track
-                        ));
-
-                        updateLabel( isChecked, getPersistedFloat(0f) );
-                        setSeekBarEnabled( isChecked );
+                        updateSeekBarAppearance( isChecked );
+                        setSeekBarEnabled(isChecked);
+                        updateLabel(isChecked, getPersistedFloat(0f));
                     }
                 });
 
@@ -72,9 +62,9 @@ public class AmountPreference extends Preference {
                     @Override
                     public void onProgressChanged(SeekBar sb, int progress, boolean fromUser) {
                         checkBox.setChecked( true );
-                        seekBar.setThumb(getContext().getResources().getDrawable(R.drawable.sb_thumb));
-                        updateLabel( true, convertToFloat(progress) );
-                        persistFloat( convertToFloat(progress) );
+                        float value = convertToFloat(progress);
+                        updateLabel( true, value );
+                        persistFloat( value );
                     }
 
                     @Override
@@ -95,9 +85,9 @@ public class AmountPreference extends Preference {
         return (int) v * 2 + 40;
     }
     private void updateLabel(boolean isEnabled, float value) {
-        checkBox.setText(isEnabled
-            ? getContext().getResources().getString(getTitleRes(), String.format("%.1f", value))
-            : "Disabled"
+        summary.setText( isEnabled
+            ? getSummary() //getRes().getString(getTitleRes(), String.format("%.1f", value))
+            : "Notification Disabled"
         );
     }
 
@@ -110,8 +100,29 @@ public class AmountPreference extends Preference {
         if( spe!=null ) spe.putBoolean(getStatusKey(), state).apply();
     }
 
+    private void setSeekBarThumbDrawable(int thumbRes) {
+        seekBar.setThumb( getRes().getDrawable( thumbRes ) );
+    }
+    private void setSeekBarProgressDrawable(int progressRes) {
+        seekBar.setProgressDrawable( getRes().getDrawable( progressRes));
+    }
+    private void updateSeekBarAppearance(boolean isEnabled) {
+        setSeekBarThumbDrawable(isEnabled
+            ? R.drawable.sb_thumb
+            : R.drawable.sb_thumb_disabled
+        );
+        setSeekBarProgressDrawable(isEnabled
+            ? R.drawable.sb_progress
+            : R.drawable.sb_track
+        );
+    }
+
     private String getStatusKey() {
-        return getKey() + "_status";
+        return getKey() + PREF_SUFFIX;
+    }
+    private Resources getRes() {
+        if( res==null ) res = getContext().getResources();
+        return res;
     }
 
 }

@@ -72,19 +72,17 @@
 
     <PreferenceCategory android:title="@string/cat_notifications">
 
-        <pl.d30.bitcoin.dash.conf.AmountPreference  android:key="diff_below"
-            android:title="@string/notif_diff_below_check_label"
+        <pl.d30.bitcoin.dash.conf.AmountPreference android:key="diff_below"
+            android:title="@string/notif_diff_below_title"
             android:summary="@string/notif_diff_below_summary"
-            android:inputType="numberDecimal|numberSigned"
             android:layout="@layout/amount_layout"
-            android:defaultValue="0.0" />
+            android:defaultValue="0" />
 
         <pl.d30.bitcoin.dash.conf.AmountPreference android:key="diff_above"
-            android:title="@string/notif_diff_above_check_label"
+            android:title="@string/notif_diff_above_title"
             android:summary="@string/notif_diff_above_summary"
-            android:inputType="numberDecimal|numberSigned"
             android:layout="@layout/amount_layout"
-            android:defaultValue="0.0" />
+            android:defaultValue="0" />
 
         <Preference android:key="notif"
             android:title="@string/notifications_title"
