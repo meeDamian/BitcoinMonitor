@@ -53,12 +53,14 @@
             android:title="@string/notif_price_below_title_off"
             android:summary="@string/notif_price_below_summary"
             android:inputType="numberDecimal"
+            android:enabled="false"
             android:defaultValue="0.0" />
 
         <EditTextPreference android:key="price_above"
             android:title="@string/notif_price_above_title_off"
             android:summary="@string/notif_price_above_summary"
             android:inputType="numberDecimal"
+            android:enabled="false"
             android:defaultValue="0.0" />
 
         <Preference android:key="notif"
