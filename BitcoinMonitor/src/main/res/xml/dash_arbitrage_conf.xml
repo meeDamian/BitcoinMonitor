@@ -76,12 +76,14 @@
             android:title="@string/notif_diff_below_title"
             android:summary="@string/notif_diff_below_summary"
             android:layout="@layout/amount_layout"
+            android:enabled="false"
             android:defaultValue="0" />
 
         <pl.d30.bitcoin.dash.conf.AmountPreference android:key="diff_above"
             android:title="@string/notif_diff_above_title"
             android:summary="@string/notif_diff_above_summary"
             android:layout="@layout/amount_layout"
+            android:enabled="false"
             android:defaultValue="0" />
 
         <Preference android:key="notif"
