@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
 import pl.d30.bitcoin.dash.cryptocoin.Btc;
+import pl.d30.bitcoin.dash.cryptocoin.Coin;
 import pl.d30.bitcoin.dash.cryptocoin.Ltc;
 
 public class NotificationsConf extends PreferenceActivity {
@@ -133,6 +135,24 @@ public class NotificationsConf extends PreferenceActivity {
                             Toast.makeText(context, R.string.warn_no_wallet_ltc, Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(Intent.ACTION_VIEW, Ltc.getStoreUri() ));
                         }
+                        }
+                    });
+                }
+
+                Button useBitcoinAlert = (Button) v.findViewById(R.id.useBitcoinAlert);
+                if( useBitcoinAlert!=null ) {
+                    useBitcoinAlert.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String bitcoinAlertPackage = "com.sleekbit.btcticker";
+                            try {
+                                PackageManager pm = getPackageManager();
+                                if( pm!=null ) startActivity( pm.getLaunchIntentForPackage(bitcoinAlertPackage) );
+                                else throw new Exception("Unable to get PackageManager");
+
+                            } catch(Exception e) {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Coin.STORE_PREFIX+bitcoinAlertPackage)));
+                            }
                         }
                     });
                 }
