@@ -36,10 +36,10 @@ public class AmountPreference extends Preference {
             summary = (TextView) v.findViewById(android.R.id.summary);
             seekBar = (SeekBar) v.findViewById(R.id.amount_value);
 
-            if( checkBox!=null && seekBar !=null ) {
+            if( checkBox!=null && seekBar!=null ) {
 
-                boolean isEnabled = isSeekBarEnabled();
-                float value = getPersistedFloat( 0f );
+                boolean isEnabled = false; //isSeekBarEnabled();
+                float value = 0f; //getPersistedFloat( 0f );
 
                 checkBox.setChecked( isEnabled );
                 seekBar.setEnabled( isEnabled() );
@@ -52,9 +52,9 @@ public class AmountPreference extends Preference {
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        updateSeekBarAppearance( isChecked );
-                        setSeekBarEnabled(isChecked);
-                        updateLabel(isChecked, getPersistedFloat(0f));
+                    updateSeekBarAppearance( isChecked );
+                    setSeekBarEnabled(isChecked);
+                    updateLabel(isChecked, getPersistedFloat(0f));
                     }
                 });
 
