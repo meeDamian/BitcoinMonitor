@@ -2,10 +2,8 @@ package pl.d30.bitcoin.dash.conf;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -14,14 +12,11 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
-import pl.d30.bitcoin.dash.cryptocoin.Btc;
-import pl.d30.bitcoin.dash.cryptocoin.Ltc;
 import pl.d30.bitcoin.dash.exchange.Exchange;
 
 public class BitcoinArbitrageDashConf extends PreferenceActivity {
@@ -115,8 +110,8 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
                 final DialogInterface.OnClickListener onClicker = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if( AlertDialog.BUTTON_POSITIVE==which )
-                            orderBook.setChecked(true);
+                    if( AlertDialog.BUTTON_POSITIVE==which )
+                        orderBook.setChecked(true);
                     }
                 };
                 orderBook.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -137,8 +132,18 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
                     return true;
                     }
                 });
+            }
+
+            AmountPreference diffBelow = (AmountPreference) findPreference(D30.IDX_DIFF_BELOW);
+            if( diffBelow!=null && diffBelow.isEnabled() ) {
 
             }
+
+            AmountPreference diffAbove = (AmountPreference) findPreference(D30.IDX_DIFF_ABOVE);
+            if( diffAbove!=null && diffAbove.isEnabled() ) {
+
+            }
+
 
 //            EditTextPreference diffBelow = (EditTextPreference) findPreference(D30.IDX_DIFF_BELOW);
 //            if( diffBelow!=null ) {
@@ -177,40 +182,6 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
 //                    }
 //                });
 //            }
-
-            Preference donate = findPreference(D30.IDX_DONATE_BTC);
-            if( donate!=null ) {
-                donate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Btc.getPaymentUri() ));
-
-                    } catch(ActivityNotFoundException e) {
-                        Toast.makeText(context, R.string.warn_no_wallet_btc, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Intent.ACTION_VIEW, Btc.getStoreUri() ));
-                    }
-                    return false;
-                    }
-                });
-            }
-
-            Preference donateLTC = findPreference(D30.IDX_DONATE_LTC);
-            if( donateLTC!=null ) {
-                donateLTC.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Ltc.getPaymentUri() ));
-
-                    } catch(ActivityNotFoundException e) {
-                        Toast.makeText(context, R.string.warn_no_wallet_ltc, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Intent.ACTION_VIEW, Ltc.getStoreUri() ));
-                    }
-                    return false;
-                    }
-                });
-            }
 
         }
 

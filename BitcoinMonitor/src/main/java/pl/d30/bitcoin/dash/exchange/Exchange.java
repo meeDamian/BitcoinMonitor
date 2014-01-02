@@ -20,6 +20,7 @@ public abstract class Exchange {
     public static final int MTGOX = 0;
     public static final int BITSTAMP = 1;
     public static final int BTCE = 2;
+    public static final int COINBASE = 3;
 
     // urls:
     public static final int TICKER = 0;
@@ -65,7 +66,7 @@ public abstract class Exchange {
             &&
             lastValue.getItem()==item
             &&
-            lastValue.isOrderBook()==(amount!=0f)
+            lastValue.isOrderBook()==(amount!=0f) // TODO: cleverer check needed
 
         ) {
             cb.onTicker(getId(), lastValue);
@@ -170,6 +171,7 @@ public abstract class Exchange {
             case Exchange.MTGOX:    return MtGoxExchange.getInstance(context);
             case Exchange.BITSTAMP: return BitStampExchange.getInstance(context);
             case Exchange.BTCE:     return BtceExchange.getInstance(context);
+            case Exchange.COINBASE: return CoinBaseExchange.getInstance(context);
         }
         return null;
     }
@@ -178,6 +180,7 @@ public abstract class Exchange {
             case Exchange.MTGOX:    return R.drawable.ic_mtgox_blue;
             case Exchange.BITSTAMP: return R.drawable.ic_bitstamp_blue;
             case Exchange.BTCE:     return R.drawable.ic_btce_blue;
+            case Exchange.COINBASE: return R.drawable.ic_btc_blue;
         }
         return null;
     }
@@ -190,7 +193,6 @@ public abstract class Exchange {
     protected abstract String getOrderBookUrlSuffix();
     public abstract boolean isCurrencySupported(int currency);
     public abstract boolean isItemSupported(int item);
-
 
     public interface OnTickerDataAvailable {
         public void onTicker(int source, LastValue lastValue);

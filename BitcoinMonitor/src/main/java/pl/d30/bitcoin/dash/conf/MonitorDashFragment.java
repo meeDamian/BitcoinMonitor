@@ -1,8 +1,6 @@
 package pl.d30.bitcoin.dash.conf;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
@@ -15,8 +13,6 @@ import java.util.Arrays;
 
 import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
-import pl.d30.bitcoin.dash.cryptocoin.Btc;
-import pl.d30.bitcoin.dash.cryptocoin.Ltc;
 import pl.d30.bitcoin.dash.exchange.Exchange;
 
 public abstract class MonitorDashFragment extends PreferenceFragment{
@@ -126,41 +122,6 @@ public abstract class MonitorDashFragment extends PreferenceFragment{
                 }
             });
         }
-
-        Preference donateBTC = findPreference(D30.IDX_DONATE_BTC);
-        if( donateBTC!=null ) {
-            donateBTC.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Btc.getPaymentUri()));
-
-                } catch (ActivityNotFoundException e) {
-                    Toast.makeText(context, R.string.warn_no_wallet_btc, Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(Intent.ACTION_VIEW, Btc.getStoreUri()));
-                }
-                return false;
-                }
-            });
-        }
-
-        Preference donateLTC = findPreference(D30.IDX_DONATE_LTC);
-        if( donateLTC!=null ) {
-            donateLTC.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Ltc.getPaymentUri() ));
-
-                } catch(ActivityNotFoundException e) {
-                    Toast.makeText(context, R.string.warn_no_wallet_ltc, Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(Intent.ACTION_VIEW, Ltc.getStoreUri() ));
-                }
-                return false;
-                }
-            });
-        }
-
     }
 
     private void adjustCurrencies(int source) {

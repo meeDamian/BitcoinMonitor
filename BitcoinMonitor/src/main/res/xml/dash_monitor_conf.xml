@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:d30="http://schemas.android.com/apk/res/pl.d30.bitcoin">
     
     <ListPreference android:key="source"
         android:title="@string/source_title_btc"
@@ -75,19 +76,8 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/cat_donate">
-
-        <Preference android:key="donateBTC"
-            android:title="@string/donate_title"
-            android:icon="@drawable/ic_btc_blue"
-            android:summary="@string/donate_summary"
-            android:persistent="false" />
-
-        <Preference android:key="donateLTC"
-            android:title="@string/donate_title_ltc"
-            android:icon="@drawable/ic_ltc_blue"
-            android:summary="@string/donate_summary"
-            android:persistent="false" />
-
+        <pl.d30.bitcoin.dash.conf.DonatePreference d30:coin="btc" />
+        <pl.d30.bitcoin.dash.conf.DonatePreference d30:coin="ltc" />
     </PreferenceCategory>
 
 
