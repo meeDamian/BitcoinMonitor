@@ -10,6 +10,12 @@ public abstract class Coin {
     public static final int BTC = 0;
     public static final int LTC = 1;
 
+    public static Integer getCoinIdByName(String name) {
+        if( name.toUpperCase().equals(Btc.getName()) ) return BTC;
+        else if( name.toUpperCase().equals(Ltc.getName()) ) return LTC;
+        else return null;
+    }
+
     public static String getName(int item) {
         switch( item ) {
             case BTC: return Btc.getName();
@@ -17,7 +23,6 @@ public abstract class Coin {
         }
         return null;
     }
-
     public static Integer getDrawable(int item) {
         switch( item ) {
             case BTC: return Btc.getDrawable();
@@ -25,8 +30,8 @@ public abstract class Coin {
         }
         return null;
     }
-    public static Integer getPreferenceDrawable(int item) {
-        switch( item ) {
+    public static Integer getPreferenceDrawable(int coin) {
+        switch( coin ) {
             case BTC: return Btc.getPreferenceDrawable();
             case LTC: return Ltc.getPreferenceDrawable();
         }

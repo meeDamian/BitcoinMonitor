@@ -22,7 +22,7 @@ public class LitecoinMonitorDashConf extends MonitorDashConf {
         return new LitecoinMonitorConfFragment( context );
     }
 
-    protected class LitecoinMonitorConfFragment extends MonitorDashFragment {
+    protected static class LitecoinMonitorConfFragment extends MonitorDashFragment {
 
         public LitecoinMonitorConfFragment(Context c) {
             super(c);

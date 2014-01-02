@@ -9,13 +9,11 @@ import android.util.AttributeSet;
 import android.widget.Toast;
 
 import pl.d30.bitcoin.R;
-import pl.d30.bitcoin.dash.cryptocoin.Btc;
 import pl.d30.bitcoin.dash.cryptocoin.Coin;
-import pl.d30.bitcoin.dash.cryptocoin.Ltc;
 
 public class DonatePreference extends Preference {
 
-    private int coin = Coin.BTC; // default
+    private Integer coin = Coin.BTC;
 
     public DonatePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -28,15 +26,13 @@ public class DonatePreference extends Preference {
                 switch( attr ) {
                     case R.styleable.DonatePreference_coin:
                         String tmpCoin = a.getString( attr );
-                        if( tmpCoin!=null ) {
-                            if( tmpCoin.equals(Btc.getName().toLowerCase()) ) coin = Coin.BTC;
-                            else if( tmpCoin.equals(Ltc.getName().toLowerCase()) ) coin = Coin.LTC;
-                        }
+                        if( tmpCoin!=null ) coin = Coin.getCoinIdByName(tmpCoin);
                         break;
                 }
             }
             a.recycle();
         }
+        if( coin==null ) coin = Coin.BTC;
         setIcon(context.getResources().getDrawable(Coin.getPreferenceDrawable(coin)));
     }
 

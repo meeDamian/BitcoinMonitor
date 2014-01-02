@@ -38,7 +38,7 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
         super.onPostCreate(savedInstanceState);
         getFragmentManager()
             .beginTransaction()
-            .add(android.R.id.content, new BitcoinArbitrageConfFragment())
+            .add(android.R.id.content, new BitcoinArbitrageConfFragment(this))
             .commit();
     }
 
@@ -56,7 +56,9 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
         return BitcoinArbitrageConfFragment.class.getName().equals(fragmentName);
     }
 
-    protected class BitcoinArbitrageConfFragment extends PreferenceFragment {
+    protected static class BitcoinArbitrageConfFragment extends PreferenceFragment {
+
+        private Context context;
 
         protected PreferenceManager pm;
         protected ListPreference exchangeBuy;
@@ -64,6 +66,11 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
 
         protected CharSequence[] exchangeNames;
         protected CharSequence[] exchangeValues;
+
+        public BitcoinArbitrageConfFragment(Context c) {
+            context = c;
+        }
+
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -118,7 +125,7 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
                     @Override
                     public boolean onPreferenceChange(final Preference preference, Object newValue) {
                     if( (Boolean)newValue ) {
-                        new AlertDialog.Builder(BitcoinArbitrageDashConf.this)
+                        new AlertDialog.Builder(context)
                             .setIcon(R.drawable.ic_notice)
                             .setTitle(R.string.order_book_confirmation_title)
                             .setMessage(R.string.order_book_confirmation_msg)

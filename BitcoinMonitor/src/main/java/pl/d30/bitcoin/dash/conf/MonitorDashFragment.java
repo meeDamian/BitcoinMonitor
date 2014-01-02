@@ -15,7 +15,7 @@ import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
 import pl.d30.bitcoin.dash.exchange.Exchange;
 
-public abstract class MonitorDashFragment extends PreferenceFragment{
+public abstract class MonitorDashFragment extends PreferenceFragment {
 
     protected ListPreference currency, source;
     protected EditTextPreference amount;

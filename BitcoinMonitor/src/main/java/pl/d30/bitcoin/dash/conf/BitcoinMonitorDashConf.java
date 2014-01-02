@@ -18,7 +18,7 @@ public class BitcoinMonitorDashConf extends MonitorDashConf {
         return new BitcoinMonitorConfFragment( context );
     }
 
-    protected class BitcoinMonitorConfFragment extends MonitorDashFragment {
+    protected static class BitcoinMonitorConfFragment extends MonitorDashFragment {
 
         public BitcoinMonitorConfFragment(Context c) {
             super(c);
