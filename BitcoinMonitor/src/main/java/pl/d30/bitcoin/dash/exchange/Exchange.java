@@ -20,7 +20,7 @@ public abstract class Exchange {
     public static final int MTGOX = 0;
     public static final int BITSTAMP = 1;
     public static final int BTCE = 2;
-    public static final int COINBASE = 3;
+//    public static final int COINBASE = 3;
 
     // urls:
     public static final int TICKER = 0;
@@ -38,9 +38,9 @@ public abstract class Exchange {
     public static final int SGD = 8;
 
     // prices:
-    public static final int PRICE_LAST = 0;
-    public static final int PRICE_BUY = 1;
-    public static final int PRICE_SELL = 2;
+    public static final int PRICE_LAST  = 0;
+    public static final int PRICE_BUY   = 1;
+    public static final int PRICE_SELL  = 2;
 
     // priorities:
     public static final boolean PERCENTAGE = true;
@@ -171,7 +171,7 @@ public abstract class Exchange {
             case Exchange.MTGOX:    return MtGoxExchange.getInstance(context);
             case Exchange.BITSTAMP: return BitStampExchange.getInstance(context);
             case Exchange.BTCE:     return BtceExchange.getInstance(context);
-            case Exchange.COINBASE: return CoinBaseExchange.getInstance(context);
+//            case Exchange.COINBASE: return CoinBaseExchange.getInstance(context);
         }
         return null;
     }
@@ -180,7 +180,7 @@ public abstract class Exchange {
             case Exchange.MTGOX:    return R.drawable.ic_mtgox_blue;
             case Exchange.BITSTAMP: return R.drawable.ic_bitstamp_blue;
             case Exchange.BTCE:     return R.drawable.ic_btce_blue;
-            case Exchange.COINBASE: return R.drawable.ic_btc_blue;
+//            case Exchange.COINBASE: return R.drawable.ic_btc_blue;
         }
         return null;
     }
