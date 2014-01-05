@@ -83,8 +83,8 @@
     <string name="used_price_title">Used price</string>
     <string name="used_price_summary">Price used in calculations</string>
     <string name="used_price_switch_last">Last</string>
-    <string name="used_price_switch_buy">Buy</string>
-    <string name="used_price_switch_sell">Sell</string>
+    <string name="used_price_switch_buy">Sell</string>
+    <string name="used_price_switch_sell">Buy</string>
 
 
     <!-- PRIORITY -->

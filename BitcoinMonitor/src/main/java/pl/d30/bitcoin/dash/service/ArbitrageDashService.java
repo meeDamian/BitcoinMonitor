@@ -58,8 +58,8 @@ public abstract class ArbitrageDashService extends DashClockExtension {
         int sellSource = Integer.parseInt(sp.getString(D30.IDX_SELL_SRC, "" + Exchange.MTGOX));
         sellExchange = Exchange.getExchange(sellSource, this);
 
-        buyPrice = sp.getBoolean(D30.IDX_BUY_PRICE, true) ? Exchange.PRICE_BUY : Exchange.PRICE_LAST;
-        sellPrice = sp.getBoolean(D30.IDX_SELL_PRICE, true) ? Exchange.PRICE_SELL : Exchange.PRICE_LAST;
+        buyPrice = sp.getBoolean(D30.IDX_BUY_PRICE, true) ? Exchange.PRICE_SELL : Exchange.PRICE_LAST;
+        sellPrice = sp.getBoolean(D30.IDX_SELL_PRICE, true) ? Exchange.PRICE_BUY : Exchange.PRICE_LAST;
 
         displayPriority = sp.getBoolean(D30.IDX_PRIORITY, displayPriority);
 
