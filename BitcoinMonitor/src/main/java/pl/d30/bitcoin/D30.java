@@ -41,10 +41,6 @@ public class D30 {
     // configuration indexes for notifications
     public static final String IDX_MASTER_SWITCH= "master_enabled";
 
-    // common configurations
-    public static final String IDX_DONATE_BTC   = "donateBTC";
-    public static final String IDX_DONATE_LTC   = "donateLTC";
-
 
     // Json helper class:
     public static class Json {
