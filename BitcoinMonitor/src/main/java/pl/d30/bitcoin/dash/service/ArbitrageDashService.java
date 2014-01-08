@@ -3,6 +3,7 @@ package pl.d30.bitcoin.dash.service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.util.Log;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.android.apps.dashclock.api.DashClockExtension;
@@ -58,7 +59,17 @@ public abstract class ArbitrageDashService extends DashClockExtension {
         int sellSource = Integer.parseInt(sp.getString(D30.IDX_SELL_SRC, "" + Exchange.MTGOX));
         sellExchange = Exchange.getExchange(sellSource, this);
 
+        /**
+         * NOTE: API's gives us prices in a way that:
+         * BUY Price is a price we will pay to SELL
+         * SELL price is a price we will pay to BUY
+         *
+         * Reversal of naming for those two prices happens in following two statements.
+         **/
+        // buyPrice is a price which WE USE to buy!
         buyPrice = sp.getBoolean(D30.IDX_BUY_PRICE, true) ? Exchange.PRICE_SELL : Exchange.PRICE_LAST;
+
+        // sellPrice is a price which WE USE to sell!
         sellPrice = sp.getBoolean(D30.IDX_SELL_PRICE, true) ? Exchange.PRICE_BUY : Exchange.PRICE_LAST;
 
         displayPriority = sp.getBoolean(D30.IDX_PRIORITY, displayPriority);
@@ -112,6 +123,7 @@ public abstract class ArbitrageDashService extends DashClockExtension {
     }
 
     protected String getPercentageDiff(float v1, float v2) {
+        Log.d(D30.LOG, "v1:" + v1 + ", v2:" + v2);
         float value = 100 - (v1 *100f) / v2;
 //        if( value>6 ) {
 //            Notification.BigPictureStyle textStyle = new Notification.BigPictureStyle();

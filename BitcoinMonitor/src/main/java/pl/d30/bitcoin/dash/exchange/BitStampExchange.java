@@ -24,13 +24,24 @@ public class BitStampExchange extends Exchange {
     protected void processTickerResponse(JsonObject json, int currency, int item, OnTickerDataAvailable cb) {
 
         String price = D30.Json.getString(json, getPriceTypeName(PRICE_LAST));
-        lastValue = new LastValue(price, currency, item);
 
-        lastValue.setSellValue( D30.Json.getString(json, getPriceTypeName(PRICE_SELL)) );
-        lastValue.setBuyValue( D30.Json.getString(json, getPriceTypeName(PRICE_BUY)) );
+        if(
+            lastValue==null
+            ||
+            lastValue.getItem()!=item
+            ||
+            lastValue.getCurrency()!=currency
+
+        ) {
+            lastValue = new LastValue(price, currency, item);
+
+            lastValue.setSellValue( D30.Json.getString(json, getPriceTypeName(PRICE_SELL)) );
+            lastValue.setBuyValue( D30.Json.getString(json, getPriceTypeName(PRICE_BUY)) );
+
+        } else lastValue.setLastValue(price);
 
         try {
-            lastValue.setTimestamp( getTimestamp(json) );
+            lastValue.setTickerTimestamp(getTimestamp(json));
 
         } catch(NumberFormatException ignored) {}
 

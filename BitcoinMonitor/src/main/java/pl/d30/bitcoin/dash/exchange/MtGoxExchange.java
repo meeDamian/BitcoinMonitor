@@ -2,6 +2,7 @@ package pl.d30.bitcoin.dash.exchange;
 
 import android.content.Context;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -35,14 +36,26 @@ public class MtGoxExchange extends Exchange {
 
             JsonObject priceLast = D30.Json.getObject(price, getPriceTypeName(PRICE_LAST));
             if( priceLast!=null ) {
-                lastValue = new LastValue(extractValue(priceLast), currency, item);
-                if( ts>0 ) lastValue.setTimestamp(ts);
 
-                JsonObject priceSell = D30.Json.getObject(price, getPriceTypeName(PRICE_SELL));
-                lastValue.setSellValue( extractValue(priceSell) );
+                if(
+                    lastValue==null
+                    ||
+                    lastValue.getItem()!=item
+                    ||
+                    lastValue.getCurrency()!=currency
 
-                JsonObject priceBuy = D30.Json.getObject(price, getPriceTypeName(PRICE_BUY));
-                lastValue.setBuyValue( extractValue(priceBuy) );
+                ) {
+                    lastValue = new LastValue(extractValue(priceLast), currency, item);
+
+                    JsonObject priceSell = D30.Json.getObject(price, getPriceTypeName(PRICE_SELL));
+                    lastValue.setSellValue( extractValue(priceSell) );
+
+                    JsonObject priceBuy = D30.Json.getObject(price, getPriceTypeName(PRICE_BUY));
+                    lastValue.setBuyValue( extractValue(priceBuy) );
+
+                } else lastValue.setLastValue(extractValue(priceLast));
+
+                if( ts>0 ) lastValue.setTickerTimestamp(ts);
 
                 if( cb!=null ) cb.onTicker(getId(), lastValue);
             }
@@ -50,8 +63,33 @@ public class MtGoxExchange extends Exchange {
     }
 
     @Override
-    protected JsonObject preProcessOrderBookResponse(JsonObject json) {
-        return D30.Json.getObject(json, "data");
+    protected void processOrderBookResponse(JsonObject json, int currency, int item, float amount, OnTickerDataAvailable cb) {
+        super.processOrderBookResponse(D30.Json.getObject(json, "data"), currency, item, amount, cb);
+    }
+
+    @Override
+    protected float getSellPrice(JsonArray asks, float amount) {
+        float tmpAmount = 0f;
+        JsonArray asksNew = new JsonArray();
+        for(int i=asks.size()-1; i>0; i--) {
+            JsonElement e = asks.get(i);
+            tmpAmount += extractAmount(e);
+            asksNew.add(e);
+            if( tmpAmount>=amount ) break;
+        }
+        return super.getSellPrice(asksNew, amount);
+    }
+    @Override
+    protected float getBuyPrice(JsonArray bids, float amount) {
+        float tmpAmount = 0f;
+        JsonArray bidsNew = new JsonArray();
+        for(int i=bids.size()-1; i>0; i--) {
+            JsonElement e = bids.get(i);
+            tmpAmount += extractAmount(e);
+            bidsNew.add(e);
+            if( tmpAmount>=amount ) break;
+        }
+        return super.getSellPrice(bidsNew, amount);
     }
 
     protected Float extractPrice(JsonElement e) {

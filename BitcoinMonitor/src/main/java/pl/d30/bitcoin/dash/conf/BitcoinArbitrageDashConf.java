@@ -56,7 +56,7 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
         return BitcoinArbitrageConfFragment.class.getName().equals(fragmentName);
     }
 
-    protected static class BitcoinArbitrageConfFragment extends PreferenceFragment {
+    public static class BitcoinArbitrageConfFragment extends PreferenceFragment {
 
         private Context context;
 
@@ -67,10 +67,11 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
         protected CharSequence[] exchangeNames;
         protected CharSequence[] exchangeValues;
 
+        public BitcoinArbitrageConfFragment() {}
+
         public BitcoinArbitrageConfFragment(Context c) {
             context = c;
         }
-
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -215,28 +216,28 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
             exchangeSell.setEntryValues( tmpValues.toArray(new CharSequence[tmpValues.size()]) );
         }
 
-        private void updateAbove(Preference p, Float value) {
-            if( value==0f ) {
-                p.setTitle(R.string.notif_diff_above_title_off);
-                p.setSummary(R.string.notif_diff_above_summary);
-
-            } else {
-                p.setTitle( getString(R.string.notif_diff_above_title_on, "" + value, "%") );
-                p.setSummary(R.string.notif_enabled);
-
-            }
-        }
-        private void updateBelow(Preference p, Float value) {
-            if( value==0f ) {
-                p.setTitle(R.string.notif_diff_below_title_off);
-                p.setSummary(R.string.notif_diff_below_summary);
-
-            } else {
-                p.setTitle( getString(R.string.notif_diff_below_title_on, "" + value, "%") );
-                p.setSummary(R.string.notif_enabled);
-
-            }
-        }
+//        private void updateAbove(Preference p, Float value) {
+//            if( value==0f ) {
+//                p.setTitle(R.string.notif_diff_above_title_off);
+//                p.setSummary(R.string.notif_diff_above_summary);
+//
+//            } else {
+//                p.setTitle( getString(R.string.notif_diff_above_title_on, "" + value, "%") );
+//                p.setSummary(R.string.notif_enabled);
+//
+//            }
+//        }
+//        private void updateBelow(Preference p, Float value) {
+//            if( value==0f ) {
+//                p.setTitle(R.string.notif_diff_below_title_off);
+//                p.setSummary(R.string.notif_diff_below_summary);
+//
+//            } else {
+//                p.setTitle( getString(R.string.notif_diff_below_title_on, "" + value, "%") );
+//                p.setSummary(R.string.notif_enabled);
+//
+//            }
+//        }
     }
 
 }

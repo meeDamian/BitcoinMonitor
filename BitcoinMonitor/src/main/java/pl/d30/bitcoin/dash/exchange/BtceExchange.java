@@ -24,13 +24,26 @@ public class BtceExchange extends Exchange {
     protected void processTickerResponse(JsonObject json, int currency, int item, OnTickerDataAvailable cb) {
         JsonObject ticker = D30.Json.getObject(json, "ticker");
         if( ticker!=null ) {
-            float price = D30.Json.getFloat(ticker, getPriceTypeName(PRICE_LAST));
-            lastValue = new LastValue(price, currency, item);
 
-            lastValue.setSellValue( D30.Json.getFloat(ticker, getPriceTypeName(PRICE_SELL)) );
-            lastValue.setBuyValue(D30.Json.getFloat(ticker, getPriceTypeName(PRICE_BUY)));
-             long ts = D30.Json.getLong(ticker, "updated");
-            if( ts>0 ) lastValue.setTimestamp(ts);
+            float price = D30.Json.getFloat(ticker, getPriceTypeName(PRICE_LAST));
+            if(
+                lastValue==null
+                ||
+                lastValue.getItem()!=item
+                ||
+                lastValue.getCurrency()!=currency
+
+            ) {
+                lastValue = new LastValue(price, currency, item);
+
+                lastValue.setSellValue( D30.Json.getFloat(ticker, getPriceTypeName(PRICE_SELL)) );
+                lastValue.setBuyValue( D30.Json.getFloat(ticker, getPriceTypeName(PRICE_BUY)) );
+
+            } else lastValue.setLastValue(price);
+
+            long ts = D30.Json.getLong(ticker, "updated");
+
+            if( ts>0 ) lastValue.setTickerTimestamp(ts);
 
             if( cb!=null ) cb.onTicker(getId(), lastValue);
         }

@@ -20,7 +20,7 @@ public abstract class Exchange {
     public static final int MTGOX = 0;
     public static final int BITSTAMP = 1;
     public static final int BTCE = 2;
-//    public static final int COINBASE = 3;
+    public static final int COINBASE = 3;
 
     // urls:
     public static final int TICKER = 0;
@@ -47,7 +47,8 @@ public abstract class Exchange {
     public static final boolean CURRENCY = false;
 
     // other:
-    private static final long FRESHNESS = 30; // seconds
+    private static final long FRESHNESS_TICKER = 30; // seconds
+    private static final long FRESHNESS_ORDER_BOOK = 60; // seconds
 
     protected Context context;
     protected LastValue lastValue;
@@ -60,13 +61,11 @@ public abstract class Exchange {
         if(
             lastValue!=null
             &&
-            lastValue.isFresh()
+            lastValue.isFresh( amount!=0f )
             &&
             lastValue.getCurrency()==currency
             &&
             lastValue.getItem()==item
-            &&
-            lastValue.isOrderBook()==(amount!=0f) // TODO: cleverer check needed
 
         ) {
             cb.onTicker(getId(), lastValue);
@@ -105,22 +104,37 @@ public abstract class Exchange {
     }
     protected abstract void processTickerResponse(JsonObject json, int currency, int item, OnTickerDataAvailable cb);
     protected void processOrderBookResponse(JsonObject json, int currency, int item, float amount, OnTickerDataAvailable cb) {
-        json = preProcessOrderBookResponse(json);
 
         JsonArray bids = D30.Json.getArray(json, "bids");
-        float buyPrice = bids!=null ? getPrice(bids, amount) : 0f;
+        float buyPrice = getBuyPrice(bids, amount);
+        Log.d(D30.LOG, getName() + " buy: " + buyPrice);
 
         JsonArray asks = D30.Json.getArray(json, "asks");
-        float sellPrice = asks!=null ? getPrice(asks, amount) : 0f;
+        float sellPrice = getSellPrice(asks, amount);
+        Log.d(D30.LOG, getName() + " sell: " + sellPrice);
 
-        lastValue = new LastValue(buyPrice, sellPrice, currency, item);
-        lastValue.setTimestamp( getTimestamp(json) );
+        if(
+            lastValue!=null
+            &&
+            lastValue.getItem()==item
+            &&
+            lastValue.getCurrency()==currency
+
+        ) {
+            lastValue.setSellValue(sellPrice);
+            lastValue.setBuyValue(buyPrice);
+
+        } else lastValue = new LastValue(buyPrice, sellPrice, currency, item);
+
+        lastValue.setOrderBookTimestamp(getTimestamp(json));
         if( cb!=null ) cb.onTicker( getId(), lastValue );
     }
 
-    // this is used in case when our precious data is nested in some retarded way (Looking at you MtGox...)
-    protected JsonObject preProcessOrderBookResponse(JsonObject json) {
-        return json;
+    protected float getBuyPrice(JsonArray bids, float amount) {
+        return bids!=null ? getPrice(bids, amount) : 0f;
+    }
+    protected float getSellPrice(JsonArray asks, float amount) {
+        return asks!=null ? getPrice(asks, amount) : 0f;
     }
 
     private float getPrice(JsonArray prices, float amount) {
@@ -171,7 +185,7 @@ public abstract class Exchange {
             case Exchange.MTGOX:    return MtGoxExchange.getInstance(context);
             case Exchange.BITSTAMP: return BitStampExchange.getInstance(context);
             case Exchange.BTCE:     return BtceExchange.getInstance(context);
-//            case Exchange.COINBASE: return CoinBaseExchange.getInstance(context);
+            case Exchange.COINBASE: return CoinBaseExchange.getInstance(context);
         }
         return null;
     }
@@ -180,7 +194,7 @@ public abstract class Exchange {
             case Exchange.MTGOX:    return R.drawable.ic_mtgox_blue;
             case Exchange.BITSTAMP: return R.drawable.ic_bitstamp_blue;
             case Exchange.BTCE:     return R.drawable.ic_btce_blue;
-//            case Exchange.COINBASE: return R.drawable.ic_btc_blue;
+            case Exchange.COINBASE: return R.drawable.ic_btc_blue;
         }
         return null;
     }
@@ -200,40 +214,39 @@ public abstract class Exchange {
 
     public class LastValue {
 
-        private float lastValue;
+        private Float lastValue;
         private float buyValue;
         private float sellValue;
 
         private int currency;
         private int item;
-        private boolean orderBook;
 
-        private long ts = 0;
+        private long timestampTicker = 0;
+        private long timestampOrderBook = 0;
+
         private float amount = 1;
         private String prettyAmount = "1";
 
         public LastValue(float buyPrice, float sellPrice, int currency, int item) {
             constructorsCallMe(
-                buyPrice + sellPrice/2, // NOTE: lastPrice here is *kinda* fake ;)
+                null,
                 currency,
-                item,
-                true
+                item
             );
             setBuyValue(buyPrice);
             setSellValue(sellPrice);
         }
 
         public LastValue(float lastValue, int currency, int item) {
-            constructorsCallMe(lastValue, currency, item, false);
+            constructorsCallMe(lastValue, currency, item);
         }
         public LastValue(String lastValue, int currency, int item) {
-            constructorsCallMe(convertToFloat(lastValue), currency, item, false);
+            constructorsCallMe(convertToFloat(lastValue), currency, item);
         }
-        private void constructorsCallMe(float lastValue, int currency, int item, boolean orderBook) {
-            this.lastValue = lastValue;
+        private void constructorsCallMe(Float lastValue, int currency, int item) {
+            if( lastValue!=null ) this.lastValue = lastValue;
             this.currency = currency;
             this.item = item;
-            this.orderBook = orderBook;
         }
 
         // handle amount
@@ -254,18 +267,29 @@ public abstract class Exchange {
         }
 
 
-        public void setTimestamp(long timestamp) {
-            this.ts = timestamp;
+        public void setTickerTimestamp(long timestamp) {
+            this.timestampTicker = timestamp;
         }
-        public boolean isFresh() {
-            return ts!=0 && ts + FRESHNESS > System.currentTimeMillis() / 100;
+        public void setOrderBookTimestamp(long timestamp) {
+            this.timestampOrderBook = timestamp;
+        }
+        public boolean isFresh(boolean isOrderBook) {
+            long tmpTs = isOrderBook ? timestampOrderBook : timestampTicker;
+            long tmpFreshness = isOrderBook ? FRESHNESS_ORDER_BOOK : FRESHNESS_TICKER;
+
+            return tmpTs!=0 && tmpTs + tmpFreshness > System.currentTimeMillis() / 100;
         }
 
 
         public int getCurrency() { return currency; }
         public int getItem() { return item; }
-        public boolean isOrderBook() { return orderBook; }
 
+        public void setLastValue(String lastValue) {
+            setSellValue(convertToFloat(lastValue));
+        }
+        public void setLastValue(float lastValue) {
+            this.sellValue = lastValue;
+        }
         public void setBuyValue(String buyValue) {
             setBuyValue(convertToFloat(buyValue));
         }
@@ -283,7 +307,10 @@ public abstract class Exchange {
         public float getFloat(int priceType) {
             float tmp;
             switch( priceType ) {
-                case Exchange.PRICE_LAST: tmp = lastValue; break;
+                case Exchange.PRICE_LAST:
+                    tmp = ( lastValue!=null ) ? lastValue : (buyValue + sellValue) / 2; // in case when no last price is available: panic & improvise
+                    break;
+
                 case Exchange.PRICE_SELL: tmp = sellValue; break;
                 case Exchange.PRICE_BUY: tmp = buyValue; break;
                 default: tmp = 0;
@@ -304,7 +331,6 @@ public abstract class Exchange {
         public String getString(int priceType) {
             return getFormattedValue("" + getFloat(priceType), false);
         }
-
 
         // methods used internally
         private float convertToFloat(String strValue) {

@@ -40,13 +40,13 @@
         <item>mtgox.com</item>
         <item>bitstamp.net</item>
         <item>btc-e.com</item>
-        <item>coinbase.com</item>
+        <!--<item>coinbase.com</item>-->
     </string-array>
     <string-array name="source_values">
         <item>0</item>
         <item>1</item>
         <item>2</item>
-        <item>3</item>
+        <!--<item>3</item>-->
     </string-array>
     <string-array name="source_defaults">
         <item>0</item>
