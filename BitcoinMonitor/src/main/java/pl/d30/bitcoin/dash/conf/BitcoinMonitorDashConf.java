@@ -1,6 +1,7 @@
 package pl.d30.bitcoin.dash.conf;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
@@ -22,6 +23,14 @@ public class BitcoinMonitorDashConf extends MonitorDashConf {
 
         public BitcoinMonitorConfFragment(Context c) {
             super(c);
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            Preference p = findPreference("crypto");
+            if( p!=null ) getPreferenceScreen().removePreference(p);
         }
 
         @Override

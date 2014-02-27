@@ -7,7 +7,7 @@
 
     <!-- Monitor (Settings Activity) -->
     <string name="monitor_btc_label">Bitcoin Exchange Rate</string>
-    <string name="monitor_ltc_label">Litecoin Exchange Rate</string>
+    <string name="monitor_alt1_label">Altcoin 1 Exchange Rate</string>
     <string name="monitor_desc">See current exchange rate in selected currency.</string>
 
     <!-- Arbitrage (Settings Activity) -->
@@ -26,9 +26,9 @@
     <string name="source_title_btc">Bitcoin Exchange</string>
     <string name="source_summary_btc">Change exchange rate source</string>
 
-    <!-- ltc -->
-    <string name="source_title_ltc">Litecoin Exchange</string>
-    <string name="source_summary_ltc">Currently only BTC-e is supported</string>
+    <!-- alt -->
+    <string name="source_title_alt">Exchange</string>
+    <string name="source_summary_alt">*Choose your exchange</string>
 
 
     <!-- CURRENCY -->

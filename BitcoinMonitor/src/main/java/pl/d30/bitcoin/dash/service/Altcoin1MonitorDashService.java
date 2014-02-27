@@ -4,7 +4,7 @@ import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.dash.cryptocoin.Coin;
 import pl.d30.bitcoin.dash.exchange.Exchange;
 
-public class LitecoinMonitorDashService extends MonitorDashService {
+public class Altcoin1MonitorDashService extends MonitorDashService {
 
     @Override
     protected int getItem() {

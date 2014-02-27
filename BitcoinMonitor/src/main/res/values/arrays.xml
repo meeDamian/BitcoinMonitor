@@ -2,7 +2,7 @@
 <resources>
     
     <!-- for BTC currency -->
-    <string-array name="currencies_btc_mtgox_list">
+    <string-array name="currencies_full_list">
         <item>USD ($)</item>
         <item>GBP (£)</item>
         <item>CAD (CA$)</item>
@@ -13,7 +13,7 @@
         <item>NOK (kr)</item>
         <item>SGD (SG$)</item>
     </string-array>
-    <string-array name="currencies_btc_mtgox_values">
+    <string-array name="currencies_full_values">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -48,12 +48,22 @@
         <item>2</item>
         <!--<item>3</item>-->
     </string-array>
-    <string-array name="source_defaults">
-        <item>0</item>
-    </string-array>
-    
-    <string-array name="empty_array">
 
+
+    <!-- for Altcoins -->
+    <string-array name="alt_list">
+        <item>Litecoin (LTC)</item>
+        <item>Dogecoin (DOGE)</item>
+        <item>Peercoin (PPC)</item>
+        <item>Mastercoin (MST)</item>
+        <item>Nextcoin (NXT)</item>
+    </string-array>
+    <string-array name="alt_values">
+        <item>LTC</item>
+        <item>DOGE</item>
+        <item>PPC</item>
+        <item>MST</item>
+        <item>NXT</item>
     </string-array>
 
 </resources>

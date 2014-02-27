@@ -51,10 +51,11 @@
 
 
 
-        <!-- DashClock LTC Monitor extension  -->
-        <service android:name=".dash.service.LitecoinMonitorDashService"
+        <!-- DashClock Altcoin 1 Monitor extension  -->
+        <!-- TODO: change icon to sth more universal -->
+        <service android:name=".dash.service.Altcoin1MonitorDashService"
             android:icon="@drawable/ic_ltc"
-            android:label="@string/monitor_ltc_label"
+            android:label="@string/monitor_alt1_label"
             android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
 
             <intent-filter>
@@ -75,11 +76,11 @@
 
             <meta-data
                 android:name="settingsActivity"
-                android:value=".dash.conf.LitecoinMonitorDashConf" />
+                android:value=".dash.conf.Altcoin1MonitorDashConf" />
 
         </service>
-        <activity android:name=".dash.conf.LitecoinMonitorDashConf"
-            android:label="@string/monitor_ltc_label"
+        <activity android:name=".dash.conf.Altcoin1MonitorDashConf"
+            android:label="@string/monitor_alt1_label"
             android:icon="@drawable/ic_ltc"
             android:exported="true" />
 
@@ -116,6 +117,7 @@
             android:icon="@drawable/ic_btc"
             android:label="@string/arbitrage_btc_label"
             android:exported="true" />
+
 
 
         <activity android:name=".dash.conf.NotificationsConf"

@@ -135,8 +135,8 @@ public abstract class MonitorDashFragment extends PreferenceFragment {
             currency.setSummary(R.string.currency_summary_active);
 
             if( source==Exchange.MTGOX) {
-                currency.setEntries(R.array.currencies_btc_mtgox_list);
-                currency.setEntryValues(R.array.currencies_btc_mtgox_values);
+                currency.setEntries(R.array.currencies_full_list);
+                currency.setEntryValues(R.array.currencies_full_values);
 
             } else {
                 if( !Arrays.asList(getResources().getStringArray(R.array.currencies_btce_values)).contains(currency.getValue()) )

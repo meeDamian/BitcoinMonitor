@@ -6,7 +6,7 @@ import pl.d30.bitcoin.R;
 
 public class Btc extends Coin {
 
-    public static final String DONATION_ADDRESS = "1NycrExPayLpNEPjr539n4uvkRuyMA9fz3";
+    public static final String DONATION_ADDRESS = "1CMZNs2nQjkfvit8Qoq1ZL38XUPJ6EDwCu";
     public static final String DONATION_DEFAULT = "0.005";
     public static final String ALTERNATIVE_APP = "piuk.blockchain.android";
 

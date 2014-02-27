@@ -17,6 +17,8 @@ public class BtceExchange extends Exchange {
     public static final String NAME = "btce";
     public static final String PRETTY_NAME = "BTC-e";
 
+    public static final int a = 0;
+
     private BtceExchange(Context context) {
         super(context);
     }

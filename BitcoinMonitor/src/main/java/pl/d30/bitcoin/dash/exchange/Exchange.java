@@ -21,6 +21,7 @@ public abstract class Exchange {
     public static final int BITSTAMP = 1;
     public static final int BTCE = 2;
     public static final int COINBASE = 3;
+    public static final int KRAKEN = 4;
 
     // urls:
     public static final int TICKER = 0;

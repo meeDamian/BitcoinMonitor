@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:d30="http://schemas.android.com/apk/res/pl.d30.bitcoin">
+
+    <ListPreference android:key="crypto"
+        android:title="Crypto currency"
+        android:summary="Choose Altcoin to be monitored"
+        android:entries="@array/alt_list"
+        android:entryValues="@array/alt_values"
+        android:defaultValue="LTC" />
     
     <ListPreference android:key="source"
         android:title="@string/source_title_btc"
@@ -12,8 +19,8 @@
     <ListPreference android:key="currency"
         android:title="@string/currency_title"
         android:summary="@string/currency_summary_active"
-        android:entries="@array/currencies_btc_mtgox_list"
-        android:entryValues="@array/currencies_btc_mtgox_values"
+        android:entries="@array/currencies_full_list"
+        android:entryValues="@array/currencies_full_values"
         android:defaultValue="0" />
 
     <EditTextPreference android:key="amount"
@@ -21,13 +28,6 @@
         android:summary="@string/amount_summary_btc"
 		android:inputType="numberDecimal"
 		android:defaultValue="1.0" />
-
-    <!--<CheckBoxPreference android:key="experimental"-->
-    <!--android:title="@string/experimental_title"-->
-    <!--android:summary="@string/experimental_summary"-->
-    <!--android:enabled="false"-->
-    <!--android:defaultValue="0" />-->
-
 
 
 
