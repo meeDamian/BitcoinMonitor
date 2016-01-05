@@ -30,7 +30,8 @@ public class BitcoinMonitorDashConf extends MonitorDashConf {
             super.onCreate(savedInstanceState);
 
             Preference p = findPreference("crypto");
-            if( p!=null ) getPreferenceScreen().removePreference(p);
+            if(p != null)
+                getPreferenceScreen().removePreference(p);
         }
 
         @Override
@@ -42,7 +43,8 @@ public class BitcoinMonitorDashConf extends MonitorDashConf {
         @Override
         protected void handleNotice() {
             Preference p = findPreference("notice_category");
-            if( p!=null ) getPreferenceScreen().removePreference(p);
+            if(p != null)
+                getPreferenceScreen().removePreference(p);
         }
     }
 }

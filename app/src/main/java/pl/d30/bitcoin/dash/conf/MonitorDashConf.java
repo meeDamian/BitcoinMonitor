@@ -18,7 +18,8 @@ public abstract class MonitorDashConf extends PreferenceActivity {
         context = getApplicationContext();
 
         final ActionBar ab = getActionBar();
-        if( ab!=null ) ab.setDisplayHomeAsUpEnabled(true);
+        if(ab != null)
+            ab.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -32,7 +33,7 @@ public abstract class MonitorDashConf extends PreferenceActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==android.R.id.home) {
+        if(item.getItemId() == android.R.id.home) {
             finish();
             return true;
         }

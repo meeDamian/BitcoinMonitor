@@ -25,7 +25,7 @@ public class BtceExchange extends Exchange {
 
     protected void processTickerResponse(JsonObject json, int currency, int item, OnTickerDataAvailable cb) {
         JsonObject ticker = D30.Json.getObject(json, "ticker");
-        if( ticker!=null ) {
+        if(ticker != null) {
 
             float price = D30.Json.getFloat(ticker, getPriceTypeName(PRICE_LAST));
             if(
@@ -38,24 +38,30 @@ public class BtceExchange extends Exchange {
             ) {
                 lastValue = new LastValue(price, currency, item);
 
-                lastValue.setSellValue( D30.Json.getFloat(ticker, getPriceTypeName(PRICE_SELL)) );
-                lastValue.setBuyValue( D30.Json.getFloat(ticker, getPriceTypeName(PRICE_BUY)) );
+                lastValue.setSellValue(D30.Json.getFloat(ticker, getPriceTypeName(PRICE_SELL)));
+                lastValue.setBuyValue(D30.Json.getFloat(ticker, getPriceTypeName(PRICE_BUY)));
 
             } else lastValue.setLastValue(price);
 
             long ts = D30.Json.getLong(ticker, "updated");
 
-            if( ts>0 ) lastValue.setTickerTimestamp(ts);
+            if(ts > 0)
+                lastValue.setTickerTimestamp(ts);
 
-            if( cb!=null ) cb.onTicker(getId(), lastValue);
+            if(cb != null)
+                cb.onTicker(getId(), lastValue);
         }
     }
 
     protected Float extractPrice(JsonElement e) {
-        return e.isJsonArray() ? e.getAsJsonArray().get(0).getAsFloat() : null;
+        return e.isJsonArray()
+            ? e.getAsJsonArray().get(0).getAsFloat()
+            : null;
     }
     protected Float extractAmount(JsonElement e) {
-        return e.isJsonArray() ? e.getAsJsonArray().get(1).getAsFloat() : null;
+        return e.isJsonArray()
+            ? e.getAsJsonArray().get(1).getAsFloat()
+            : null;
     }
     protected Long getTimestamp(JsonObject json) {
         return System.currentTimeMillis()/1000;
@@ -80,17 +86,19 @@ public class BtceExchange extends Exchange {
         return URL_ORDER_BOOK;
     }
     public boolean isCurrencySupported(int currency) {
-        return currency==USD || currency==EUR;
+        return currency == USD || currency == EUR;
     }
     public boolean isItemSupported(int item) {
-        return item==Coin.BTC || item==Coin.LTC;
+        return item == Coin.BTC || item == Coin.LTC;
     }
 
 
     // singleton magic
     private static BtceExchange mInstance = null;
     public static BtceExchange getInstance(Context context) {
-        if( mInstance==null ) mInstance = new BtceExchange(context);
+        if(mInstance == null)
+            mInstance = new BtceExchange(context);
+
         return mInstance;
     }
 }

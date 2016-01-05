@@ -32,7 +32,7 @@ public abstract class MonitorDashFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
 
         pm = getPreferenceManager();
-        pm.setSharedPreferencesName( getPreferenceFileName() );
+        pm.setSharedPreferencesName(getPreferenceFileName());
 
         addPreferencesFromResource(R.xml.dash_monitor_conf);
 
@@ -41,22 +41,21 @@ public abstract class MonitorDashFragment extends PreferenceFragment {
         handleNotice();
 
 
-
         currency = (ListPreference) findPreference( D30.IDX_CURRENCY );
 
         source = (ListPreference) findPreference(D30.IDX_SOURCE);
-        if( source!=null ) {
+        if(source != null) {
             int v = Integer.parseInt(source.getValue());
-            adjustCurrencies( v );
-            source.setIcon( Exchange.getIcon(v) );
+            adjustCurrencies(v);
+            source.setIcon(Exchange.getIcon(v));
 
             source.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                int nv = Integer.parseInt( newValue.toString() );
+                int nv = Integer.parseInt(newValue.toString());
 
                 adjustCurrencies(nv);
-                preference.setIcon( Exchange.getIcon(nv) );
+                preference.setIcon(Exchange.getIcon(nv));
 
 //                CheckBoxPreference cbp = (CheckBoxPreference) findPreference("experimental");
 //                if( cbp!=null ) {
@@ -69,12 +68,13 @@ public abstract class MonitorDashFragment extends PreferenceFragment {
         }
 
         amount = (EditTextPreference) findPreference(D30.IDX_AMOUNT);
-        if( amount!=null ) {
+        if(amount != null) {
             amount.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                 try {
-                    if( Float.parseFloat(newValue.toString())<=0 ) throw new NumberFormatException();
+                    if(Float.parseFloat(newValue.toString()) <= 0)
+                        throw new NumberFormatException();
 
                 } catch(NumberFormatException e) {
                     Toast.makeText(context, getString(R.string.error_invalid_amount), Toast.LENGTH_LONG).show();
@@ -86,7 +86,7 @@ public abstract class MonitorDashFragment extends PreferenceFragment {
         }
 
         EditTextPreference priceBelow = (EditTextPreference) findPreference(D30.IDX_PRICE_BELOW);
-        if( priceBelow!=null ) {
+        if(priceBelow != null) {
             updateBelow(priceBelow, Float.parseFloat(priceBelow.getText()));
             priceBelow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
@@ -105,7 +105,7 @@ public abstract class MonitorDashFragment extends PreferenceFragment {
         }
 
         EditTextPreference priceAbove = (EditTextPreference) findPreference(D30.IDX_PRICE_ABOVE);
-        if( priceAbove!=null ) {
+        if(priceAbove != null) {
             updateAbove(priceAbove, Float.parseFloat(priceAbove.getText()));
             priceAbove.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
@@ -125,7 +125,7 @@ public abstract class MonitorDashFragment extends PreferenceFragment {
     }
 
     private void adjustCurrencies(int source) {
-        if( source==Exchange.BITSTAMP ) {
+        if(source == Exchange.BITSTAMP) {
             currency.setValue( "" + Exchange.USD );
             currency.setEnabled(false);
             currency.setSummary(R.string.currency_summary_not_supported);
@@ -134,13 +134,13 @@ public abstract class MonitorDashFragment extends PreferenceFragment {
             currency.setEnabled(true);
             currency.setSummary(R.string.currency_summary_active);
 
-            if( source==Exchange.MTGOX) {
+            if(source == Exchange.MTGOX) {
                 currency.setEntries(R.array.currencies_full_list);
                 currency.setEntryValues(R.array.currencies_full_values);
 
             } else {
-                if( !Arrays.asList(getResources().getStringArray(R.array.currencies_btce_values)).contains(currency.getValue()) )
-                    currency.setValue( "" + Exchange.USD );
+                if(!Arrays.asList(getResources().getStringArray(R.array.currencies_btce_values)).contains(currency.getValue()))
+                    currency.setValue("" + Exchange.USD);
 
                 currency.setEntries(R.array.currencies_btce_list);
                 currency.setEntryValues(R.array.currencies_btce_values);
@@ -149,26 +149,28 @@ public abstract class MonitorDashFragment extends PreferenceFragment {
     }
 
     private void updateAbove(Preference p, Float value) {
-        if( value==0f ) {
+        if(value == 0f) {
             p.setTitle(R.string.notif_price_above_title_off);
             p.setSummary(R.string.notif_price_above_summary);
 
-        } else if(value>0) {
+        } else if(value > 0) {
             p.setTitle( getString(R.string.notif_price_above_title_on, "$", "" + value) );
             p.setSummary(R.string.notif_enabled);
 
-        } else throw new NumberFormatException("that value cannot be negative");
+        } else
+            throw new NumberFormatException("that value cannot be negative");
     }
     private void updateBelow(Preference p, Float value) {
-        if( value==0f ) {
+        if(value == 0f) {
             p.setTitle(R.string.notif_price_below_title_off);
             p.setSummary(R.string.notif_price_below_summary);
 
-        } else if(value>0) {
+        } else if(value > 0) {
             p.setTitle( getString(R.string.notif_price_below_title_on, "$", "" + value) );
             p.setSummary(R.string.notif_enabled);
 
-        } else throw new NumberFormatException("that value cannot be negative");
+        } else
+            throw new NumberFormatException("that value cannot be negative");
     }
 
     protected abstract String getPreferenceFileName();

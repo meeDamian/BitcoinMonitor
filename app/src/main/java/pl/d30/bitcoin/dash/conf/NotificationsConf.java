@@ -42,7 +42,8 @@ public class NotificationsConf extends PreferenceActivity {
         context = getApplicationContext();
 
         final ActionBar ab = getActionBar();
-        if( ab!=null ) ab.setDisplayHomeAsUpEnabled(true);
+        if(ab != null)
+            ab.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -60,11 +61,11 @@ public class NotificationsConf extends PreferenceActivity {
         getMenuInflater().inflate(R.menu.notifications, menu);
 
         MenuItem m = menu.findItem(R.id.notification_switch);
-        if( m!=null ) {
+        if(m != null) {
             RelativeLayout rl = (RelativeLayout) m.getActionView();
-            if( rl!=null ) {
+            if(rl != null) {
                 Switch masterSwitch = (Switch) rl.findViewById(R.id.actionBarSwitch);
-                if( masterSwitch!=null ) {
+                if(masterSwitch != null) {
 //                    nf.registerMasterSwitch( masterSwitch );
                     masterSwitch.setChecked(false);
                     masterSwitch.setEnabled(false);
@@ -77,7 +78,7 @@ public class NotificationsConf extends PreferenceActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==android.R.id.home) {
+        if(item.getItemId() == android.R.id.home) {
             finish();
             return true;
         }
@@ -86,7 +87,7 @@ public class NotificationsConf extends PreferenceActivity {
 
     @Override
     protected boolean isValidFragment(String fragmentName) {
-        return fragmentName.equals( NotificationsFragment.class.getName() );
+        return fragmentName.equals(NotificationsFragment.class.getName());
     }
 
     public class NotYetImplementedFragment extends Fragment {
@@ -94,9 +95,9 @@ public class NotificationsConf extends PreferenceActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.not_yet_implemented_dummy, container, false);
-            if( v!=null ) {
+            if(v != null) {
                 Button email = (Button) v.findViewById(R.id.email);
-                if( email!=null ) {
+                if(email != null) {
                     email.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -108,7 +109,7 @@ public class NotificationsConf extends PreferenceActivity {
                 }
 
                 Button donateBtc = (Button) v.findViewById(R.id.donateBtc);
-                if( donateBtc!=null ) {
+                if(donateBtc != null) {
                     donateBtc.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -124,7 +125,7 @@ public class NotificationsConf extends PreferenceActivity {
                 }
 
                 Button donateLtc = (Button) v.findViewById(R.id.donateLtc);
-                if( donateLtc!=null ) {
+                if(donateLtc != null) {
                     donateLtc.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -140,23 +141,25 @@ public class NotificationsConf extends PreferenceActivity {
                 }
 
                 Button useBitcoinAlert = (Button) v.findViewById(R.id.useBitcoinAlert);
-                if( useBitcoinAlert!=null ) {
+                if(useBitcoinAlert != null) {
                     useBitcoinAlert.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            String bitcoinAlertPackage = "com.sleekbit.btcticker";
-                            try {
-                                PackageManager pm = getPackageManager();
-                                if( pm!=null ) startActivity( pm.getLaunchIntentForPackage(bitcoinAlertPackage) );
-                                else throw new Exception("Unable to get PackageManager");
+                        String bitcoinAlertPackage = "com.sleekbit.btcticker";
+                        try {
+                            PackageManager pm = getPackageManager();
+                            if(pm != null)
+                                startActivity( pm.getLaunchIntentForPackage(bitcoinAlertPackage) );
 
-                            } catch(Exception e) {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Coin.STORE_PREFIX+bitcoinAlertPackage)));
-                            }
+                            else
+                                throw new Exception("Unable to get PackageManager");
+
+                        } catch(Exception e) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Coin.STORE_PREFIX+bitcoinAlertPackage)));
+                        }
                         }
                     });
                 }
-
             }
             return v;
         }
@@ -174,7 +177,8 @@ public class NotificationsConf extends PreferenceActivity {
             super.onCreate(savedInstanceState);
 
             pm = getPreferenceManager();
-            if( pm!=null ) pm.setSharedPreferencesName(D30.PREF_FILE_NOTIF);
+            if(pm != null)
+                pm.setSharedPreferencesName(D30.PREF_FILE_NOTIF);
 
             addPreferencesFromResource(R.xml.dash_notifications_conf);
         }
@@ -189,15 +193,18 @@ public class NotificationsConf extends PreferenceActivity {
             masterSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    updatePreferencesState(isChecked);
-                    saveMasterState(isChecked);
+                updatePreferencesState(isChecked);
+                saveMasterState(isChecked);
                 }
             });
 
         }
 
         private void saveMasterState(boolean state) {
-            getSp().edit().putBoolean(D30.IDX_MASTER_SWITCH, state).apply();
+            getSp()
+                .edit()
+                .putBoolean(D30.IDX_MASTER_SWITCH, state)
+                .apply();
         }
         private void updatePreferencesState(boolean state) {
             getPreferenceScreen().setEnabled(state);
@@ -207,7 +214,9 @@ public class NotificationsConf extends PreferenceActivity {
         }
 
         private SharedPreferences getSp() {
-            if( sp==null ) sp = getSharedPreferences(D30.PREF_FILE_NOTIF, MODE_PRIVATE);
+            if(sp == null)
+                sp = getSharedPreferences(D30.PREF_FILE_NOTIF, MODE_PRIVATE);
+
             return sp;
         }
     }

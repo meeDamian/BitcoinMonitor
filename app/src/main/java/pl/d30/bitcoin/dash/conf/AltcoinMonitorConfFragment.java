@@ -41,7 +41,7 @@ public class AltcoinMonitorConfFragment extends MonitorDashFragment {
     @Override
     protected void handleNotice() {
         Preference p = findPreference("notice");
-        if( p!=null ) {
+        if(p != null) {
             p.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {

@@ -53,13 +53,15 @@ public class CoinBaseExchange extends Exchange {
 
     @Override
     public boolean isItemSupported(int item) {
-        return item== Coin.BTC;
+        return item == Coin.BTC;
     }
 
     // singleton magic
     private static CoinBaseExchange mInstance = null;
     public static CoinBaseExchange getInstance(Context context) {
-        if( mInstance==null ) mInstance = new CoinBaseExchange(context);
+        if( mInstance==null )
+            mInstance = new CoinBaseExchange(context);
+
         return mInstance;
     }
 }

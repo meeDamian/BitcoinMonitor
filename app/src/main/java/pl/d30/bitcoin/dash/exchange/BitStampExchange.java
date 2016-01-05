@@ -5,6 +5,8 @@ import android.content.Context;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import org.jetbrains.annotations.Contract;
+
 import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.dash.cryptocoin.Coin;
 
@@ -26,11 +28,11 @@ public class BitStampExchange extends Exchange {
         String price = D30.Json.getString(json, getPriceTypeName(PRICE_LAST));
 
         if(
-            lastValue==null
+            lastValue == null
             ||
-            lastValue.getItem()!=item
+            lastValue.getItem() != item
             ||
-            lastValue.getCurrency()!=currency
+            lastValue.getCurrency() != currency
 
         ) {
             lastValue = new LastValue(price, currency, item);
@@ -45,19 +47,25 @@ public class BitStampExchange extends Exchange {
 
         } catch(NumberFormatException ignored) {}
 
-        if( cb!=null ) cb.onTicker(getId(), lastValue);
+        if(cb != null)
+            cb.onTicker(getId(), lastValue);
     }
 
     protected Float extractPrice(JsonElement e) {
-        return e.isJsonArray() ? Float.parseFloat(e.getAsJsonArray().get(0).getAsString()) : null;
+        return e.isJsonArray()
+            ? Float.parseFloat(e.getAsJsonArray().get(0).getAsString())
+            : null;
     }
     protected Float extractAmount(JsonElement e) {
-        return e.isJsonArray() ? Float.parseFloat(e.getAsJsonArray().get(1).getAsString()) : null;
+        return e.isJsonArray()
+            ? Float.parseFloat(e.getAsJsonArray().get(1).getAsString())
+            : null;
     }
     protected Long getTimestamp(JsonObject json) {
         return Long.parseLong(D30.Json.getString(json, "timestamp"));
     }
 
+    @Contract(pure = true)
     public static String getPriceTypeName(int priceType) {
         switch( priceType ) {
             case PRICE_BUY: return "ask";
@@ -85,17 +93,19 @@ public class BitStampExchange extends Exchange {
         return URL_ORDER_BOOK;
     }
     public boolean isCurrencySupported(int currency) {
-        return currency==USD;
+        return currency == USD;
     }
     public boolean isItemSupported(int item) {
-        return item==Coin.BTC;
+        return item == Coin.BTC;
     }
 
 
     // singleton magic
     private static BitStampExchange mInstance = null;
     public static BitStampExchange getInstance(Context context) {
-        if( mInstance==null ) mInstance = new BitStampExchange(context);
+        if(mInstance == null)
+            mInstance = new BitStampExchange(context);
+
         return mInstance;
     }
 }

@@ -65,7 +65,9 @@ public class KrakenExchange extends Exchange {
 
     private static KrakenExchange mInstance = null;
     public static KrakenExchange getInstance(Context context) {
-        if( mInstance==null ) mInstance = new KrakenExchange(context);
+        if(mInstance == null)
+            mInstance = new KrakenExchange(context);
+
         return mInstance;
     }
 }

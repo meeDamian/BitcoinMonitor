@@ -23,6 +23,8 @@ public class Altcoin1MonitorDashService extends MonitorDashService {
 
     @Override
     protected void fixSource() {
-        sp.edit().putString(D30.IDX_SOURCE, Integer.toString(source = Exchange.BTCE)).apply();
+        sp.edit()
+            .putString(D30.IDX_SOURCE, Integer.toString(source = Exchange.BTCE))
+            .apply();
     }
 }

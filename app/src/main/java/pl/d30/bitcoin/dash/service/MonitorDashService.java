@@ -26,8 +26,6 @@ public abstract class MonitorDashService extends DashClockExtension {
         super.onInitialize(isReconnect);
         setUpdateWhenScreenOn(true);
 
-//        EasyTracker.getInstance().setContext(this);
-
         sp = getSharedPreferences(getConfFile(), MODE_PRIVATE);
     }
 
@@ -36,18 +34,23 @@ public abstract class MonitorDashService extends DashClockExtension {
 
         source = Integer.parseInt(sp.getString(D30.IDX_SOURCE, "" + source));
         exchange = Exchange.getExchange(source, this);
-        if( !exchange.isItemSupported(getItem()) ) fixSource();
+        if(!exchange.isItemSupported(getItem()))
+            fixSource();
 
         try {
             currency = Integer.parseInt(sp.getString(D30.IDX_CURRENCY, "" + currency));
-            if( !exchange.isCurrencySupported(currency) ) fixCurrency();
+            if(!exchange.isCurrencySupported(currency))
+                fixCurrency();
 
-        } catch(NumberFormatException e) { fixCurrency(); }
+        } catch(NumberFormatException e) {
+            fixCurrency();
+        }
 
         exchange.getTicker(currency, getItem(), new Exchange.OnTickerDataAvailable() {
             @Override
             public void onTicker(int source, Exchange.LastValue lastValue) {
-            if( !updateWidget(lastValue, Exchange.PRICE_LAST) ) handleError();
+            if(!updateWidget(lastValue, Exchange.PRICE_LAST))
+                handleError();
             }
         });
     }
@@ -55,19 +58,18 @@ public abstract class MonitorDashService extends DashClockExtension {
     protected boolean updateWidget(Exchange.LastValue lastValue, int priceType) {
 
         String amount = sp.getString(D30.IDX_AMOUNT, "");
-        if( !amount.isEmpty() ) {
+        if(!amount.isEmpty()) {
             try {
                 lastValue.setAmount(amount);
 
             } catch(Exception e) {
                 fixAmount();
-
             }
         }
 
-        publishUpdate( lastValue, priceType );
+        publishUpdate(lastValue, priceType);
 
-        logEntry( lastValue );
+        logEntry(lastValue);
 
         return true;
     }
@@ -107,12 +109,18 @@ public abstract class MonitorDashService extends DashClockExtension {
     protected abstract String getIntentAddress();
 
     protected void fixSource() {
-        sp.edit().putString(D30.IDX_SOURCE, Integer.toString(source = Exchange.MTGOX)).apply();
+        sp.edit()
+            .putString(D30.IDX_SOURCE, Integer.toString(source = Exchange.MTGOX))
+            .apply();
     }
     protected void fixCurrency() {
-        sp.edit().putString(D30.IDX_CURRENCY, Exchange.getCurrencyName(currency = Exchange.USD)).apply();
+        sp.edit()
+            .putString(D30.IDX_CURRENCY, Exchange.getCurrencyName(currency = Exchange.USD))
+            .apply();
     }
     protected void fixAmount() {
-        sp.edit().putString(D30.IDX_AMOUNT, Float.toString(1f)).apply();
+        sp.edit()
+            .putString(D30.IDX_AMOUNT, Float.toString(1f))
+            .apply();
     }
 }

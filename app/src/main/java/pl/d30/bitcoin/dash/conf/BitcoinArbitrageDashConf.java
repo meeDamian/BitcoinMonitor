@@ -30,7 +30,8 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
         context = getApplicationContext();
 
         final ActionBar ab = getActionBar();
-        if( ab!=null ) ab.setDisplayHomeAsUpEnabled(true);
+        if(ab != null)
+            ab.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -44,7 +45,7 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if( item.getItemId()==android.R.id.home ) {
+        if(item.getItemId() == android.R.id.home) {
             finish();
             return true;
         }
@@ -78,7 +79,8 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
             super.onCreate(savedInstanceState);
 
             pm = getPreferenceManager();
-            if( pm!=null ) pm.setSharedPreferencesName(D30.PREF_FILE_BTC);
+            if(pm != null)
+                pm.setSharedPreferencesName(D30.PREF_FILE_BTC);
 
             addPreferencesFromResource(R.xml.dash_arbitrage_conf);
 
@@ -94,7 +96,7 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object newValue) {
                     int position = Integer.parseInt(newValue.toString());
-                    preference.setIcon( Exchange.getIcon(position) );
+                    preference.setIcon(Exchange.getIcon(position));
                     hideExchange(position);
                     return true;
                     }
@@ -118,14 +120,14 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
                 final DialogInterface.OnClickListener onClicker = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                    if( AlertDialog.BUTTON_POSITIVE==which )
+                    if(AlertDialog.BUTTON_POSITIVE == which)
                         orderBook.setChecked(true);
                     }
                 };
                 orderBook.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                     @Override
                     public boolean onPreferenceChange(final Preference preference, Object newValue) {
-                    if( (Boolean)newValue ) {
+                    if((Boolean)newValue) {
                         new AlertDialog.Builder(context)
                             .setIcon(R.drawable.ic_notice)
                             .setTitle(R.string.order_book_confirmation_title)
@@ -143,12 +145,12 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
             }
 
             AmountPreference diffBelow = (AmountPreference) findPreference(D30.IDX_DIFF_BELOW);
-            if( diffBelow!=null && diffBelow.isEnabled() ) {
+            if(diffBelow != null && diffBelow.isEnabled()) {
 
             }
 
             AmountPreference diffAbove = (AmountPreference) findPreference(D30.IDX_DIFF_ABOVE);
-            if( diffAbove!=null && diffAbove.isEnabled() ) {
+            if(diffAbove != null && diffAbove.isEnabled()) {
 
             }
 
@@ -199,21 +201,21 @@ public class BitcoinArbitrageDashConf extends PreferenceActivity {
 
         // NOTE: isn't like the ugliest code ever? (:
         protected void hideExchange(int position) {
-            ArrayList<CharSequence> tmpNames = new ArrayList<CharSequence>();
-            ArrayList<CharSequence> tmpValues = new ArrayList<CharSequence>();
-            for(int i=0; i<exchangeNames.length; i++) {
-                if( i!=position ) {
-                    tmpNames.add( exchangeNames[i] );
-                    tmpValues.add( exchangeValues[i] );
+            ArrayList<CharSequence> tmpNames = new ArrayList<>();
+            ArrayList<CharSequence> tmpValues = new ArrayList<>();
+            for(int i = 0; i < exchangeNames.length; i++) {
+                if(i != position) {
+                    tmpNames.add(exchangeNames[i]);
+                    tmpValues.add(exchangeValues[i]);
                 }
             }
-            if( Integer.parseInt(exchangeSell.getValue())==position ) {
+            if(Integer.parseInt(exchangeSell.getValue()) == position) {
                 String newValue = tmpValues.get(0).toString();
                 exchangeSell.setValue(newValue);
                 exchangeSell.setIcon(getIcon(newValue));
             }
-            exchangeSell.setEntries( tmpNames.toArray(new CharSequence[tmpNames.size()]) );
-            exchangeSell.setEntryValues( tmpValues.toArray(new CharSequence[tmpValues.size()]) );
+            exchangeSell.setEntries(tmpNames.toArray(new CharSequence[tmpNames.size()]));
+            exchangeSell.setEntryValues(tmpValues.toArray(new CharSequence[tmpValues.size()]));
         }
 
 //        private void updateAbove(Preference p, Float value) {

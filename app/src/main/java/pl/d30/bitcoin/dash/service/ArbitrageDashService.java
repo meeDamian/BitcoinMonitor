@@ -33,9 +33,14 @@ public abstract class ArbitrageDashService extends DashClockExtension {
     Exchange.OnTickerDataAvailable callback = new Exchange.OnTickerDataAvailable() {
         @Override
         public void onTicker(int source, Exchange.LastValue lastValue) {
-        if( firstDownload==null ) firstDownload = lastValue;
-        else if( buyExchange.getId()==source ) updateWidget( lastValue, firstDownload );
-        else updateWidget( firstDownload, lastValue );
+        if(firstDownload == null)
+            firstDownload = lastValue;
+
+        else if(buyExchange.getId() == source)
+            updateWidget(lastValue, firstDownload);
+
+        else
+            updateWidget(firstDownload, lastValue);
         }
     };
 
@@ -44,14 +49,11 @@ public abstract class ArbitrageDashService extends DashClockExtension {
         super.onInitialize(isReconnect);
         setUpdateWhenScreenOn(true);
 
-//        EasyTracker.getInstance().setContext(this);
-
         sp = getSharedPreferences(getConfFile(), MODE_PRIVATE);
     }
 
     @Override
     protected void onUpdateData(int reason) {
-
         int buySource = Integer.parseInt(sp.getString(D30.IDX_BUY_SRC, "" + Exchange.BITSTAMP));
         buyExchange = Exchange.getExchange(buySource, this);
 
@@ -66,27 +68,31 @@ public abstract class ArbitrageDashService extends DashClockExtension {
          * Reversal of naming for those two prices happens in following two statements.
          **/
         // buyPrice is a price which WE USE to buy!
-        buyPrice = sp.getBoolean(D30.IDX_BUY_PRICE, true) ? Exchange.PRICE_SELL : Exchange.PRICE_LAST;
+        buyPrice = sp.getBoolean(D30.IDX_BUY_PRICE, true)
+            ? Exchange.PRICE_SELL
+            : Exchange.PRICE_LAST;
 
         // sellPrice is a price which WE USE to sell!
-        sellPrice = sp.getBoolean(D30.IDX_SELL_PRICE, true) ? Exchange.PRICE_BUY : Exchange.PRICE_LAST;
+        sellPrice = sp.getBoolean(D30.IDX_SELL_PRICE, true)
+            ? Exchange.PRICE_BUY
+            : Exchange.PRICE_LAST;
 
         displayPriority = sp.getBoolean(D30.IDX_PRIORITY, displayPriority);
 
         float orderBookAmount = 0f;
         boolean useOrderBook = sp.getBoolean(D30.IDX_ORDER_BOOK, false);
-        if( useOrderBook ) {
+        if(useOrderBook) {
             String amount = sp.getString(D30.IDX_ORDER_AMOUNT, "");
-            if( !amount.isEmpty() ) {
+            if(!amount.isEmpty()) {
                 try {
                     orderBookAmount = Float.parseFloat(amount);
 
                 } catch(NumberFormatException e) {
-                    orderBookAmount = fixAmount( 1f );
+                    orderBookAmount = fixAmount(1f);
 
                 }
 
-            } else orderBookAmount = fixAmount( 1f );
+            } else orderBookAmount = fixAmount(1f);
         }
 
         buyExchange.getTicker(getCurrency(), getItem(), orderBookAmount, callback);
@@ -147,11 +153,14 @@ public abstract class ArbitrageDashService extends DashClockExtension {
     }
     protected String getCurrencyDiff(float v1, float v2) {
         NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
-        return nf.format( v2-v1 );
+        return nf.format(v2 - v1);
     }
 
     protected float fixAmount(float amount) {
-        sp.edit().putString(D30.IDX_ORDER_AMOUNT, Float.toString(amount)).apply();
+        sp.edit()
+            .putString(D30.IDX_ORDER_AMOUNT, Float.toString(amount))
+            .apply();
+
         return amount;
     }
 

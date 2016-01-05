@@ -31,33 +31,34 @@ public class MtGoxExchange extends Exchange {
                 ts = getTimestamp(price);
 
             } catch(NumberFormatException ignored) {
-                ts = 0l;
+                ts = 0L;
             }
 
             JsonObject priceLast = D30.Json.getObject(price, getPriceTypeName(PRICE_LAST));
-            if( priceLast!=null ) {
-
+            if(priceLast != null) {
                 if(
-                    lastValue==null
+                    lastValue == null
                     ||
-                    lastValue.getItem()!=item
+                    lastValue.getItem() != item
                     ||
-                    lastValue.getCurrency()!=currency
-
+                    lastValue.getCurrency() != currency
                 ) {
                     lastValue = new LastValue(extractValue(priceLast), currency, item);
 
                     JsonObject priceSell = D30.Json.getObject(price, getPriceTypeName(PRICE_SELL));
-                    lastValue.setSellValue( extractValue(priceSell) );
+                    lastValue.setSellValue(extractValue(priceSell));
 
                     JsonObject priceBuy = D30.Json.getObject(price, getPriceTypeName(PRICE_BUY));
-                    lastValue.setBuyValue( extractValue(priceBuy) );
+                    lastValue.setBuyValue(extractValue(priceBuy));
 
-                } else lastValue.setLastValue(extractValue(priceLast));
+                } else
+                    lastValue.setLastValue(extractValue(priceLast));
 
-                if( ts>0 ) lastValue.setTickerTimestamp(ts);
+                if(ts > 0)
+                    lastValue.setTickerTimestamp(ts);
 
-                if( cb!=null ) cb.onTicker(getId(), lastValue);
+                if(cb != null)
+                    cb.onTicker(getId(), lastValue);
             }
         }
     }
@@ -71,11 +72,13 @@ public class MtGoxExchange extends Exchange {
     protected float getSellPrice(JsonArray asks, float amount) {
         float tmpAmount = 0f;
         JsonArray asksNew = new JsonArray();
-        for(int i=asks.size()-1; i>0; i--) {
+        for(int i = asks.size()-1; i > 0; i--) {
             JsonElement e = asks.get(i);
             tmpAmount += extractAmount(e);
             asksNew.add(e);
-            if( tmpAmount>=amount ) break;
+
+            if(tmpAmount >= amount)
+                break;
         }
         return super.getSellPrice(asksNew, amount);
     }
@@ -83,23 +86,28 @@ public class MtGoxExchange extends Exchange {
     protected float getBuyPrice(JsonArray bids, float amount) {
         float tmpAmount = 0f;
         JsonArray bidsNew = new JsonArray();
-        for(int i=bids.size()-1; i>0; i--) {
+        for(int i = bids.size()-1; i > 0; i--) {
             JsonElement e = bids.get(i);
             tmpAmount += extractAmount(e);
             bidsNew.add(e);
-            if( tmpAmount>=amount ) break;
+            if(tmpAmount >= amount)
+                break;
         }
         return super.getSellPrice(bidsNew, amount);
     }
 
     protected Float extractPrice(JsonElement e) {
-        return e.isJsonObject() ? D30.Json.getFloat( e.getAsJsonObject(), "price") : null;
+        return e.isJsonObject()
+            ? D30.Json.getFloat( e.getAsJsonObject(), "price")
+            : null;
     }
     protected Float extractAmount(JsonElement e) {
-        return e.isJsonObject() ? D30.Json.getFloat(e.getAsJsonObject(), "amount") : null;
+        return e.isJsonObject()
+            ? D30.Json.getFloat(e.getAsJsonObject(), "amount")
+            : null;
     }
     protected Long getTimestamp(JsonObject json) {
-        return Long.parseLong(D30.Json.getString(json, "now"))/1000000;
+        return Long.parseLong(D30.Json.getString(json, "now")) / 1000000;
     }
 
     // MtGox specific functions:
@@ -129,14 +137,16 @@ public class MtGoxExchange extends Exchange {
         return true;
     }
     public boolean isItemSupported(int item) {
-        return item==Coin.BTC;
+        return item == Coin.BTC;
     }
 
 
     // singleton magic
     private static MtGoxExchange mInstance = null;
     public static MtGoxExchange getInstance(Context context) {
-        if( mInstance==null ) mInstance = new MtGoxExchange(context);
+        if(mInstance == null)
+            mInstance = new MtGoxExchange(context);
+
         return mInstance;
     }
 }

@@ -12,6 +12,8 @@ import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import org.jetbrains.annotations.Contract;
+
 import pl.d30.bitcoin.R;
 
 public class AmountPreference extends Preference {
@@ -78,9 +80,11 @@ public class AmountPreference extends Preference {
         return v;
     }
 
+    @Contract(pure = true)
     private static float convertToFloat(int v) {
         return (float) v / 2 - 20;
     }
+    @Contract(pure = true)
     private static int convertToInt(float v) {
         return (int) v * 2 + 40;
     }

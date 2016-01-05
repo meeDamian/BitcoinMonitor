@@ -19,20 +19,24 @@ public class DonatePreference extends Preference {
         super(context, attrs);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DonatePreference);
-        if( a!=null ) {
+        if(a != null) {
             final int N = a.getIndexCount();
-            for(int i=0; i<N; i++) {
+            for(int i = 0; i < N; i++) {
                 int attr = a.getIndex(i);
-                switch( attr ) {
+                switch(attr) {
                     case R.styleable.DonatePreference_coin:
-                        String tmpCoin = a.getString( attr );
-                        if( tmpCoin!=null ) coin = Coin.getCoinIdByName(tmpCoin);
+                        String tmpCoin = a.getString(attr);
+                        if(tmpCoin != null)
+                            coin = Coin.getCoinIdByName(tmpCoin);
+
                         break;
                 }
             }
             a.recycle();
         }
-        if( coin==null ) coin = Coin.BTC;
+        if(coin == null)
+            coin = Coin.BTC;
+
         setIcon(context.getResources().getDrawable(Coin.getPreferenceDrawable(coin)));
     }
 
@@ -40,7 +44,9 @@ public class DonatePreference extends Preference {
     protected void onClick() {
         Intent i = Coin.getPaymentIntent(coin);
         PackageManager pm = getContext().getPackageManager();
-        if( pm!=null && i.resolveActivity(pm)!=null ) getContext().startActivity(Intent.createChooser(i, "Choose payment app"));
+        if(pm != null && i.resolveActivity(pm) != null)
+            getContext().startActivity(Intent.createChooser(i, "Choose payment app"));
+
         else {
             Toast.makeText(getContext(), Coin.getNoWalletWarn(coin), Toast.LENGTH_SHORT).show();
             getContext().startActivity( Coin.getStoreIntent(coin) );

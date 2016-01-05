@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.annotation.Nullable;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -45,29 +46,34 @@ public class D30 {
     // Json helper class:
     public static class Json {
 
+        @Nullable
         public static JsonObject getObject(JsonObject j, String n) {
             JsonElement e = j.get(n);
-            return e!=null && e.isJsonObject() ? e.getAsJsonObject() : null;
+            return e != null && e.isJsonObject() ? e.getAsJsonObject() : null;
         }
 
+        @Nullable
         public static JsonArray getArray(JsonObject j, String n) {
             JsonElement e = j.get(n);
-            return e!=null && e.isJsonArray() ? e.getAsJsonArray() : null;
+            return e != null && e.isJsonArray() ? e.getAsJsonArray() : null;
         }
 
+        @Nullable
         public static String getString(JsonObject j, String n) {
             JsonElement e = j.get(n);
-            return e!=null && e.isJsonPrimitive() ? e.getAsString() : null;
+            return e != null && e.isJsonPrimitive() ? e.getAsString() : null;
         }
 
+        @Nullable
         public static Float getFloat(JsonObject j, String n) {
             JsonElement e = j.get(n);
-            return e!=null && e.isJsonPrimitive() ? e.getAsFloat() : null;
+            return e != null && e.isJsonPrimitive() ? e.getAsFloat() : null;
         }
 
+        @Nullable
         public static Long getLong(JsonObject j, String n) {
             JsonElement e = j.get(n);
-            return e!=null && e.isJsonPrimitive() ? e.getAsLong() : null;
+            return e != null && e.isJsonPrimitive() ? e.getAsLong() : null;
         }
 
     }
@@ -75,19 +81,22 @@ public class D30 {
 
     // App/Device version extractors
     private static String appVersion = null;
+    @Nullable
     public static String getAppVersion(Context c) {
-        if( appVersion!=null ) return appVersion;
+        if(appVersion != null)
+            return appVersion;
 
         PackageManager pm = c.getPackageManager();
-        if( pm!=null ) {
+        if(pm != null) {
             try {
                 PackageInfo pi = pm.getPackageInfo(c.getPackageName(), 0);
                 return appVersion = pi.versionName + " (" + pi.versionCode + ")";
 
-            } catch( PackageManager.NameNotFoundException ignored ) {}
+            } catch(PackageManager.NameNotFoundException ignored) {}
         }
         return null;
     }
+    @org.jetbrains.annotations.Contract(pure = true)
     public static String getDeviceInfo() {
         return Build.MANUFACTURER + " " + Build.MODEL + "[" + Build.DEVICE + "|" + Build.PRODUCT + "|" + Build.SERIAL + "], OS: " + Build.VERSION.RELEASE;
     }

@@ -1,6 +1,7 @@
 package pl.d30.bitcoin.dash.exchange;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.gson.JsonArray;
@@ -8,6 +9,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+
+import org.jetbrains.annotations.Contract;
 
 import java.text.DecimalFormat;
 
@@ -126,24 +129,30 @@ public abstract class Exchange {
             lastValue.setSellValue(sellPrice);
             lastValue.setBuyValue(buyPrice);
 
-        } else lastValue = new LastValue(buyPrice, sellPrice, currency, item);
+        } else
+            lastValue = new LastValue(buyPrice, sellPrice, currency, item);
 
         lastValue.setOrderBookTimestamp(getTimestamp(json));
-        if( cb!=null ) cb.onTicker( getId(), lastValue );
+        if(cb != null)
+            cb.onTicker( getId(), lastValue );
     }
 
     protected float getBuyPrice(JsonArray bids, float amount) {
-        return bids!=null ? getPrice(bids, amount) : 0f;
+        return bids != null
+            ? getPrice(bids, amount)
+            : 0f;
     }
     protected float getSellPrice(JsonArray asks, float amount) {
-        return asks!=null ? getPrice(asks, amount) : 0f;
+        return asks != null
+            ? getPrice(asks, amount)
+            : 0f;
     }
 
     private float getPrice(JsonArray prices, float amount) {
         float currentAmount = 0f, sum = 0f;
         for(JsonElement priceItem : prices) {
             float tmpAmount = extractAmount(priceItem);
-            if( currentAmount+tmpAmount<amount ) {
+            if(currentAmount+tmpAmount < amount) {
                 sum += tmpAmount * extractPrice(priceItem);
                 currentAmount += tmpAmount;
 
@@ -160,16 +169,20 @@ public abstract class Exchange {
     protected abstract Float extractAmount(JsonElement e);
     protected abstract Long getTimestamp(JsonObject json);
 
+    @Nullable
+    @Contract(pure = true)
     public static String getPriceTypeName(int priceType) {
-        switch( priceType ) {
+        switch (priceType) {
             case PRICE_LAST: return "last";
             case PRICE_BUY:  return "buy";
             case PRICE_SELL: return "sell";
         }
         return null;
     }
+    @Nullable
+    @Contract(pure = true)
     public static String getCurrencyName(int currency) {
-        switch( currency ) {
+        switch (currency) {
             case USD: return "USD";
             case GBP: return "GBP";
             case JPY: return "JPY";
@@ -182,8 +195,9 @@ public abstract class Exchange {
         }
         return null;
     }
+    @Nullable
     public static Exchange getExchange(int exchange, Context context) {
-        switch( exchange ) {
+        switch (exchange) {
             case Exchange.MTGOX:    return MtGoxExchange.getInstance(context);
             case Exchange.BITSTAMP: return BitStampExchange.getInstance(context);
             case Exchange.BTCE:     return BtceExchange.getInstance(context);
@@ -191,8 +205,10 @@ public abstract class Exchange {
         }
         return null;
     }
+    @Nullable
+    @Contract(pure = true)
     public static Integer getIcon(int item) {
-        switch(item) {
+        switch (item) {
             case Exchange.MTGOX:    return R.drawable.ic_mtgox_blue;
             case Exchange.BITSTAMP: return R.drawable.ic_bitstamp_blue;
             case Exchange.BTCE:     return R.drawable.ic_btce_blue;
@@ -246,7 +262,9 @@ public abstract class Exchange {
             constructorsCallMe(convertToFloat(lastValue), currency, item);
         }
         private void constructorsCallMe(Float lastValue, int currency, int item) {
-            if( lastValue!=null ) this.lastValue = lastValue;
+            if(lastValue != null)
+                this.lastValue = lastValue;
+
             this.currency = currency;
             this.item = item;
         }
@@ -254,14 +272,18 @@ public abstract class Exchange {
         // handle amount
         public void setAmount(String amount) throws Exception {
             this.amount = Float.parseFloat(amount);
-            if( this.amount<=0 ) throw new Exception("amount cannot be set to zero or less");
+            if(this.amount <= 0)
+                throw new Exception("amount cannot be set to zero or less");
 
             String[] tmp = amount.split("\\.");
             prettyAmount = tmp[0].replaceFirst("^0+(?!$)", "");
-            if( prettyAmount.equals("") ) prettyAmount = "0";
-            if( tmp.length>1 ) {
+            if(prettyAmount.equals(""))
+                prettyAmount = "0";
+
+            if(tmp.length > 1) {
                 String decimals = tmp[1].replaceAll("[0]+$", "");
-                if(!decimals.equals("")) prettyAmount += "." + decimals;
+                if(!decimals.equals(""))
+                    prettyAmount += "." + decimals;
             }
         }
         public String getPrettyAmount() {
@@ -276,10 +298,13 @@ public abstract class Exchange {
             this.timestampOrderBook = timestamp;
         }
         public boolean isFresh(boolean isOrderBook) {
-            long tmpTs = isOrderBook ? timestampOrderBook : timestampTicker;
+            long tmpTs = isOrderBook
+                ? timestampOrderBook
+                : timestampTicker;
+
             long tmpFreshness = isOrderBook ? FRESHNESS_ORDER_BOOK : FRESHNESS_TICKER;
 
-            return tmpTs!=0 && tmpTs + tmpFreshness > System.currentTimeMillis() / 100;
+            return tmpTs != 0 && tmpTs + tmpFreshness > System.currentTimeMillis() / 100;
         }
 
 
@@ -310,11 +335,20 @@ public abstract class Exchange {
             float tmp;
             switch( priceType ) {
                 case Exchange.PRICE_LAST:
-                    tmp = ( lastValue!=null ) ? lastValue : (buyValue + sellValue) / 2; // in case when no last price is available: panic & improvise
+                    tmp = lastValue!=null
+                        ? lastValue
+                        : (buyValue + sellValue) / 2; // in case when no last price is available: panic & improvise
+
                     break;
 
-                case Exchange.PRICE_SELL: tmp = sellValue; break;
-                case Exchange.PRICE_BUY: tmp = buyValue; break;
+                case Exchange.PRICE_SELL:
+                    tmp = sellValue;
+                    break;
+
+                case Exchange.PRICE_BUY:
+                    tmp = buyValue;
+                    break;
+
                 default: tmp = 0;
             }
             return amount * tmp;
@@ -323,7 +357,7 @@ public abstract class Exchange {
             float tmp = getFloat(priceType);
 
             // TODO: this is ugly, and should be prettified
-            return getFormattedValue(decimalPlaces==-1
+            return getFormattedValue(decimalPlaces == -1
                 ? (tmp<10 ? new DecimalFormat("#.##").format(tmp) : "" + Math.round(tmp))
                 : new DecimalFormat("#." + new String(new char[decimalPlaces]).replace('\0', '#')).format(tmp),
                 true
@@ -338,8 +372,10 @@ public abstract class Exchange {
         private float convertToFloat(String strValue) {
             return Float.parseFloat(strValue);
         }
+        @Nullable
+        @Contract(pure = true)
         private String getFormattedValue(String value, boolean compact) {
-            switch( currency ) {
+            switch (currency) {
                 // Prefixed:
                 case USD: return "$" + value;
                 case GBP: return "£" + value;
@@ -355,7 +391,8 @@ public abstract class Exchange {
                 case CAD: return (compact ? "C$" : "CA$") + value;
                 case SGD: return (compact ? "S$" : "SG$") + value;
 
-                default: return null;
+                default:
+                    return null;
             }
         }
     }
