@@ -78,7 +78,8 @@ public abstract class Exchange {
     }
 
     protected void downloadResponse(final int currency, final int item, final float amount, final OnTickerDataAvailable cb) {
-        Ion.with(context, getUrl(currency, item, (amount==0f) ? TICKER : ORDER_BOOK))
+        Ion.with(context)
+            .load(getUrl(currency, item, (amount==0f) ? TICKER : ORDER_BOOK))
             .setHeader("User-Agent", "DashClock Bitcoin Monitor " + D30.getAppVersion(context) + ", " + D30.getDeviceInfo())
             .asJsonObject()
             .setCallback(new FutureCallback<JsonObject>() {
@@ -210,7 +211,7 @@ public abstract class Exchange {
     public abstract boolean isItemSupported(int item);
 
     public interface OnTickerDataAvailable {
-        public void onTicker(int source, LastValue lastValue);
+        void onTicker(int source, LastValue lastValue);
     }
 
     public class LastValue {

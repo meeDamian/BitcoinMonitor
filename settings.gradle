@@ -1,1 +1,1 @@
-include ':BitcoinMonitor'
+include ':app'

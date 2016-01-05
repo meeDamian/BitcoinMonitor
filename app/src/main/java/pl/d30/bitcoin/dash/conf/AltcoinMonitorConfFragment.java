@@ -9,7 +9,8 @@ import android.preference.Preference;
 import pl.d30.bitcoin.D30;
 import pl.d30.bitcoin.R;
 
-class AltcoinMonitorConfFragment extends MonitorDashFragment {
+public class AltcoinMonitorConfFragment extends MonitorDashFragment {
+
 
     public AltcoinMonitorConfFragment(Context c) {
         super(c);

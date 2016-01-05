@@ -1,0 +1,84 @@
+apply plugin: 'com.android.application'
+
+apply from: '../incrementAndExport.gradle'
+
+loadSecrets()
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.2'
+
+    defaultConfig {
+        applicationId "pl.d30.bitcoin"
+        minSdkVersion 17
+        targetSdkVersion 23
+
+        versionCode getVersionCode() as Integer
+        versionName getVersionName() as String // 1 6 5
+    }
+
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    signingConfigs {
+        release {
+            storeFile       safeGetFile('STORE_FILE') as File
+            storePassword   safeGet('STORE_PASSWORD') as String
+            keyAlias        safeGet('KEY_ALIAS') as String
+            keyPassword     safeGet('KEY_PASSWORD', safeGet('STORE_PASSWORD')) as String
+        }
+    }
+
+
+
+    buildTypes {
+        debug {
+            versionNameSuffix "-SNAPSHOT"
+        }
+        release {
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release as Object
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
+        }
+    }
+}
+
+dependencies {
+    compile 'com.koushikdutta.ion:ion:2.1.6'
+    compile 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+}
+
+//def Properties props = new Properties()
+//def propFile = file('../signing.properties')
+//if (propFile.canRead()){
+//    props.load(new FileInputStream(propFile))
+//
+//    if( props!=null
+//        && props.containsKey('STORE_FILE')
+//        && props.containsKey('STORE_PASSWORD')
+//        && props.containsKey('KEY_ALIAS')
+//        && props.containsKey('KEY_PASSWORD')
+//    ) {
+//
+//        println 'RELEASE BUILD SIGNING'
+//
+//        android.signingConfigs.release.storeFile = file(props['STORE_FILE'])
+//        android.signingConfigs.release.storePassword = props['STORE_PASSWORD']
+//        android.signingConfigs.release.keyAlias = props['KEY_ALIAS']
+//        android.signingConfigs.release.keyPassword = props['KEY_PASSWORD']
+//
+//    } else {
+//        println 'RELEASE BUILD NOT FOUND SIGNING PROPERTIES'
+//        android.buildTypes.release.signingConfig = null
+//    }
+//
+//} else {
+//    println 'RELEASE BUILD NOT FOUND SIGNING FILE'
+//    android.buildTypes.release.signingConfig = null
+//}

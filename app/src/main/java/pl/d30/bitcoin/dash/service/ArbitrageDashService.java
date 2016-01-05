@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 
-import com.google.analytics.tracking.android.EasyTracker;
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
 
@@ -45,7 +44,7 @@ public abstract class ArbitrageDashService extends DashClockExtension {
         super.onInitialize(isReconnect);
         setUpdateWhenScreenOn(true);
 
-        EasyTracker.getInstance().setContext(this);
+//        EasyTracker.getInstance().setContext(this);
 
         sp = getSharedPreferences(getConfFile(), MODE_PRIVATE);
     }
